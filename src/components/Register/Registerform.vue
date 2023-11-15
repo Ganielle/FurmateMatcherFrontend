@@ -122,7 +122,7 @@
                     <MDBCol>
                         <MDBBtn type="submit" class="signin" color="primary" @click="RegisterUser()" block :disabled="registerprocessing.loading">
                             <MDBSpinner v-if="registerprocessing.loading" />
-                             <p v-else>Sign up </p>
+                            <p v-else>Sign up </p>
                         </MDBBtn>
                     </MDBCol>
                 </MDBRow>
@@ -190,6 +190,7 @@ export default defineComponent({
             const data = {
                 username: this.username,
                 password: this.password,
+                email: this.email,
                 firstname: this.firstname,
                 middlename: this.middlename,
                 lastname: this.lastname,
@@ -257,5 +258,9 @@ export default defineComponent({
 }
 .registration-form .signin {
     background-color: rgba(149,56,158,1)
+}
+label.form-label::after{
+    content: " *" !important;
+    color: red
 }
 </style>

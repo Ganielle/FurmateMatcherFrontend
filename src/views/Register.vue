@@ -1,11 +1,20 @@
 <template>
     <div class="registration">
-        <MDBBtn @click="ReturnHome()" color="primary" class="home">RETURN TO HOME</MDBBtn>
+        <MDBBtn @click="() => {
+            if (category !== ''){
+                category = ''
+            }
+            else{
+                ReturnHome()
+            }
+        }" color="primary" class="home">{{ BackButtonName }}</MDBBtn>
         <Registercategory v-if="category == ''" @pickcategory="data => {
             category = data
         }"/>
         <RegistrationForm v-else-if="category === 'User'" />
-        <Registershelterrescuer v-else-if="category === 'Shelter'" />
+        <Registershelterrescuer v-else-if="category === 'Shelter'" :user="'SHELTER'" :role="shelterid"/>
+        <Registershelterrescuer v-else-if="category === 'Organization'" :user="'ORGANIZATION'" :role="organizationid"/>
+        <Registershelterrescuer v-else-if="category === 'Rescuer'" :user="'RESCUER'" :role="rescuerid"/>
     </div>
     <img :src="logo" class="bottom-right-image">
 </template>
@@ -24,7 +33,10 @@ export default defineComponent({
     data() {
         return {
             logo,
-            category: ""
+            category: "",
+            rescuerid: import.meta.env.VITE_RESCUER_ROLE_ID,
+            organizationid: import.meta.env.VITE_ORGANIZATION_ROLE_ID,
+            shelterid: import.meta.env.VITE_SHELTER_ROLE_ID
         }
     },
     components: {
@@ -33,6 +45,15 @@ export default defineComponent({
         MDBBtn,
         Registercategory,
         Registershelterrescuer
+    },
+    computed: {
+        BackButtonName(){
+            if (this.category != ''){
+                return "BACK TO REGISTER CATEGORY"
+            }
+
+            return "BACK TO LANDING PAGE"
+        }
     },
     methods: {
         ReturnHome(){

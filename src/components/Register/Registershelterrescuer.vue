@@ -2,13 +2,14 @@
     <MDBContainer class="registration-form">
         <div class="p-5 bg-light">
             <form @submit.prevent>
-                <strong class="text-center" style="font-size: 1.5vw;">FURMATE SHELTER REGISTRATION FORM</strong>
+                <strong class="text-center" style="font-size: 1.5vw;">FURMATE {{ user }} REGISTRATION FORM</strong>
                 <br/><br/>
                 <MDBInput
                     type="text"
                     label="Username"
                     v-model="username"
                     wrapperClass="mb-4"
+                    labelClass="forminput"
                     required
                 />
                 <MDBInput
@@ -16,6 +17,7 @@
                     label="Password"
                     v-model="password"
                     wrapperClass="mb-4"
+                    labelClass="forminput"
                     required
                 />
                 <MDBInput
@@ -23,6 +25,7 @@
                     label="Email Address"
                     v-model="email"
                     wrapperClass="mb-4"
+                    labelClass="forminput"
                     required
                 />
                 <MDBInput
@@ -30,6 +33,7 @@
                     label="Building No./Street/Barangay"
                     v-model="street"
                     wrapperClass="mb-4"
+                    labelClass="forminput"
                     required
                 />
                 <MDBRow id="HomeAddress">
@@ -39,6 +43,7 @@
                             label="Municipality"
                             v-model="municipality"
                             wrapperClass="mb-4"
+                            labelClass="forminput"
                             required
                         />
                     </MDBCol>
@@ -48,6 +53,7 @@
                             label="Province"
                             v-model="province"
                             wrapperClass="mb-4"
+                            labelClass="forminput"
                             required
                         />
                     </MDBCol>
@@ -57,6 +63,7 @@
                             label="Country"
                             v-model="country"
                             wrapperClass="mb-4"
+                            labelClass="forminput"
                             required
                         />
                     </MDBCol>
@@ -66,13 +73,14 @@
                             label="Zip Code"
                             v-model="zipcode"
                             wrapperClass="mb-4"
+                            labelClass="forminput"
                             required
                         />
                     </MDBCol>
                 </MDBRow>
-                <MDBTextarea label="Vision" rows="4" v-model="vision" />
+                <MDBTextarea label="Vision" rows="4" v-model="vision" labelClass="forminput"/>
                 <br/>
-                <MDBTextarea label="Mission" rows="4" v-model="mission" />
+                <MDBTextarea label="Mission" rows="4" v-model="mission" aria-label="forminput"/>
                 <br/>
                 <MDBCheckbox
                     label="By click this you're accepting the <a href='/termsandcondition'>Terms and Conditions</a>"
@@ -87,7 +95,7 @@
                     <MDBCol>
                         <MDBBtn type="submit" class="signin" color="primary" @click="RegisterUser()" block :disabled="registerprocessing.loading">
                             <MDBSpinner v-if="registerprocessing.loading" />
-                             <p v-else>Sign up </p>
+                            <p v-else>Sign up </p>
                         </MDBBtn>
                     </MDBCol>
                 </MDBRow>
@@ -100,20 +108,17 @@
 import { defineComponent, ref } from 'vue';
 import { MDBContainer, MDBInput, MDBCheckbox, MDBRow, MDBCol, MDBBtn, MDBRadio, MDBSpinner, MDBTextarea } from "mdb-vue-ui-kit";
 
-import { Registration } from '@/modules/registration/registration.ts'
+import { Registration } from '@/modules/registration/registration'
+import { RegistrationRescuer } from '@/modules/registration/registrationrescuer'
 
 export default defineComponent({
     name: "RegistrationResucershelterform",
+    props: ["role", "user"],
     data(){
         return {
             username: "",
             password: "",
             email: "",
-            firstname: "",
-            middlename: "",
-            lastname: "",
-            gender: "",
-            dob: "",
             street: "",
             municipality: "",
             province: "",
@@ -131,13 +136,12 @@ export default defineComponent({
         MDBRow,
         MDBCol,
         MDBBtn,
-        MDBRadio,
         MDBSpinner,
         MDBTextarea
     },
     methods: {
         async RegisterUser() {
-            if (this.username == "" && this.password == "" && this.email == "" && this.firstname == "" && this.middlename == "" && this.lastname == "" && this.gender == "" && this.dob == "" && this.street == "" && this.municipality == "" && this.province == "" && this.country == "" && this.zipcode == ""){
+            if (this.username == "" && this.password == "" && this.email == "" && this.street == "" && this.municipality == "" && this.province == "" && this.country == "" && this.zipcode == ""){
                 this.$swal({
                     title: "Please complete the form first before proceeding!",
                     confirmButtonText: "OK"
@@ -156,13 +160,9 @@ export default defineComponent({
             }
 
             const data = {
+                roleId: this.role,
                 username: this.username,
                 password: this.password,
-                firstname: this.firstname,
-                middlename: this.middlename,
-                lastname: this.lastname,
-                gender: this.gender,
-                dob: this.dob,
                 street: this.street,
                 municipality: this.municipality,
                 province: this.province,
@@ -185,11 +185,6 @@ export default defineComponent({
                         this.username == ""
                         this.password == "" 
                         this.email == "" 
-                        this.firstname == "" 
-                        this.middlename == "" 
-                        this.lastname == "" 
-                        this.gender == "" 
-                        this.dob == "" 
                         this.street == "" 
                         this.municipality == "" 
                         this.province == "" 
@@ -207,7 +202,7 @@ export default defineComponent({
         }
     },
     setup() {
-        const { registerresponse, registerprocessing, Register } = Registration()
+        const { registerresponse, registerprocessing, Register } = RegistrationRescuer()
 
         return { registerresponse, registerprocessing, Register }
     }
@@ -225,5 +220,9 @@ export default defineComponent({
 }
 .registration-form .signin {
     background-color: rgba(149,56,158,1)
+}
+label.form-label::after{
+    content: " *" !important;
+    color: red
 }
 </style>

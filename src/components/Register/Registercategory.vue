@@ -5,8 +5,8 @@
             <br/>
            <MDBBtn color="primary" block @click="$emit('pickcategory', 'User')">Adopter Registration</MDBBtn>
            <MDBBtn color="primary" block @click="$emit('pickcategory', 'Shelter')">Shelter Registration</MDBBtn>
-           <MDBBtn color="primary" block>Organization Registration</MDBBtn>
-           <MDBBtn color="primary" block>Individual Rescuer Registration</MDBBtn>
+           <MDBBtn color="primary" block @click="$emit('pickcategory', 'Organization')">Organization Registration</MDBBtn>
+           <MDBBtn color="primary" block @click="$emit('pickcategory', 'Rescuer')">Individual Rescuer Registration</MDBBtn>
         </div>
     </MDBContainer>
 </template>
