@@ -53,13 +53,6 @@ export default defineComponent({
     margin-bottom: 2vh;
     margin-right: 2vw;
 }
-.home{
-    position: absolute;
-    top: 0;
-    left: 0;
-    margin-top: 2vh;
-    margin-left: 2vh;
-}
 .registration-form{
     margin: auto;
     width: 50vw;
