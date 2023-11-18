@@ -2,7 +2,19 @@
     <div class="registration">
         <MDBContainer class="registration-form">
             <div class="p-5 text-center bg-light">
-                <MDBBtn @click="ReturnHome()" color="primary" class="home">RETURN TO HOME</MDBBtn>
+                <h3 v-if="validationprocessing.loading">
+                    Validating your account
+                </h3>
+                <h3 v-else-if="validationresponse.message != 'success'">
+                    There's a problem validating your account! Please contact customer support for more details.
+                </h3>
+                <h3 v-else>
+                    Your account is now activated! You can now login using your account.
+                </h3>
+                <MDBBtn @click="ReturnHome()" color="primary" class="home" :disabled="validationprocessing.loading == false ? false : true">
+                    <MDBSpinner size="medium" v-if="validationprocessing.loading"></MDBSpinner>
+                    <strong v-else>RETURN TO HOME</strong>
+                </MDBBtn>
             </div>
         </MDBContainer>
     </div>
@@ -11,9 +23,9 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import { MDBContainer, MDBBtn } from "mdb-vue-ui-kit";
+import { MDBContainer, MDBBtn, MDBSpinner } from "mdb-vue-ui-kit";
 
-import LoginForm from '@/components/Login/Loginform.vue'
+import { EmailValidaiton } from '@/modules/registration/emailvalidation';
 import logo from "@/assets/logo.png"
 
 export default defineComponent({
@@ -25,12 +37,21 @@ export default defineComponent({
     },
     components: {
         MDBContainer,
-        MDBBtn
+        MDBBtn,
+        MDBSpinner
     },
     methods: {
         ReturnHome(){
             this.$router.push({name: "home"})
         }
+    },
+    mounted(){
+        this.Validation(this.$route.query.value)
+    },
+    setup(){
+        const { validationresponse, validationprocessing, Validation } = EmailValidaiton()
+
+        return { validationresponse, validationprocessing, Validation }
     }
 })
 </script>

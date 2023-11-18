@@ -160,6 +160,7 @@ export default defineComponent({
             }
 
             const data = {
+                email: this.email,
                 roleId: this.role,
                 username: this.username,
                 password: this.password,

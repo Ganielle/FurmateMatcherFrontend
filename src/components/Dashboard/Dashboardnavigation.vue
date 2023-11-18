@@ -80,15 +80,15 @@
     </div>
     
     <div @click="Logout()">
-      <p style="margin-left: 5px;white-space: nowrap; overflow: hidden">
+      <p style="margin-left: 20px;white-space: nowrap; overflow: hidden; cursor: pointer;">
         <MDBIcon
           fas
           icon="sign-out-alt"
-          size="4x"
+          size="2x"
           class="text-primary"
           style="color: white !important"
         />
-          <strong style="margin-left: 20px; font-size: 3vw; color: white">LOGOUT</strong>
+          <strong style="margin-left: 20px; font-size: 2vw; color: white; cursor: pointer;">LOGOUT</strong>
         </p>
     </div>
     <div v-if="didToggle === false && innerWidth <= 768" class="custom-backdrop" @click="SidebarToggle()">

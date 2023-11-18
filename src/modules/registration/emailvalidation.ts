@@ -18,10 +18,12 @@ export const EmailValidaiton = () => {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify({
+                id: data
+            })
         }
 
-        await fetch(`${import.meta.env.VITE_API_URL}/validation`, requestOptions)
+        await fetch(`${import.meta.env.VITE_API_URL}/emailverification/validate`, requestOptions)
         .then(res => {
             return res.json()
         })
