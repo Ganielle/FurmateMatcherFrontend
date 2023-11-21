@@ -83,7 +83,6 @@ export default defineComponent({
 
             if (this.loginresponse.message == "success"){
                 localStorage.setItem("auth", JSON.stringify(this.loginresponse.response))
-
                 this.$swal({
                     title: 'User Logging in',
                     html: `${this.loginresponse.response.username} will be logging in <b></b> milliseconds.`,
@@ -104,7 +103,12 @@ export default defineComponent({
                     }
                 }).then(result => {
                     if (result.dismiss === this.$swal.DismissReason.timer) {
-                        this.$router.push({name: "userhome"})
+                        if (this.loginresponse.response.roleId == "629a98a5a881575c013b5326"){
+                            this.$router.push({name: "user"})
+                        }
+                        else if (this.loginresponse.response.roleId == "629a98a5a881575c013b5327"){
+                            this.$router.push({name: "rescuer"})
+                        }
                     }
                 })
             }

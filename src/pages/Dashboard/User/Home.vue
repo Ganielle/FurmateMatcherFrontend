@@ -1,7 +1,3 @@
-
-import type { log } from 'console';
-
-import type { onMounted } from 'vue';
 <template>
     <MDBContainer fluid>
         <br/>
@@ -120,32 +116,18 @@ import type { onMounted } from 'vue';
                 <strong style="font-size:1.5vw">PET LIST</strong>
                 <br/><br/>
                 <MDBRow>
-                    <MDBCol col="6" v-for="petsItem in filteredPets" :key="petsItem.Name">
+                    <MDBCol col="6" v-for="petsItem in petsreponse.petlistresponse" :key="petsItem">
                         <MDBCard  style="height: 100%">
                             <MDBCardImg
-                                :src="petsItem.image"
+                                :src="GetImage(petsItem.picture)"
                                 top
                             />
                             <MDBCardBody>
-                            <MDBCardTitle>{{ petsItem.Name }}</MDBCardTitle>
+                            <MDBCardTitle>{{ petsItem.name }}</MDBCardTitle>
                             <MDBCardText>
-                                <strong>Breed: {{ petsItem.Breed }}</strong>
+                                <strong>Breed: {{ petsItem.breed }}</strong>
                                 <br/>
-                                <strong>Age: {{ petsItem.AgeSpecification }}</strong>
-                                <br/>
-                                <strong>Gender: {{ petsItem.Gender }}</strong>
-                                <br/>
-                                <strong>Size: {{ petsItem.Size }}</strong>
-                                <br/>
-                                <strong>Color: {{ petsItem.Color }}</strong>
-                                <br/>
-                                <strong>Coat Length: {{ petsItem.CoatLength }}</strong>
-                                <br/>
-                                <strong>Good With: {{ petsItem.Goowith }}</strong>
-                                <br/>
-                                <strong>Personality: {{ petsItem.Personality }}</strong>
-                                <br/>
-                                <strong>Care & Behaviour: {{ petsItem.CareBehaviour }}</strong>
+                                <strong>Gender: {{ petsItem.gender }}</strong>
                             </MDBCardText>
                                 <MDBBtn color="primary">View </MDBBtn>
                             </MDBCardBody>
@@ -170,6 +152,9 @@ import browny from '@/assets/Dashboard/User/Pets/Browny.jpg'
 import hachi from '@/assets/Dashboard/User/Pets/Hachi.jpg'
 import joker from '@/assets/Dashboard/User/Pets/Joker.jpg'
 import puti from '@/assets/Dashboard/User/Pets/Puti.jpg'
+
+import { Pets } from '@/modules/dashboard/user/pet'
+import { GetItemKey } from '@/modules/globalfunction'
 
 export default defineComponent({
     name: "MatcherHome",
@@ -276,75 +261,7 @@ export default defineComponent({
                 "Declawed",
                 "Special Needs",
                 "Outdoor trained"
-            ],
-            pets:[
-                {
-                    Name: "Briana",
-                    Breed: "Aspin",
-                    AgeSpecification: "Adult",
-                    Gender: "Female",
-                    Size: "Medium",
-                    Color: "Black",
-                    CoatLength: "Short",
-                    Goowith: "Any",
-                    Personality: "Friendly",
-                    CareBehaviour: "House-trained",
-                    image: briana
-                },
-                {
-                    Name: "Browny",
-                    Breed: "Aspin",
-                    AgeSpecification: "Adult",
-                    Gender: "Male",
-                    Size: "Large",
-                    Color: "Brown / Chocolate",
-                    CoatLength: "Short",
-                    Goowith: "Any",
-                    Personality: "Affectionate",
-                    CareBehaviour: "House-trained",
-                    image: browny
-                },
-                {
-                    Name: "Puti",
-                    Breed: "Aspin",
-                    AgeSpecification: "Young",
-                    Gender: "Male",
-                    Size: "Medium",
-                    Color: "White",
-                    CoatLength: "Short",
-                    Goowith: "Dogs",
-                    Personality: "Calm",
-                    CareBehaviour: "Outdoor trained",
-                    image: puti
-                },
-                {
-                    Name: "Joker",
-                    Breed: "Aspin",
-                    AgeSpecification: "Young",
-                    Gender: "Male",
-                    Size: "Medium",
-                    Color: "Brown / Chocolate",
-                    CoatLength: "Short",
-                    Goowith: "Dogs",
-                    Personality: "Adventurous",
-                    CareBehaviour: "Outdoor trained",
-                    image: joker
-                },
-                {
-                    Name: "Hachi",
-                    Breed: "Golden Retriever Mix",
-                    AgeSpecification: "Adult",
-                    Gender: "Female",
-                    Size: "Large",
-                    Color: "Golden",
-                    CoatLength: "Medium",
-                    Goowith: "Kids",
-                    Personality: "Playful",
-                    CareBehaviour: "House-trained",
-                    image: hachi
-                }
-            ],
-            filteredPets: []
+            ]
         }
     },
     components: {
@@ -360,24 +277,25 @@ export default defineComponent({
         Dashboardbreadcrumbs
     },
     methods: {
-        FilterPets(){
-            this.filteredPets = this.pets.filter((pet) => {
-                return (
-                (this.selectedBreeds === "" || pet.Breed === this.selectedBreeds) &&
-                (this.selectedAge === "" || pet.AgeSpecification === this.selectedAge) &&
-                (this.selectedGender === "" || pet.Gender === this.selectedGender) &&
-                (this.selectedSize === "" || pet.Size === this.selectedSize) &&
-                (this.selectedColor === "" || pet.Color === this.selectedColor) &&
-                (this.selectedCoatLength === "" || pet.CoatLength === this.selectedCoatLength) &&
-                (this.selectedGoodWith === "" || pet.Goowith === this.selectedGoodWith) &&
-                (this.selectedPersonality === "" || pet.Personality === this.selectedPersonality) &&
-                (this.selectedCareBehaviour === "" || pet.CareBehaviour === this.selectedCareBehaviour)
-                );
-            });
+        async FilterPets(){
+            const auth: any = await GetItemKey("auth")
+            const authdata = JSON.parse(auth)
+
+            await this.GetPetList(authdata._id)
+
+            console.log(this.petsreponse.petlistresponse)
+        },
+        GetImage(image: any){
+            return new URL(`${import.meta.env.VITE_API_URL}/${image}`, import.meta.url).href
         }
     },
     mounted(){
         this.FilterPets()
+    },
+    setup(){
+        const { petsreponse, petsprocessing, GetPetList } = Pets()
+
+        return { petsreponse, petsprocessing, GetPetList }
     }
 })
 </script>

@@ -25,6 +25,13 @@
                     wrapperClass="mb-4"
                     required
                 />
+                <MDBInput
+                    type="text"
+                    label="Contact Number"
+                    v-model="contactnumber"
+                    wrapperClass="mb-4"
+                    required
+                />
                 <MDBRow>
                     <MDBCol>
                         <MDBInput
@@ -394,6 +401,7 @@ export default defineComponent({
             username: "",
             password: "",
             email: "",
+            contactnumber: "",
             firstname: "",
             middlename: "",
             lastname: "",
@@ -611,6 +619,7 @@ export default defineComponent({
                 username: this.username,
                 password: this.password,
                 email: this.email,
+                contactnumber: this.contactnumber,
                 firstname: this.firstname,
                 middlename: this.middlename,
                 lastname: this.lastname,

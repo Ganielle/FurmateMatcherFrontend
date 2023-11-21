@@ -8,7 +8,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import { MDBContainer, MDBBtn } from "mdb-vue-ui-kit";
+import { MDBBtn } from "mdb-vue-ui-kit";
 
 import LoginForm from '@/components/Login/Loginform.vue'
 import logo from "@/assets/logo.png"
@@ -21,7 +21,6 @@ export default defineComponent({
         }
     },
     components: {
-        MDBContainer,
         LoginForm,
         MDBBtn
     },

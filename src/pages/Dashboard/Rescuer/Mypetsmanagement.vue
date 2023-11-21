@@ -1,0 +1,439 @@
+<template>
+    <MDBContainer>
+        <br/>
+        <Dashboardbreadcrumbs data="MY PETS / MANAGEMENT" />
+        <br/>
+        <div class="px-0 mb-3 d-flex align-items-center justify-content-center">
+            <button class="tc-pager" role="button"
+                :class="{'tc-page-disable': petspagination.page <= 0}"
+                :disabled="petspagination.page <= 0" 
+                @click="() => {
+                    petspagination.page -= 1
+                }">
+                <MDBIcon
+                    fas
+                    icon="chevron-left"
+                    class="text-primary"
+                    style="color: white !important"
+                />
+            </button>
+            <div class="tc-page">{{ petspagination.page + 1 }}</div>
+            <button class="tc-pager" role="button"
+                :class="{'tc-page-disable': petspagination.page >= petspagination.totalPages - 1}"
+                :disabled=" petspagination.page >= petspagination.totalPages - 1"
+                @click="() => {
+                    petspagination.page += 1
+                }">
+                <MDBIcon
+                    fas
+                    icon="chevron-right"
+                    class="text-primary"
+                    style="color: white !important"
+                />
+            </button>
+        </div>
+
+        <br/>
+        <MDBBtn color="primary" @click="addpetmodal = true">ADD PET</MDBBtn>
+        <br/>
+        <br/>
+        <MDBTable responsive class="align-middle mb-0 bg-white text-center">
+            <thead class="table-warning">
+                <tr>
+                    <th scope="col">
+                        PET NAME
+                    </th>
+                    <th scope="col">
+                        PET TYPE
+                    </th>
+                    <th scope="col">
+                        PET BREED
+                    </th>
+                    <th scope="col">
+                        ACTIONS
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-if="petsprocessing.petlistloading">
+                    <td colspan="4">
+                        <MDBSpinner></MDBSpinner>
+                    </td>
+                </tr>
+                <tr v-else-if="petsreponse.petlistresponse == '' || petsreponse.petlistresponse.length <= 0">
+                    <td colspan="4">No Data Yet!</td>
+                </tr>
+                <tr v-else v-for="data in petsreponse.petlistresponse" :key="data">
+                    <th scope="row" class="text-center" style="color: black">
+                        {{ data.name }}
+                    </th>
+                    <th class="text-center" style="color: black">
+                        {{ data.type }}
+                    </th>
+                    <th class="text-center" style="color: black">
+                        {{ data.breed }}
+                    </th>
+                    <th class="text-center">
+                        <MDBRow>
+                            <MDBCol>
+                                <MDBBtn block color="primary">DETAILS</MDBBtn>
+                            </MDBCol>
+                            <MDBCol>
+                                <MDBBtn block color="primary">EDIT</MDBBtn>
+                            </MDBCol>
+                            <MDBCol>
+                                <MDBBtn block color="primary">DELETE</MDBBtn>
+                            </MDBCol>
+                        </MDBRow>
+                    </th>
+                </tr>
+            </tbody>
+        </MDBTable>
+    </MDBContainer>
+
+    <MDBModal v-model="addpetmodal" staticBackdrop>
+        <MDBModalHeader>
+            <MDBModalTitle>ADD PET</MDBModalTitle>
+        </MDBModalHeader>
+        <MDBModalBody>
+            <form @submit.prevent>
+                <MDBInput 
+                    type="text"
+                    label="Pet Name"
+                    v-model="petname"
+                    wrapperClass="mb-4"
+                    required
+                />
+
+                <div class="d-flex flex-wrap ">
+                    <div class="flex-grow-1 mb-3">
+                        <select class="form-select cua-input-select-2" name="role" v-model="type"
+                            style="background-color: white; color: black; font-size: 0.9em;">
+                            <option value="">What is your pet type?</option>
+                            <option v-for="typekey in typepetdata" :key="typekey" :value="typekey">{{ typekey }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap ">
+                    <div class="flex-grow-1 mb-3">
+                        <select class="form-select cua-input-select-2" name="role" v-model="gender"
+                            style="background-color: white; color: black; font-size: 0.9em;">
+                            <option value="">What is your pet gender?</option>
+                            <option v-for="genderkey in genderpetdata" :key="genderkey" :value="genderkey">{{ genderkey }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap " v-if="type == 'Dog'">
+                    <div class="flex-grow-1 mb-3">
+                        <select class="form-select cua-input-select-2" name="role" v-model="breed"
+                            style="background-color: white; color: black; font-size: 0.9em;">
+                            <option value="">What is your pet breed?</option>
+                            <option v-for="breeddogkey in breedpetdogdata" :key="breeddogkey" :value="breeddogkey">{{ breeddogkey }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="d-flex flex-wrap " v-else>
+                    <div class="flex-grow-1 mb-3">
+                        <select class="form-select cua-input-select-2" name="role" v-model="breed"
+                            style="background-color: white; color: black; font-size: 0.9em;">
+                            <option value="">What is your pet breed?</option>
+                            <option v-for="breedcatkey in breedpetcatdata" :key="breedcatkey" :value="breedcatkey">{{ breedcatkey }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap ">
+                    <div class="flex-grow-1 mb-3">
+                        <select class="form-select cua-input-select-2" name="role" v-model="age"
+                            style="background-color: white; color: black; font-size: 0.9em;">
+                            <option value="">What is your pet age?</option>
+                            <option v-for="agekey in agepetdata" :key="agekey" :value="agekey">{{ agekey }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                What is your pet personality traits? (Please at lease one)
+                <div v-for="personalitykey in personalitytraitsdata" :key="personalitykey">
+                    <label class="container no-center-text"><strong>{{ personalitykey }}</strong>
+                        <input type="checkbox"
+                            :value="personalitykey"
+                            :id="personalitykey"
+                            v-model="personality"
+                            :name="personalitykey"
+                            checked>
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <br/>
+                <div class="d-flex flex-wrap ">
+                    <div class="flex-grow-1 mb-3">
+                        <select class="form-select cua-input-select-2" name="role" v-model="special"
+                            style="background-color: white; color: black; font-size: 0.9em;">
+                            <option value="">Is your pet a special pet?</option>
+                            <option v-for="specialkey in specialdata" :key="specialkey" :value="specialkey">{{ specialkey }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap ">
+                    <div class="flex-grow-1 mb-3">
+                        <select class="form-select cua-input-select-2" name="role" v-model="maintenance"
+                            style="background-color: white; color: black; font-size: 0.9em;">
+                            <option value="">Is your pet have a maintenance?</option>
+                            <option v-for="maintenancekey in petmaintenancedata" :key="maintenancekey" :value="maintenancekey">{{ maintenancekey }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap ">
+                    <div class="flex-grow-1 mb-3">
+                        <select class="form-select cua-input-select-2" name="role" v-model="located"
+                            style="background-color: white; color: black; font-size: 0.9em;">
+                            <option value="">Where is your pet located?</option>
+                            <option v-for="locatedkey in locateddata" :key="locatedkey" :value="locatedkey">{{ locatedkey }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <MDBFile v-model="file" />
+                <br/>
+                <MDBBtn color="primary" block @click="() => {
+                    if (petname == '' || type == '' || gender == '' || breed == '' || age == '' || personality.length <= 0 || maintenance == '' || located == '' || file.length <= 0){
+                        $swal({
+                            title: 'Please complete the form first before proceeding!',
+                            confirmButtonText: 'OK'
+                        })
+
+                        return;
+                    }
+
+                    SavePet()
+                }" :disabled="petsprocessing.petaddloading">
+                    <MDBSpinner v-if="petsprocessing.petaddloading"></MDBSpinner>
+                    <strong v-else>SAVE PET DATA</strong>
+                </MDBBtn>
+            </form>
+        </MDBModalBody>
+        <MDBModalFooter>
+            <MDBBtn color="warning" @click="() => {
+                petname = ''
+                type = ''
+                gender = ''
+                breed = ''
+                age = ''
+                personality = []
+                maintenance = ''
+                located = ''
+                file = []
+                addpetmodal = false
+            }" :disabled="petsprocessing.petaddloading">CLOSE</MDBBtn>
+        </MDBModalFooter>
+    </MDBModal>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+import { MDBBtn, MDBCol, MDBContainer, MDBFile, MDBIcon, MDBInput, MDBModal, MDBModalBody, MDBModalFooter, MDBModalHeader, MDBModalTitle, MDBRow, MDBSpinner, MDBTable } from 'mdb-vue-ui-kit';
+
+import Dashboardbreadcrumbs from '@/components/Dashboard/Dashboardbreadcrumbs.vue';
+
+import { Pets } from '@/modules/dashboard/rescuer/pet'
+import { GetItemKey } from '@/modules/globalfunction'
+
+export default defineComponent({
+    name: "RescuerPetManagement",
+    props: ["currentPage", "totalPage"],
+    data() {
+        return{
+            addpetmodal: false,
+            petname: "",
+            type: "",
+            gender: "",
+            breed: "",
+            age: "",
+            personality: [],
+            special: "",
+            maintenance: "",
+            located: "",
+            file: [],
+            typepetdata:[
+                "Dog",
+                "Cat"
+            ],
+            genderpetdata: [
+                "Female",
+                "Male",
+            ],
+            breedpetcatdata: [
+                "Puspin",
+                "Siamese",
+                "Persian",
+                "Maine Coon",
+                "Ragdoll",
+                "British Shorthair",
+                "Scottish Fold",
+                "Bengal",
+                "Russian Blue",
+                "Burmese"
+            ],
+            breedpetdogdata: [
+                "Aspin",
+                "Shih Tzu",
+                "Pomeranian",
+                "Dachshund",
+                "Golden Retriever",
+                "Labrador Retriever",
+                "Chihuahua",
+                "Siberian Husky",
+                "Belgian Malinois"
+            ],
+            agepetdata: [
+                "Young",
+                "Adult",
+                "Senior"
+            ],
+            personalitytraitsdata: [
+                "Friendly",
+                "Playful",
+                "Loyal",
+                "Independent",
+                "Energetic",
+                "Calm",
+                "Affectionate",
+                "Intelligent",
+                "Protective",
+                "Adventurous",
+                "Shy",
+                "Social",
+                "Aggressive",
+                "Curious",
+                "Cuddly"
+            ],
+            petmaintenancedata:[
+                "Yes",
+                "No"
+            ],
+            specialdata: [
+                "Yes",
+                "No"
+            ],
+            locateddata:[
+                "Quezon City",
+                "Manila",
+                "Marikina",
+                "Mandaluyong",
+                "San Juan",
+                "Taguig",
+                "Pasig"
+            ],
+        }
+    },
+    components: {
+    Dashboardbreadcrumbs,
+    MDBContainer,
+    MDBIcon,
+    MDBTable,
+    MDBBtn,
+    MDBModal,
+    MDBModalHeader,
+    MDBModalTitle,
+    MDBModalBody,
+    MDBModalFooter,
+    MDBInput,
+    MDBFile,
+    MDBSpinner,
+    MDBRow,
+    MDBCol
+},
+    methods: {
+        async SavePet(){
+            const auth: any = await GetItemKey("auth")
+            const authdata = JSON.parse(auth)
+            const formData = new FormData()
+
+            formData.append("id", authdata._id)
+            formData.append("petname", this.petname)
+            formData.append("type", this.type)
+            formData.append("gender", this.gender)
+            formData.append("breed", this.breed)
+            formData.append("personality", JSON.stringify(this.personality))
+            formData.append("special", this.special)
+            formData.append("maintenance", this.maintenance)
+            formData.append("located", this.located)
+            formData.append("file", this.file[0])
+
+            await this.AddPet(formData)
+
+            if (this.petsreponse.petaddmessage == "success"){
+                this.$swal({
+                    title: 'Save Success!',
+                    html: `The page will reload in <b></b> milliseconds.`,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    allowEscapeKey: false,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                    this.$swal.showLoading()
+                    const b = this.$swal.getHtmlContainer().querySelector('b')
+                    this.timeInterval = setInterval(() => {
+                        b.textContent = this.$swal.getTimerLeft()
+                    }, 100)
+                    },
+                    willClose: () => {
+                    clearInterval(this.timerInterval)
+                    }
+                }).then(result => {
+                    if (result.dismiss === this.$swal.DismissReason.timer) {
+                        window.location.reload();
+                    }
+                })
+            }
+            else{
+                this.$swal({
+                    title: `There's a problem saving your data! ErrorCode: ${this.petsreponse.petlistresponse}`,
+                    confirmButtonText: 'OK'
+                })
+            }
+        },
+        async ListPets(){
+            const auth: any = await GetItemKey("auth")
+            const authdata = JSON.parse(auth)
+
+            await this.GetPetList(authdata._id)
+        }
+    },
+    mounted(){
+        this.ListPets()
+    },
+    setup(){
+        const { petsreponse, petsprocessing, petspagination, AddPet, GetPetList } = Pets()
+
+        return { petsreponse, petsprocessing, petspagination, AddPet, GetPetList }
+    }
+})
+</script>
+
+<style>
+.tc-pager,
+.tc-page {
+  background-color: #95389e;
+  color: rgb(255, 200, 106);
+  padding: 0.25rem 0.8rem;
+  margin: 0 0.5rem;
+  font-weight: bold;
+  border-radius: 0.5rem;
+}
+.tc-page-disable {
+    background-color: #1a212b;
+    opacity: 0.5;
+    color: #c59238;
+    padding: 0.25rem 0.8rem;
+    margin: 0 0.5rem;
+    font-weight: bold;
+    border-radius: 0.5rem;
+    cursor:context-menu;
+}
+</style>

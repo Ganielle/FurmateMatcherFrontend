@@ -9,7 +9,7 @@
         <MDBRow>
             <MDBCol col="3">
                 <img
-                    :src="user"
+                    :src="GetImage"
                     class="img-thumbnail"
                     alt="..."
                     style="width: 100%"
@@ -17,7 +17,11 @@
                 <br/><br/>
                 <MDBFile v-model="file" label="Change Profile Picture" />
                 <br/>
-                <MDBBtn block color="primary" :disabled="file.length <= 0">SAVE CHANGES</MDBBtn>
+                <MDBBtn block color="primary" :disabled="file.length <= 0 || userprofileprocessing.upload || userprofileprocessing.profileloading"
+                @click="UploadPic()">
+                    <MDBSpinner v-if="userprofileprocessing.upload"></MDBSpinner>
+                    <b v-else>SAVE CHANGES</b>
+                </MDBBtn>
                 <br/><br/>
             </MDBCol>
             <MDBCol>
@@ -31,35 +35,35 @@
                 <MDBInput
                     type="text"
                     label="Birthday"
-                    v-model="fullname"
+                    v-model="dob"
                     wrapperClass="mb-4"
                     disabled
                 />
                 <MDBInput
                     type="text"
                     label="Email"
-                    v-model="fullname"
+                    v-model="email"
                     wrapperClass="mb-4"
                     disabled
                 />
                 <MDBInput
                     type="text"
                     label="Contact Number"
-                    v-model="fullname"
+                    v-model="contact"
                     wrapperClass="mb-4"
                     disabled
                 />
                 <MDBInput
                     type="text"
                     label="Gender"
-                    v-model="fullname"
+                    v-model="gender"
                     wrapperClass="mb-4"
                     disabled
                 />
                 <MDBInput
                     type="text"
                     label="Address (Municipality)"
-                    v-model="fullname"
+                    v-model="address"
                     wrapperClass="mb-4"
                     disabled
                 />
@@ -69,10 +73,10 @@
         <br/>
 
         <MDBRow>
-            <MDBCol>
+            <MDBCol >
                 <strong class="text-center">USER PREFERENCES</strong>
                 <br/><br/>
-                <form @submit.prevent>
+                <form @submit.prevent style="height: 500px; overflow-y: auto;">
                     
                     <div class="d-flex flex-wrap ">
                         <div class="flex-grow-1 mb-3">
@@ -146,12 +150,16 @@
                             </select>
                         </div>
                     </div>
+
+                    <MDBBtn class="text-center" color="primary" block>SAVE CHANGES</MDBBtn>
+                <br/>
+                <br/>
                 </form>
             </MDBCol>
-            <MDBCol>
+            <MDBCol >
                 <strong class="text-center">PET PREFERENCES</strong>
                 <br/><br/>
-                <form @submit.prevent>
+                <form @submit.prevent style="height: 500px; overflow-y: auto;">
                     
                     <div class="d-flex flex-wrap ">
                         <div class="flex-grow-1 mb-3">
@@ -252,6 +260,8 @@
                             </select>
                         </div>
                     </div>
+                    <MDBBtn class="text-center" color="primary" block>SAVE CHANGES</MDBBtn>
+                    <br/><br/>
                 </form>
             </MDBCol>
         </MDBRow>
@@ -259,12 +269,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import { MDBRow, MDBCol, MDBContainer, MDBInput, MDBFile, MDBBtn } from "mdb-vue-ui-kit";
+import { defineComponent, isProxy, toRaw } from 'vue';
+import { MDBRow, MDBCol, MDBContainer, MDBInput, MDBFile, MDBBtn, MDBSpinner } from "mdb-vue-ui-kit";
 
 import Dashboardbreadcrumbs from '@/components/Dashboard/Dashboardbreadcrumbs.vue';
 
 import user from '@/assets/Dashboard/User/Profile/user.png'
+import { UserProfile } from '@/modules/dashboard/user/userprofile';
+import { GetItemKey } from '@/modules/globalfunction'
 
 export default defineComponent({
     name: "UserProfile",
@@ -440,7 +452,121 @@ export default defineComponent({
         MDBFile,
         MDBInput,
         MDBBtn,
-        Dashboardbreadcrumbs
+        Dashboardbreadcrumbs,
+        MDBSpinner
+    },
+    computed: {
+        GetImage(){
+            if (this.userprofileresponse.profileresponse != '' && this.userprofileresponse.profileresponse != undefined){
+                let proxyData = toRaw(this.userprofileresponse.profileresponse)
+
+                if (proxyData.constructor === Object){
+                    return new URL(`${import.meta.env.VITE_API_URL}/${proxyData.preference.userdetails.profilepic}`, import.meta.url).href
+                }
+                else{
+                    return user
+                }
+            }
+            else{
+                return user
+            }
+        }
+    },
+    methods: {
+        async UploadPic(){
+            if (this.file.length <= 0){
+                this.$swal({
+                    title: "Please select a picture file first before uploading!",
+                    confirmButtonText: "OK"
+                })
+                return
+            }
+            const auth = await GetItemKey("auth")
+            const authdata = JSON.parse(auth)
+            const formData = new FormData()
+
+            formData.append("file", this.file[0])
+            formData.append("id", authdata._id)
+
+            await this.UploadProfilePic(formData)
+
+            if (this.userprofileresponse.uploadmessage == "success"){
+                this.$swal({
+                    title: 'Upload success',
+                    html: `The page will reload in <b></b> milliseconds.`,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    allowEscapeKey: false,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                    this.$swal.showLoading()
+                    const b = this.$swal.getHtmlContainer().querySelector('b')
+                    this.timeInterval = setInterval(() => {
+                        b.textContent = this.$swal.getTimerLeft()
+                    }, 100)
+                    },
+                    willClose: () => {
+                    clearInterval(this.timerInterval)
+                    }
+                }).then(result => {
+                    if (result.dismiss === this.$swal.DismissReason.timer) {
+                        window.location.reload();
+                    }
+                })
+            }
+            else{
+                this.$swal({
+                    title: `There's a problem saving your profile picture! Error Code: ${this.userprofileresponse.uploadresponse}`,
+                    confirmButtonText: "OK"
+                })
+            }
+        },
+        async GetProfile(){
+            const auth = await GetItemKey("auth")
+            const authdata = JSON.parse(auth)
+
+            await this.Profile(authdata._id)
+
+            if (this.userprofileresponse.profilemessage == "success"){
+                if (this.userprofileresponse.profileresponse != '' && this.userprofileresponse.profileresponse != undefined){
+                    let proxyData = toRaw(this.userprofileresponse.profileresponse)
+
+                    if (proxyData.constructor === Object){
+                        this.fullname = `${proxyData.preference.userdetails.firstname} ${proxyData.preference.userdetails.lastname}`
+                        this.dob = proxyData.preference.userdetails.dob
+                        this.email = proxyData.preference.userdetails.email
+                        this.contact = proxyData.preference.userdetails.contactnumber
+                        this.gender = proxyData.preference.userdetails.gender
+                        this.address = proxyData.preference.userdetails.municipality
+
+                        this.location = proxyData.preference.location
+                        this.typeofhome = proxyData.preference.typeofhome
+                        this.aloneothers = proxyData.preference.aloneothers
+                        this.ownershipstatus = proxyData.preference.ownershipstatus
+                        this.breedowned = proxyData.preference.breedowned
+                        this.petshave = proxyData.preference.petshave
+
+                        this.located = proxyData.petdata.located
+                        this.typepet = proxyData.petdata.typepet
+                        this.genderpet = proxyData.petdata.genderpet
+                        this.agepet = proxyData.petdata.agepet
+                        this.specialdogs = proxyData.petdata.specialdogs
+                        this.breedpet = proxyData.petdata.breedpet
+                        this.personalitytraits = proxyData.petdata.personalitytraits
+                        this.petmaintenance = proxyData.petdata.petmaintenance
+                    }
+                }
+            }
+        }
+    },
+    mounted(){
+        this.GetProfile()
+    },
+    setup(){
+        const { userprofileresponse, userprofileprocessing, UploadProfilePic, Profile } = UserProfile()
+
+        return { userprofileresponse, userprofileprocessing, UploadProfilePic, Profile }
     }
 })
 </script>

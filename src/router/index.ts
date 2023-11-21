@@ -74,6 +74,17 @@ const router = createRouter({
         component: () => import('../pages/Dashboard/User/Profile.vue')
       }]
     },
+    {
+      path: "/rescuer",
+      name: "rescuer",
+      component: () => import('../views/Dashboard/Rescuer/Dashboard.vue'),
+      redirect: "/rescuer/mypets",
+      children: [{
+        path: "mypets",
+        name: "rescuerpetmanagement",
+        component: () => import('../pages/Dashboard/Rescuer/Mypetsmanagement.vue')
+      }]
+    }
   ]
 })
 
