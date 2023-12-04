@@ -12,7 +12,9 @@ export const Pets = () => {
        petlikelistresponse: '',
        petdetailsmessage: '',
        petdetailsresponse: [{
-        userDetails: [{}],
+        userDetails: [{
+            username: ''
+        }],
         ownerDetails: [{}]
        }],
        petadoptionrequestmessage: '',

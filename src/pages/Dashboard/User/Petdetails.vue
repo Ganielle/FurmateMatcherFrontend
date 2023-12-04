@@ -47,6 +47,14 @@
                     }" :disabled="petsreponse.petdetailsresponse[0].hasPendingRequests || petsreponse.petdetailsresponse[0].hasSuccessRequests">
                         <strong v-if="petsreponse.petdetailsresponse[0].hasPendingRequests == true" >ADOPTION REQUESTED</strong>
                         <strong v-else-if="petsreponse.petdetailsresponse[0].hasSuccessRequests == true">YOU ALREADY ADOPT THIS PET</strong>
+                        <strong v-else-if="petsreponse.petdetailsresponse[0].adopterDetails != undefined">
+                            <div v-if="petsreponse.petdetailsresponse[0].adopterDetails[0].user == uid">
+                                YOU ALREADY ADOPT THIS PET
+                            </div>
+                            <div v-else>
+                                SOMEONE ALREADY ADOPT THIS PET
+                            </div>
+                        </strong>
                         <strong v-else>ADOPT ME!</strong>
                     </MDBBtn>
                 </MDBCol>
@@ -137,7 +145,8 @@ export default defineComponent({
     data(){
         return {
             user,
-            username: ""
+            username: "",
+            uid: ""
         }
     },
     components: {
@@ -184,6 +193,7 @@ export default defineComponent({
             const authdata = JSON.parse(auth)
 
             this.username = authdata.username
+            this.uid = authdata._id
         },
         async UserAdoptionRequest(petid: any){
             const auth = await GetItemKey("auth")

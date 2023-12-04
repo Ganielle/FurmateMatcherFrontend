@@ -10,7 +10,7 @@
                 </center>
                 <div style="height: 500px; overflow-y: auto; width: 100%;">
                     <div v-for="data in chatresponse.chatlistdata" :key=data style="cursor: pointer" class="chatbox-item">
-                        <div class="chatbox-item-child" :style="SelectedRoom" style="border-radius: 2px; padding-left: 5px; padding-right: 5px; margin: 0; width: 100%;" @click="() => {
+                        <div class="chatbox-item-child" :style="SelectedRoom(data._id)" style="border-radius: 2px; padding-left: 5px; padding-right: 5px; margin: 0; width: 100%;" @click="() => {
                             SelectChatHistory(data._id)
                         }">
                         <strong>Chat box for {{ data.roomname }}</strong>
@@ -88,10 +88,13 @@ export default defineComponent({
         MDBTextarea
     },
     computed: {
-        SelectedRoom(){
+        
+    },
+    methods: {
+        SelectedRoom(id: any){
             const roomidquery = this.$route.query.roomid
-
-            if (this.roomchatid == roomidquery?.toString()){
+            
+            if (id == this.roomchatid){
                 return {
                     backgroundColor: "rgb(9, 59, 221)",
                     color: "white"
@@ -102,9 +105,7 @@ export default defineComponent({
                 backgroundColor: "rgb(214, 214, 214)",
                 color: "black"
             }
-        }
-    },
-    methods: {
+        },
         async ChatList(){
             const auth = await GetItemKey("auth")
             const authdata = JSON.parse(auth)
@@ -140,6 +141,12 @@ export default defineComponent({
 
             if (this.chatresponse.chathistorymessage == "success"){
                 this.roomchatid = id
+
+                // Use $refs to access the scroll container
+                const container: any = this.$refs.scrollContainer;
+
+                // Scroll to the bottom
+                container.scrollTop = container.scrollHeight;
             }
         },
         async UserSendChat(){

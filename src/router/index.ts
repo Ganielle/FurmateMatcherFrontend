@@ -104,6 +104,11 @@ const router = createRouter({
         path: "/rescuermessages",
         name: "rescuermessages",
         component: () => import("../pages/Dashboard/Rescuer/Messagerescuer.vue")
+      },
+      {
+        path: "/manageadoption",
+        name: "rescuermanageadoption",
+        component: () => import("../pages/Dashboard/Rescuer/Manageadoption.vue")
       }]
     }
   ]

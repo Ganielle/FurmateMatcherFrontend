@@ -43,6 +43,11 @@ export default defineComponent({
                             pageName: "Manage",
                             icon: "chevron-right",
                         },
+                        {
+                            name: "rescuermanageadoption",
+                            pageName: "Manage Adoption",
+                            icon: "chevron-right",
+                        },
                     ]
                 },
                 {
