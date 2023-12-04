@@ -5,12 +5,18 @@ export const Pets = () => {
        petaddmessage: '',
        petaddresponse: '',
        petlistmessage: '',
-       petlistresponse: ''
+       petlistresponse: '',
+       petadoptionlistmessage: '',
+       petadoptionlistresponse: '',
+       petapproverejectmessage: '',
+       petapproverejectresponse: ''
     })
 
     const petsprocessing = ref({
         petaddloading: false,
-        petlistloading: false
+        petlistloading: false,
+        petadoptionlistloading: false,
+        petapproverejectloading: false
     })
 
     const petspagination = ref({
@@ -42,9 +48,9 @@ export const Pets = () => {
             petsprocessing.value.petaddloading = false
         })
         .catch(err => {
-            userprofileresponse.value.profilemessage = "bad-request"
-            userprofileresponse.value.profileresponse = err.message
-            userprofileprocessing.value.profileloading = false
+            petsreponse.value.petaddmessage = "bad-request"
+            petsreponse.value.petaddresponse = err.message
+            petsprocessing.value.petaddloading = false
         })
     }
 
@@ -62,11 +68,58 @@ export const Pets = () => {
             petsprocessing.value.petlistloading = false
         })
         .catch(err => {
-            userprofileresponse.value.petlistmessage = "bad-request"
-            userprofileresponse.value.petlistresponse = err.message
-            userprofileprocessing.value.petlistloading = false
+            petsreponse.value.petlistmessage = "bad-request"
+            petsreponse.value.petlistresponse = err.message
+            petsprocessing.value.petlistloading = false
         })
     }
 
-    return { petsreponse, petsprocessing, petspagination, AddPet, GetPetList }
+    const GetAdoptionList = async(userid: any) => {
+        petsprocessing.value.petadoptionlistloading = true
+
+        await fetch(`${import.meta.env.VITE_API_URL}/pets/adoptpetlist?page=${petspagination.value.page}&limit=${petspagination.value.limit}&userid=${userid}`, {})
+        .then(res => {
+            return res.json()
+        })
+        .then(data => {
+            petsreponse.value.petadoptionlistmessage = data.message
+            petsreponse.value.petadoptionlistresponse = data.data != undefined ? data.data : ''
+            petspagination.value.totalPages = data.pages
+            petsprocessing.value.petadoptionlistloading = false
+        })
+        .catch(err => {
+            petsreponse.value.petadoptionlistmessage = "bad-request"
+            petsreponse.value.petadoptionlistresponse = err.message
+            petsprocessing.value.petadoptionlistloading = false
+        })
+    }
+
+    const ApproveRejectAdopter = async(data: any) => {
+        petsprocessing.value.petapproverejectloading = true;
+
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        }
+
+        await fetch(`${import.meta.env.VITE_API_URL}/pets/approverejectadopter`, requestOptions)
+        .then(res => {
+            return res.json()
+        })
+        .then(data => {
+            petsreponse.value.petapproverejectmessage = data.message
+            petsreponse.value.petapproverejectresponse = data.data != undefined ? data.data : ''
+            petsprocessing.value.petapproverejectloading = false
+        })
+        .catch(err => {
+            petsreponse.value.petapproverejectmessage = "bad-request"
+            petsreponse.value.petapproverejectresponse = err.message
+            petsprocessing.value.petapproverejectloading = false
+        })
+    }
+
+    return { petsreponse, petsprocessing, petspagination, AddPet, GetPetList, GetAdoptionList, ApproveRejectAdopter }
 }
