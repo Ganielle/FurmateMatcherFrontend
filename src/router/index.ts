@@ -99,6 +99,11 @@ const router = createRouter({
         path: "mypets",
         name: "rescuerpetmanagement",
         component: () => import('../pages/Dashboard/Rescuer/Mypetsmanagement.vue')
+      },
+      {
+        path: "/rescuermessages",
+        name: "rescuermessages",
+        component: () => import("../pages/Dashboard/Rescuer/Messagerescuer.vue")
       }]
     }
   ]

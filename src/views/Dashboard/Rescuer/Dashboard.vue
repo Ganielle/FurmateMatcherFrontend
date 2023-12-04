@@ -46,7 +46,7 @@ export default defineComponent({
                     ]
                 },
                 {
-                    name: "usermessages",
+                    name: "rescuermessages",
                     pageName: "MESSAGES",
                     icon: "envelope",
                     children: []

@@ -5,12 +5,22 @@ export const Chat = () => {
        chatcreatemessage: '',
        chatcreatedata: '',
        chatlistmessage: '',
-       chatlistdata: ''
+       chatlistdata: '',
+       chathistorymessage: '',
+       chathistorydata: [{
+        sender: {
+            username: ''
+        }
+       }],
+       chatsendmessage: '',
+       chatsenddata: ''
     })
 
     const chatprocessing = ref({
         chatcreateloading: false,
-        chatlistloading: false
+        chatlistloading: false,
+        chathistoryloading: false,
+        chatsendloading: false
     })
 
     const CreateChat = async (data: any) => {
@@ -59,5 +69,51 @@ export const Chat = () => {
         })
     }
 
-    return { chatresponse, chatprocessing, CreateChat, GetChatList }
+    const GetChatHistory = async (id: any) => {
+        chatprocessing.value.chathistoryloading = true
+
+        await fetch(`${import.meta.env.VITE_API_URL}/chat/roomchathistory?roomid=${id}`, {})
+        .then(res => {
+            return res.json()
+        })
+        .then(data => {
+            chatresponse.value.chathistorymessage = data.message
+            chatresponse.value.chathistorydata = data.data != undefined ? data.data : ''
+            chatprocessing.value.chathistoryloading = false
+        })
+        .catch(err => {
+            chatresponse.value.chathistorymessage = "bad-request"
+            chatresponse.value.chathistorydata = err.message
+            chatprocessing.value.chathistoryloading = false
+        })
+    }
+
+    const SendChat = async (data: any) => {
+        chatprocessing.value.chatsendloading = true
+
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        }
+
+        await fetch(`${import.meta.env.VITE_API_URL}/chat/sendchat`, requestOptions)
+        .then(res => {
+            return res.json()
+        })
+        .then(data => {
+            chatresponse.value.chatsendmessage = data.message
+            chatresponse.value.chatsenddata = data.data != undefined ? data.data : ''
+            chatprocessing.value.chatsendloading = false
+        })
+        .catch(err => {
+            chatresponse.value.chatcreatemessage = "bad-request"
+            chatresponse.value.chatcreatemessage = err.message
+            chatprocessing.value.chatsendloading = false
+        })
+    }
+
+    return { chatresponse, chatprocessing, CreateChat, GetChatList, GetChatHistory, SendChat }
 }

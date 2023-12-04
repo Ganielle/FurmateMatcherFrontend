@@ -14,7 +14,9 @@ export const Pets = () => {
        petdetailsresponse: [{
         userDetails: [{}],
         ownerDetails: [{}]
-       }]
+       }],
+       petadoptionrequestmessage: '',
+       petadoptionrequestdata: ''
     })
 
     const petsprocessing = ref({
@@ -22,7 +24,8 @@ export const Pets = () => {
         petlistloading: false,
         petlikeloading: false,
         petlikelistloading: false,
-        petdetailsloading: false
+        petdetailsloading: false,
+        petadoptionrequestloading: false
     })
 
     const GetPetList = async (id: any) => {
@@ -108,10 +111,10 @@ export const Pets = () => {
         })
     }
 
-    const PetDetailsView = async(petid: any) => {
+    const PetDetailsView = async(petid: any, userid: any) => {
         petsprocessing.value.petdetailsloading = true;
 
-        await fetch(`${import.meta.env.VITE_API_URL}/pets/petdetails?petid=${petid}`, {})
+        await fetch(`${import.meta.env.VITE_API_URL}/pets/petdetails?petid=${petid}&userid=${userid}`, {})
         .then(res => {
             return res.json()
         })
@@ -127,5 +130,32 @@ export const Pets = () => {
         })
     }
 
-    return { petsreponse, petsprocessing, GetPetList, GetPetCustomFilterList, PetLike, PetLikeList, PetDetailsView }
+    const AdoptionRequest = async(data: any) => {
+        petsprocessing.value.petadoptionrequestloading = true
+
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        }
+
+        await fetch(`${import.meta.env.VITE_API_URL}/pets/requestadoptpet`, requestOptions)
+        .then(res => {
+            return res.json()
+        })
+        .then(data => {
+            petsreponse.value.petadoptionrequestmessage = data.message
+            petsreponse.value.petadoptionrequestdata = data.data != undefined ? data.data : ''
+            petsprocessing.value.petadoptionrequestloading = false
+        })
+        .catch(err => {
+            petsreponse.value.petadoptionrequestmessage = "bad-request"
+            petsreponse.value.petadoptionrequestdata = err.message
+            petsprocessing.value.petadoptionrequestloading = false
+        })
+    }
+
+    return { petsreponse, petsprocessing, GetPetList, GetPetCustomFilterList, PetLike, PetLikeList, PetDetailsView, AdoptionRequest }
 }

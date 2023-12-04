@@ -34,7 +34,21 @@
                         <MDBSpinner v-if="chatprocessing.chatcreateloading"></MDBSpinner>
                         <strong>CHAT WITH MY RESCUER</strong>
                     </MDBBtn>
-                    <MDBBtn color="success" block>ADOPT ME</MDBBtn>
+                    <MDBBtn color="success" block @click="() => {
+                        $swal({
+                            title: `Are you sure you want to request an adoption to the rescuer?`,
+                            showCancelButton: true,
+                            confirmButtonText: 'Yes'
+                        }).then(data => {
+                            if (data.isConfirmed){
+                                UserAdoptionRequest(petsreponse.petdetailsresponse[0]._id)
+                            }
+                        })
+                    }" :disabled="petsreponse.petdetailsresponse[0].hasPendingRequests || petsreponse.petdetailsresponse[0].hasSuccessRequests">
+                        <strong v-if="petsreponse.petdetailsresponse[0].hasPendingRequests == true" >ADOPTION REQUESTED</strong>
+                        <strong v-else-if="petsreponse.petdetailsresponse[0].hasSuccessRequests == true">YOU ALREADY ADOPT THIS PET</strong>
+                        <strong v-else>ADOPT ME!</strong>
+                    </MDBBtn>
                 </MDBCol>
                 <MDBCol>
                     <div style="height: 550px; overflow-y: auto;">
@@ -144,7 +158,10 @@ export default defineComponent({
 },
     methods: {
         async GetPetDetails(){
-            await this.PetDetailsView(this.petid)
+            const auth = await GetItemKey("auth")
+            const authdata = JSON.parse(auth)
+
+            await this.PetDetailsView(this.petid, authdata._id)
         },
         GetImage(data: any){
             return new URL(`${import.meta.env.VITE_API_URL}/${data}`, import.meta.url).href
@@ -159,12 +176,36 @@ export default defineComponent({
             }
 
             await this.CreateChat(data)
+            
+            this.$router.push({name: "usermessages", query: {"roomid": this.chatresponse.chatcreatemessage._id}})
         },
         async GetUsername(){
             const auth = await GetItemKey("auth")
             const authdata = JSON.parse(auth)
 
             this.username = authdata.username
+        },
+        async UserAdoptionRequest(petid: any){
+            const auth = await GetItemKey("auth")
+            const authdata = JSON.parse(auth)
+
+            const data = {
+                petid: petid,
+                userid: authdata._id
+            }
+
+            await this.AdoptionRequest(data)
+
+            if (this.petsreponse.petadoptionrequestmessage == "success"){
+                window.location.reload()
+            }
+            else{
+                $swal({
+                    title: `There's a problem requesting for adoption! Error Code: ${this.petsreponse.petadoptionrequestdata}`,
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes'
+                })
+            }
         }
     },
     mounted(){
@@ -172,10 +213,10 @@ export default defineComponent({
         this.GetUsername();
     },
     setup(){
-        const { petsreponse, petsprocessing, PetDetailsView } = Pets()
+        const { petsreponse, petsprocessing, PetDetailsView, AdoptionRequest } = Pets()
         const { chatresponse, chatprocessing, CreateChat } = Chat()
 
-        return { petsreponse, petsprocessing, PetDetailsView,
+        return { petsreponse, petsprocessing, PetDetailsView, AdoptionRequest,
             chatresponse, chatprocessing, CreateChat }
     }
 })
