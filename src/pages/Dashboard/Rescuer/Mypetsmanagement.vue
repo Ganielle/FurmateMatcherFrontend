@@ -76,13 +76,54 @@
                     <th class="text-center">
                         <MDBRow>
                             <MDBCol>
-                                <MDBBtn block color="primary">DETAILS</MDBBtn>
+                                <MDBBtn block color="primary" @click="() => {
+                                    petname = data.name
+                                    description = data.description
+                                    type = data.type
+                                    gender = data.gender
+                                    breed = data.breed
+                                    age = data.age
+                                    personality = data.personalitytraits
+                                    special = data.special
+                                    maintenance = data.maintenance
+                                    located = data.located
+                                    picture = data.picture
+
+                                    viewpetmodal = true
+                                }">DETAILS</MDBBtn>
                             </MDBCol>
                             <MDBCol>
-                                <MDBBtn block color="primary">EDIT</MDBBtn>
+                                <MDBBtn block color="primary" @click="() => {
+                                    petname = data.name
+                                    description = data.description
+                                    type = data.type
+                                    gender = data.gender
+                                    breed = data.breed
+                                    age = data.age
+                                    personality = data.personalitytraits
+                                    special = data.special
+                                    maintenance = data.maintenance
+                                    located = data.located
+
+                                    updatemodal = true
+                                }">EDIT</MDBBtn>
                             </MDBCol>
                             <MDBCol>
-                                <MDBBtn block color="primary">DELETE</MDBBtn>
+                                <MDBBtn block color="primary" @click="() => {
+                                    this.$swal({
+                                        title: `Are you sure you want to remove this pet?`,
+                                        confirmButtonText: 'Yes',
+                                        showCancelButton: true
+                                    }).then((result) => {
+                                        if (result.isConfirmed){
+                                            RemovePet(data._id)
+                                        }
+                                    })
+                                }" :disabled="petsprocessing.petremoveloading"
+                                >
+                                    <MDBSpinner v-if="petsprocessing.petremoveloading"></MDBSpinner>
+                                    <strong v-else>DELETE</strong>
+                                </MDBBtn>
                             </MDBCol>
                         </MDBRow>
                     </th>
@@ -135,16 +176,7 @@
                             <option v-for="breeddogkey in breedpetdogdata" :key="breeddogkey" :value="breeddogkey">{{ breeddogkey }}</option>
                         </select>
                     </div>
-                </div>
-                <div class="d-flex flex-wrap " v-else>
-                    <div class="flex-grow-1 mb-3">
-                        <select class="form-select cua-input-select-2" name="role" v-model="breed"
-                            style="background-color: white; color: black; font-size: 0.9em;">
-                            <option value="">What is your pet breed?</option>
-                            <option v-for="breedcatkey in breedpetcatdata" :key="breedcatkey" :value="breedcatkey">{{ breedcatkey }}</option>
-                        </select>
-                    </div>
-                </div>
+                </div>  
 
                 <div class="d-flex flex-wrap ">
                     <div class="flex-grow-1 mb-3">
@@ -158,14 +190,14 @@
 
                 What is your pet personality traits? (Please at lease one)
                 <div v-for="personalitykey in personalitytraitsdata" :key="personalitykey">
-                    <label class="container no-center-text"><strong>{{ personalitykey }}</strong>
+                    <label class="container no-center-text">
                         <input type="checkbox"
                             :value="personalitykey"
                             :id="personalitykey"
                             v-model="personality"
                             :name="personalitykey"
-                            checked>
-                        <span class="checkmark"></span>
+                            checked>&nbsp;
+                        <span class="checkmark"></span><strong>{{ personalitykey }}</strong>
                     </label>
                 </div>
                 <br/>
@@ -233,6 +265,265 @@
             }" :disabled="petsprocessing.petaddloading">CLOSE</MDBBtn>
         </MDBModalFooter>
     </MDBModal>
+
+    <MDBModal v-model="viewpetmodal" staticBackdrop>
+        <MDBModalHeader>
+            <MDBModalTitle>VIEW PET DETAILS</MDBModalTitle>
+        </MDBModalHeader>
+        <MDBModalBody>
+            <form @submit.prevent>
+                <center>
+                    <img
+                        :src="GetImage(picture)"
+                        class="img-thumbnail"
+                        alt="..."
+                        height="20"
+                    />
+                </center>
+                <br/>
+                <MDBInput 
+                    type="text"
+                    label="Pet Name"
+                    v-model="petname"
+                    wrapperClass="mb-4"
+                    disabled
+                />
+
+                <MDBTextarea label="Pet Description" rows="4" v-model="description" disabled/>
+
+                <div class="d-flex flex-wrap ">
+                    <div class="flex-grow-1 mb-3">
+                        <select class="form-select cua-input-select-2" name="role" v-model="type"
+                            style="background-color: white; color: black; font-size: 0.9em;" disabled>
+                            <option value="">What is your pet type?</option>
+                            <option v-for="typekey in typepetdata" :key="typekey" :value="typekey">{{ typekey }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap ">
+                    <div class="flex-grow-1 mb-3">
+                        <select class="form-select cua-input-select-2" name="role" v-model="gender"
+                            style="background-color: white; color: black; font-size: 0.9em;" disabled>
+                            <option value="">What is your pet gender?</option>
+                            <option v-for="genderkey in genderpetdata" :key="genderkey" :value="genderkey">{{ genderkey }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap " v-if="type == 'Dog'">
+                    <div class="flex-grow-1 mb-3">
+                        <select class="form-select cua-input-select-2" name="role" v-model="breed"
+                            style="background-color: white; color: black; font-size: 0.9em;" disabled>
+                            <option value="">What is your pet breed?</option>
+                            <option v-for="breeddogkey in breedpetdogdata" :key="breeddogkey" :value="breeddogkey">{{ breeddogkey }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap ">
+                    <div class="flex-grow-1 mb-3">
+                        <select class="form-select cua-input-select-2" name="role" v-model="age"
+                            style="background-color: white; color: black; font-size: 0.9em;" disabled>
+                            <option value="">What is your pet age?</option>
+                            <option v-for="agekey in agepetdata" :key="agekey" :value="agekey">{{ agekey }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                What is your pet personality traits? (Please at lease one)
+                <div v-for="personalitykey in personalitytraitsdata" :key="personalitykey">
+                    <label class="container no-center-text">
+                        <input type="checkbox"
+                            :value="personalitykey"
+                            :id="personalitykey"
+                            v-model="personality"
+                            :name="personalitykey"
+                            checked disabled>&nbsp;
+                        <span class="checkmark" disabled></span><strong>{{ personalitykey }}</strong>
+                    </label>
+                </div>
+                <br/>
+                <div class="d-flex flex-wrap ">
+                    <div class="flex-grow-1 mb-3">
+                        <select class="form-select cua-input-select-2" name="role" v-model="special"
+                            style="background-color: white; color: black; font-size: 0.9em;" disabled>
+                            <option value="">Is your pet a special pet?</option>
+                            <option v-for="specialkey in specialdata" :key="specialkey" :value="specialkey">{{ specialkey }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap ">
+                    <div class="flex-grow-1 mb-3">
+                        <select class="form-select cua-input-select-2" name="role" v-model="maintenance"
+                            style="background-color: white; color: black; font-size: 0.9em;" disabled>
+                            <option value="">Is your pet have a maintenance?</option>
+                            <option v-for="maintenancekey in petmaintenancedata" :key="maintenancekey" :value="maintenancekey">{{ maintenancekey }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap ">
+                    <div class="flex-grow-1 mb-3">
+                        <select class="form-select cua-input-select-2" name="role" v-model="located"
+                            style="background-color: white; color: black; font-size: 0.9em;" disabled>
+                            <option value="">Where is your pet located?</option>
+                            <option v-for="locatedkey in locateddata" :key="locatedkey" :value="locatedkey">{{ locatedkey }}</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </MDBModalBody>
+        <MDBModalFooter>
+            <MDBBtn color="warning" @click="() => {
+                petname = ''
+                type = ''
+                gender = ''
+                breed = ''
+                age = ''
+                personality = []
+                maintenance = ''
+                located = ''
+                file = []
+                viewpetmodal = false
+            }" :disabled="petsprocessing.petaddloading">CLOSE</MDBBtn>
+        </MDBModalFooter>
+    </MDBModal>
+
+    <MDBModal v-model="updatemodal" staticBackdrop>
+        <MDBModalHeader>
+            <MDBModalTitle>UPDATE PET</MDBModalTitle>
+        </MDBModalHeader>
+        <MDBModalBody>
+            <form @submit.prevent>
+                <MDBInput 
+                    type="text"
+                    label="Pet Name"
+                    v-model="petname"
+                    wrapperClass="mb-4"
+                    required
+                />
+
+                <MDBTextarea label="Pet Description" rows="4" v-model="description" />
+
+                <div class="d-flex flex-wrap ">
+                    <div class="flex-grow-1 mb-3">
+                        <select class="form-select cua-input-select-2" name="role" v-model="type"
+                            style="background-color: white; color: black; font-size: 0.9em;">
+                            <option value="">What is your pet type?</option>
+                            <option v-for="typekey in typepetdata" :key="typekey" :value="typekey">{{ typekey }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap ">
+                    <div class="flex-grow-1 mb-3">
+                        <select class="form-select cua-input-select-2" name="role" v-model="gender"
+                            style="background-color: white; color: black; font-size: 0.9em;">
+                            <option value="">What is your pet gender?</option>
+                            <option v-for="genderkey in genderpetdata" :key="genderkey" :value="genderkey">{{ genderkey }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap " v-if="type == 'Dog'">
+                    <div class="flex-grow-1 mb-3">
+                        <select class="form-select cua-input-select-2" name="role" v-model="breed"
+                            style="background-color: white; color: black; font-size: 0.9em;">
+                            <option value="">What is your pet breed?</option>
+                            <option v-for="breeddogkey in breedpetdogdata" :key="breeddogkey" :value="breeddogkey">{{ breeddogkey }}</option>
+                        </select>
+                    </div>
+                </div>  
+
+                <div class="d-flex flex-wrap ">
+                    <div class="flex-grow-1 mb-3">
+                        <select class="form-select cua-input-select-2" name="role" v-model="age"
+                            style="background-color: white; color: black; font-size: 0.9em;">
+                            <option value="">What is your pet age?</option>
+                            <option v-for="agekey in agepetdata" :key="agekey" :value="agekey">{{ agekey }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                What is your pet personality traits? (Please at lease one)
+                <div v-for="personalitykey in personalitytraitsdata" :key="personalitykey">
+                    <label class="container no-center-text">
+                        <input type="checkbox"
+                            :value="personalitykey"
+                            :id="personalitykey"
+                            v-model="personality"
+                            :name="personalitykey"
+                            checked>&nbsp;
+                        <span class="checkmark"></span><strong>{{ personalitykey }}</strong>
+                    </label>
+                </div>
+                <br/>
+                <div class="d-flex flex-wrap ">
+                    <div class="flex-grow-1 mb-3">
+                        <select class="form-select cua-input-select-2" name="role" v-model="special"
+                            style="background-color: white; color: black; font-size: 0.9em;">
+                            <option value="">Is your pet a special pet?</option>
+                            <option v-for="specialkey in specialdata" :key="specialkey" :value="specialkey">{{ specialkey }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap ">
+                    <div class="flex-grow-1 mb-3">
+                        <select class="form-select cua-input-select-2" name="role" v-model="maintenance"
+                            style="background-color: white; color: black; font-size: 0.9em;">
+                            <option value="">Is your pet have a maintenance?</option>
+                            <option v-for="maintenancekey in petmaintenancedata" :key="maintenancekey" :value="maintenancekey">{{ maintenancekey }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap ">
+                    <div class="flex-grow-1 mb-3">
+                        <select class="form-select cua-input-select-2" name="role" v-model="located"
+                            style="background-color: white; color: black; font-size: 0.9em;">
+                            <option value="">Where is your pet located?</option>
+                            <option v-for="locatedkey in locateddata" :key="locatedkey" :value="locatedkey">{{ locatedkey }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <MDBFile v-model="file" />
+                <br/>
+                <MDBBtn color="primary" block @click="() => {
+                    if (petname == '' || type == '' || gender == '' || breed == '' || age == '' || personality.length <= 0 || maintenance == '' || located == '' || file.length <= 0){
+                        $swal({
+                            title: 'Please complete the form first before proceeding!',
+                            confirmButtonText: 'OK'
+                        })
+
+                        return;
+                    }
+
+                    SavePet()
+                }" :disabled="petsprocessing.petaddloading">
+                    <MDBSpinner v-if="petsprocessing.petaddloading"></MDBSpinner>
+                    <strong v-else>UPDATE PET DATA</strong>
+                </MDBBtn>
+            </form>
+        </MDBModalBody>
+        <MDBModalFooter>
+            <MDBBtn color="warning" @click="() => {
+                petname = ''
+                type = ''
+                gender = ''
+                breed = ''
+                age = ''
+                personality = []
+                maintenance = ''
+                located = ''
+                file = []
+                updatemodal = false
+            }" :disabled="petsprocessing.petaddloading">CLOSE</MDBBtn>
+        </MDBModalFooter>
+    </MDBModal>
 </template>
 
 <script lang="ts">
@@ -250,6 +541,8 @@ export default defineComponent({
     data() {
         return{
             addpetmodal: false,
+            viewpetmodal: false,
+            updatemodal: false,
             petname: "",
             description: "",
             type: "",
@@ -261,6 +554,7 @@ export default defineComponent({
             maintenance: "",
             located: "",
             file: [],
+            picture: "",
             typepetdata:[
                 "Dog",
                 "Cat"
@@ -334,23 +628,23 @@ export default defineComponent({
         }
     },
     components: {
-    Dashboardbreadcrumbs,
-    MDBContainer,
-    MDBIcon,
-    MDBTable,
-    MDBBtn,
-    MDBModal,
-    MDBModalHeader,
-    MDBModalTitle,
-    MDBModalBody,
-    MDBModalFooter,
-    MDBInput,
-    MDBFile,
-    MDBSpinner,
-    MDBRow,
-    MDBCol,
-    MDBTextarea
-},
+        Dashboardbreadcrumbs,
+        MDBContainer,
+        MDBIcon,
+        MDBTable,
+        MDBBtn,
+        MDBModal,
+        MDBModalHeader,
+        MDBModalTitle,
+        MDBModalBody,
+        MDBModalFooter,
+        MDBInput,
+        MDBFile,
+        MDBSpinner,
+        MDBRow,
+        MDBCol,
+        MDBTextarea
+    },
     methods: {
         async SavePet(){
             const auth: any = await GetItemKey("auth")
@@ -408,15 +702,59 @@ export default defineComponent({
             const authdata = JSON.parse(auth)
 
             await this.GetPetList(authdata._id)
-        }
+        },
+        async RemovePet(id: any){
+
+            const data = {
+                petid: id
+            }
+
+            await this.PetRemove(data)
+
+            if (this.petsreponse.petremovemessage == "success"){
+                this.$swal({
+                title: 'Pet successfully removed!',
+                html: 'The page will be refreshed in <b></b> milliseconds.',
+                timer: 2000,
+                timerProgressBar: true,
+                allowEscapeKey: false,
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                didOpen: () => {
+                  this.$swal.showLoading()
+                  const b = this.$swal.getHtmlContainer().querySelector('b')
+                  this.timeInterval = setInterval(() => {
+                    b.textContent = this.$swal.getTimerLeft()
+                  }, 100)
+                },
+                willClose: () => {
+                  clearInterval(this.timerInterval)
+                }
+              }).then((result) => {
+                /* Read more about handling dismissals below */
+                if (result.dismiss === this.$swal.DismissReason.timer) {
+                    window.location.reload()
+                }
+              })
+            }
+            else{
+                this.$swal({
+                    title: `There's a problem removing your pet. Error Code: ${this.petsreponse.petremoveresponse}`,
+                    confirmButtonText: "OK! Cool"
+                })
+            }
+        },
+        GetImage(image: any){
+            return new URL(`${import.meta.env.VITE_API_URL}/${image}`, import.meta.url).href
+        },
     },
     mounted(){
         this.ListPets()
     },
     setup(){
-        const { petsreponse, petsprocessing, petspagination, AddPet, GetPetList } = Pets()
+        const { petsreponse, petsprocessing, petspagination, AddPet, GetPetList, PetRemove } = Pets()
 
-        return { petsreponse, petsprocessing, petspagination, AddPet, GetPetList }
+        return { petsreponse, petsprocessing, petspagination, AddPet, GetPetList, PetRemove }
     }
 })
 </script>

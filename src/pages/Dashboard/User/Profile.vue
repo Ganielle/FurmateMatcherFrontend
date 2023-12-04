@@ -118,26 +118,28 @@
                     <br/>
                     <strong>CAT:</strong>
                     <div v-for="cat in breedownedcatdata" :key="cat">
-                        <label class="container no-center-text"><strong>{{ cat }}</strong>
+                        <label class="container no-center-text">
                             <input type="checkbox"
                                 :value="cat"
                                 :id="cat"
                                 v-model="breedowned"
                                 :name="cat"
                                 checked>
-                            <span class="checkmark"></span>
+                            <span class="checkmark"></span>&nbsp;
+                            <strong>{{ cat }}</strong>
                         </label>
                     </div>
                     <strong>DOG:</strong>
                     <div v-for="dog in breedowneddogdata" :key="dog">
-                        <label class="container no-center-text"><strong>{{ dog }}</strong>
+                        <label class="container no-center-text">
                             <input type="checkbox"
                                 :value="dog"
                                 :id="dog"
                                 v-model="breedowned"
                                 :name="dog"
                                 checked>
-                            <span class="checkmark"></span>
+                            <span class="checkmark"></span>&nbsp;
+                            <strong>{{ dog }}</strong>
                         </label>
                     </div>
                     <br/>
@@ -214,40 +216,43 @@
                     <br/>
                     <strong>CAT:</strong>
                     <div v-for="cat in breedpetcatdata" :key="cat">
-                        <label class="container no-center-text"><strong>{{ cat }}</strong>
+                        <label class="container no-center-text">
                             <input type="checkbox"
                                 :value="cat"
                                 :id="cat"
                                 v-model="breedpet"
                                 :name="cat"
                                 checked>
-                            <span class="checkmark"></span>
+                            <span class="checkmark"></span>&nbsp;
+                            <strong>{{ cat }}</strong>
                         </label>
                     </div>
                     <strong>DOG:</strong>
                     <div v-for="dog in breedpetdogdata" :key="dog">
-                        <label class="container no-center-text"><strong>{{ dog }}</strong>
+                        <label class="container no-center-text">
                             <input type="checkbox"
                                 :value="dog"
                                 :id="dog"
                                 v-model="breedpet"
                                 :name="dog"
                                 checked>
-                            <span class="checkmark"></span>
+                            <span class="checkmark"></span>&nbsp;
+                            <strong>{{ dog }}</strong>
                         </label>
                     </div>
                     <br/>
                     What kind of pet personality traits do you prefer?
                     <br/>
                     <div v-for="personality in personalitytraitsdata" :key="personality">
-                        <label class="container no-center-text"><strong>{{ personality }}</strong>
+                        <label class="container no-center-text">
                             <input type="checkbox"
                                 :value="personality"
                                 :id="personality"
                                 v-model="personalitytraits"
                                 :name="personality"
                                 checked>
-                            <span class="checkmark"></span>
+                            <span class="checkmark"></span>&nbsp;
+                            <strong>{{ personality }}</strong>
                         </label>
                     </div>
                     <br/>

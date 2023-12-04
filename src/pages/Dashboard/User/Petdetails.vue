@@ -19,6 +19,7 @@
                     <strong>Rescuer: </strong><p>{{ petsreponse.petdetailsresponse[0].userDetails[0].username }}</p>
                     <strong>Adopter: </strong>
                     <p v-if="petsreponse.petdetailsresponse[0].adopterDetails == undefined">none</p>
+                    <p v-else>{{ petsreponse.petdetailsresponse[0].adopterDetails[0].firstname }} {{ petsreponse.petdetailsresponse[0].adopterDetails[0].lastname }}</p>
                     <MDBBtn color="primary" block :disabled="chatprocessing.chatcreateloading" @click="() => {
                         $swal({
                             title: 'Are you sure you want to chat with this rescuer?',

@@ -34,11 +34,6 @@ export default defineComponent({
                     icon: "heart",
                     children: [
                         {
-                            name: "",
-                            pageName: "List",
-                            icon: "chevron-right",
-                        },
-                        {
                             name: "rescuerpetmanagement",
                             pageName: "Manage",
                             icon: "chevron-right",

@@ -43,11 +43,6 @@ export default defineComponent({
                             name: "likpets",
                             pageName: "LIKED PETS",
                             icon: "chevron-right",
-                        },
-                        {
-                            name: "updatepets",
-                            pageName: "ADOPTED PETS",
-                            icon: "chevron-right",
                         }
                     ]
                 },

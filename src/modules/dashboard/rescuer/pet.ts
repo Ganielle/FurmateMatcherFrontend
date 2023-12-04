@@ -9,14 +9,17 @@ export const Pets = () => {
        petadoptionlistmessage: '',
        petadoptionlistresponse: '',
        petapproverejectmessage: '',
-       petapproverejectresponse: ''
+       petapproverejectresponse: '',
+       petremovemessage: '',
+       petremoveresponse: '',
     })
 
     const petsprocessing = ref({
         petaddloading: false,
         petlistloading: false,
         petadoptionlistloading: false,
-        petapproverejectloading: false
+        petapproverejectloading: false,
+        petremoveloading: false
     })
 
     const petspagination = ref({
@@ -110,8 +113,8 @@ export const Pets = () => {
             return res.json()
         })
         .then(data => {
-            petsreponse.value.petapproverejectmessage = data.message
             petsreponse.value.petapproverejectresponse = data.data != undefined ? data.data : ''
+            petsreponse.value.petapproverejectmessage = data.message
             petsprocessing.value.petapproverejectloading = false
         })
         .catch(err => {
@@ -121,5 +124,32 @@ export const Pets = () => {
         })
     }
 
-    return { petsreponse, petsprocessing, petspagination, AddPet, GetPetList, GetAdoptionList, ApproveRejectAdopter }
+    const PetRemove = async(data: any) => {
+        petsprocessing.value.petremoveloading = true;
+
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        }
+
+        await fetch(`${import.meta.env.VITE_API_URL}/pets/deletepet`, requestOptions)
+        .then(res => {
+            return res.json()
+        })
+        .then(data => {
+            petsreponse.value.petremovemessage = data.message
+            petsreponse.value.petremoveresponse = data.data != undefined ? data.data : ''
+            petsprocessing.value.petremoveloading = false
+        })
+        .catch(err => {
+            petsreponse.value.petremovemessage = "bad-request"
+            petsreponse.value.petremoveresponse = err.message
+            petsprocessing.value.petremoveloading = false
+        })
+    }
+
+    return { petsreponse, petsprocessing, petspagination, AddPet, GetPetList, GetAdoptionList, ApproveRejectAdopter, PetRemove }
 }

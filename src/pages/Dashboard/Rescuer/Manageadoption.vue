@@ -80,7 +80,7 @@
                                         confirmButtonText: 'Yes'
                                     }).then((result) => {
                                         if (result.isConfirmed){
-                                            ApproveReject(data.data[0].adopterdetails.user, 'success')
+                                            ApproveReject(data.data[0].adopterdetails.user, 'success', data.data[0].pet)
                                         }
                                     })
                                 }">APPROVE</MDBBtn>
@@ -93,13 +93,24 @@
                                         confirmButtonText: 'Yes'
                                     }).then((result) => {
                                         if (result.isConfirmed){
-                                            ApproveReject(data.data[0].adopterdetails.user, 'reject')
+                                            ApproveReject(data.data[0].adopterdetails.user, 'reject', data.data[0].pet)
                                         }
                                     })
                                 }">REJECT</MDBBtn>
                             </MDBCol>
                             <MDBCol>
-                                <MDBBtn color="warning" block style="height: 100%;">REQUEST CHAT</MDBBtn>
+                                <MDBBtn color="warning" block style="height: 100%;" @click="() => {
+                                    $swal({
+                                        title: 'Are you sure you want to chat with this adopter?',
+                                        showCancelButton: true,
+                                        confirmButtonText: 'Yes'
+                                    }).then((resultdata: any) => {
+                                        if (resultdata.isConfirmed){
+                                            const room = `Adoption for ${data.data[0].petdata.name} with ${data.data[0].adopteruserdetails.username} & ${uname}`
+                                            CreateMessage(data.data[0].adopteruserdetails._id, room)
+                                        }
+                                    })
+                                }">REQUEST CHAT</MDBBtn>
                             </MDBCol>
                         </MDBRow>
                     </th>
@@ -161,6 +172,7 @@ import { MDBBtn, MDBCol, MDBContainer, MDBIcon, MDBRow, MDBSpinner, MDBTable, MD
 import { GetItemKey } from '@/modules/globalfunction'
 import { Pets } from '@/modules/dashboard/rescuer/pet'
 import { UserProfile } from '@/modules/dashboard/user/userprofile'
+import { Chat } from '@/modules/dashboard/user/chat'
 
 import Dashboardbreadcrumbs from '@/components/Dashboard/Dashboardbreadcrumbs.vue';
 
@@ -175,7 +187,8 @@ export default defineComponent({
                 "ACTION"
             ],
             viewdetails: false,
-            detailsuid: ""
+            detailsuid: "",
+            uname: ""
         }
     },
     components: {
@@ -204,10 +217,11 @@ export default defineComponent({
         GetImage(data: any){
             return new URL(`${import.meta.env.VITE_API_URL}/${data}`, import.meta.url).href
         },
-        async ApproveReject(userid: any, status: any){
+        async ApproveReject(userid: any, status: any, petid: any){
             const userdata = {
                 userid: userid,
-                status: status
+                status: status,
+                petid: petid
             }
             await this.ApproveRejectAdopter(userdata)
 
@@ -220,17 +234,39 @@ export default defineComponent({
                     confirmButtonText: 'OK! Cool'
                 })
             }
-        }
+        },
+        async GetUsername(){
+            const auth = await GetItemKey("auth")
+            const authdata = JSON.parse(auth)
+
+            this.uname = authdata.username
+        },
+        async CreateMessage(adopterid: any, roomname: any){
+            const auth = await GetItemKey("auth")
+            const authdata = JSON.parse(auth)
+            const data = {
+                rescuerid: authdata._id,
+                adopterid: adopterid,
+                roomname: roomname
+            }
+
+            await this.CreateChat(data)
+            
+            this.$router.push({name: "rescuermessages", query: {"roomid": this.chatresponse.chatcreatemessage._id}})
+        },
     },
     mounted(){
         this.AdoptionList()
+        this.GetUsername()
     },
     setup(){
         const { petsreponse, petsprocessing, petspagination, GetAdoptionList, ApproveRejectAdopter } = Pets()
         const { userprofileresponse, userprofileprocessing, Profile } = UserProfile()
+        const { chatresponse, chatprocessing, CreateChat } = Chat()
 
         return { petsreponse, petsprocessing, petspagination, GetAdoptionList, ApproveRejectAdopter,
-            userprofileresponse, userprofileprocessing, Profile }
+            userprofileresponse, userprofileprocessing, Profile,
+            chatresponse, chatprocessing, CreateChat }
     }
 })
 </script>
