@@ -104,6 +104,7 @@
                                     special = data.special
                                     maintenance = data.maintenance
                                     located = data.located
+                                    userpetid = data._id
 
                                     updatemodal = true
                                 }">EDIT</MDBBtn>
@@ -493,7 +494,7 @@
                 <MDBFile v-model="file" />
                 <br/>
                 <MDBBtn color="primary" block @click="() => {
-                    if (petname == '' || type == '' || gender == '' || breed == '' || age == '' || personality.length <= 0 || maintenance == '' || located == '' || file.length <= 0){
+                    if (petname == '' || type == '' || gender == '' || breed == '' || age == '' || personality.length <= 0 || maintenance == '' || located == ''){
                         $swal({
                             title: 'Please complete the form first before proceeding!',
                             confirmButtonText: 'OK'
@@ -502,9 +503,9 @@
                         return;
                     }
 
-                    SavePet()
-                }" :disabled="petsprocessing.petaddloading">
-                    <MDBSpinner v-if="petsprocessing.petaddloading"></MDBSpinner>
+                    UpdateUserPet(userpetid)
+                }" :disabled="petsprocessing.petupdateloading">
+                    <MDBSpinner v-if="petsprocessing.petupdateloading"></MDBSpinner>
                     <strong v-else>UPDATE PET DATA</strong>
                 </MDBBtn>
             </form>
@@ -543,6 +544,7 @@ export default defineComponent({
             addpetmodal: false,
             viewpetmodal: false,
             updatemodal: false,
+            userpetid: "",
             petname: "",
             description: "",
             type: "",
@@ -744,6 +746,61 @@ export default defineComponent({
                 })
             }
         },
+        async UpdateUserPet(petid: any){
+            const auth: any = await GetItemKey("auth")
+            const authdata = JSON.parse(auth)
+            const formData = new FormData()
+
+            formData.append("petid", petid)
+            formData.append("userid", authdata._id)
+            formData.append("petname", this.petname)
+            formData.append("description", this.description)
+            formData.append("type", this.type)
+            formData.append("gender", this.gender)
+            formData.append("breed", this.breed)
+            formData.append("personality", JSON.stringify(this.personality))
+            formData.append("special", this.special)
+            formData.append("maintenance", this.maintenance)
+            formData.append("located", this.located)
+
+            if (this.file.length > 0){
+                formData.append("file", this.file[0])
+            }
+
+            await this.UpdatePet(formData)
+
+            if (this.petsreponse.petupdatemessage == "success"){
+                this.$swal({
+                    title: 'Save Success!',
+                    html: `The page will reload in <b></b> milliseconds.`,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    allowEscapeKey: false,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                    this.$swal.showLoading()
+                    const b = this.$swal.getHtmlContainer().querySelector('b')
+                    this.timeInterval = setInterval(() => {
+                        b.textContent = this.$swal.getTimerLeft()
+                    }, 100)
+                    },
+                    willClose: () => {
+                    clearInterval(this.timerInterval)
+                    }
+                }).then(result => {
+                    if (result.dismiss === this.$swal.DismissReason.timer) {
+                        window.location.reload();
+                    }
+                })
+            }
+            else{
+                this.$swal({
+                    title: `There's a problem saving your data! ErrorCode: ${this.petsreponse.petupdateresponse}`,
+                    confirmButtonText: 'OK'
+                })
+            }
+        },
         GetImage(image: any){
             return new URL(`${import.meta.env.VITE_API_URL}/${image}`, import.meta.url).href
         },
@@ -752,9 +809,9 @@ export default defineComponent({
         this.ListPets()
     },
     setup(){
-        const { petsreponse, petsprocessing, petspagination, AddPet, GetPetList, PetRemove } = Pets()
+        const { petsreponse, petsprocessing, petspagination, AddPet, GetPetList, PetRemove, UpdatePet } = Pets()
 
-        return { petsreponse, petsprocessing, petspagination, AddPet, GetPetList, PetRemove }
+        return { petsreponse, petsprocessing, petspagination, AddPet, GetPetList, PetRemove, UpdatePet }
     }
 })
 </script>
