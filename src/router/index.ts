@@ -72,6 +72,22 @@ const router = createRouter({
         path: "userprofile",
         name: "userprofile",
         component: () => import('../pages/Dashboard/User/Profile.vue')
+      },
+      {
+        path: "/likepets",
+        name: "likpets",
+        component: () => import("../pages/Dashboard/User/LikePets.vue")
+      },
+      {
+        path: "/usermessages",
+        name: "usermessages",
+        component: () => import("../pages/Dashboard/User/Usermessages.vue")
+      },
+      {
+        path: ":petid/petviewer",
+        name: "petviewer",
+        component: () => import("../pages/Dashboard/User/Petdetails.vue"),
+        props: true
       }]
     },
     {

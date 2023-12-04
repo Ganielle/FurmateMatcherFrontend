@@ -6,38 +6,33 @@
             <br/>
             <MDBRow style="height: 300px;" start>
                 <MDBCol>
-                    <MDBCard style="height: 100%;" class="faq-item">
-                        <MDBCardBody>
-                            <MDBCardTitle class="text-center" style="color: rgba(149,56,158,1);">CHECKLIST FOR NEW ADOPTERS</MDBCardTitle>
-                            <MDBCardText>
-                                Some quick example text to build on the card title and make up the bulk of the
-                                card's content.
-                            </MDBCardText>
-                            <MDBBtn rounded outline="info">LEARN MORE</MDBBtn>
-                        </MDBCardBody>
-                    </MDBCard>
-                </MDBCol>
-                <MDBCol>
-                    <MDBCard style="height: 100%;" class="faq-item">
+                    <MDBCard style="height: 100%;" class="faq-item" @click="() => {
+                                $router.push({name: 'firsttimeadopters'})
+                            }">
                         <MDBCardBody>
                             <MDBCardTitle class="text-center" style="color: rgba(149,56,158,1);">PET ADOPTION FAQS</MDBCardTitle>
                             <MDBCardText>
-                                Some quick example text to build on the card title and make up the bulk of the
-                                card's content.
+                                Welcoming a furry friend into your home is an exciting and rewarding experience. As a first-time fur adopter, it's essential to provide the best care and environment for........
                             </MDBCardText>
-                            <MDBBtn rounded outline="info">LEARN MORE</MDBBtn>
+                            <MDBBtn rounded outline="info" @click="() => {
+                                $router.push({name: 'firsttimeadopters'})
+                            }">LEARN MORE</MDBBtn>
                         </MDBCardBody>
                     </MDBCard>
                 </MDBCol>
                 <MDBCol>
-                    <MDBCard style="height: 100%;" class="faq-item">
+                    <MDBCard style="height: 100%;" class="faq-item" @click="() => {
+                                $router.push({name: 'faq'})
+                            }">
                         <MDBCardBody>
                             <MDBCardTitle class="text-center" style="color: rgba(149,56,158,1);">RESCUERS FAQS</MDBCardTitle>
                             <MDBCardText>
-                                Some quick example text to build on the card title and make up the bulk of the
-                                card's content.
+                                Thank you for using the Furmate Matcher! We're here to assist you at every stage, from exploring
+                                profiles of over (no. of pets available for adoption) adoptable pets to welcoming your.......
                             </MDBCardText>
-                            <MDBBtn rounded outline="info">LEARN MORE</MDBBtn>
+                            <MDBBtn rounded outline="info" @click="() => {
+                                $router.push({name: 'faq'})
+                            }">LEARN MORE</MDBBtn>
                         </MDBCardBody>
                     </MDBCard>
                 </MDBCol>

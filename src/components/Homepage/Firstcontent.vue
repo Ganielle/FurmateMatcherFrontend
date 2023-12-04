@@ -4,80 +4,24 @@
             <br/><br/><br/>
             <p style="color: rgba(149,56,158,1); font-size: 2vw;">Pets Available for Adoption Nearby</p>
             <br/>
-            <MDBRow style="height: 300px;" start>
-                <MDBCol>
-                    <MDBCard style="height: 100%;" class="pet-adopt-item">
+            <MDBSpinner size="large" v-if="petsprocessing.petlistloading" />
+            <MDBRow v-else-if="petsreponse.petlistresponse.length > 0" style="height: 300px;" start>
+                <MDBCol v-for="data in petsreponse.petlistresponse" :key="data">
+                    <MDBCard style="height: 100%;" class="pet-adopt-item" @click="() => {
+                        $router.push({name: 'login'})
+                    }">
                         <MDBCardImg
-                            :src="logo"
+                            :src="GetImage(data.picture)"
                             top
                             alt="..."
                         />
                         <MDBCardBody>
-                            <MDBCardTitle class="text-center">PET NAME</MDBCardTitle>
-                        </MDBCardBody>
-                    </MDBCard>
-                </MDBCol>
-                <MDBCol>
-                    <MDBCard style="height: 100%;" class="pet-adopt-item">
-                        <MDBCardImg
-                            :src="logo"
-                            top
-                            alt="..."
-                        />
-                        <MDBCardBody>
-                            <MDBCardTitle class="text-center">PET NAME</MDBCardTitle>
-                        </MDBCardBody>
-                    </MDBCard>
-                </MDBCol>
-                <MDBCol>
-                    <MDBCard style="height: 100%;" class="pet-adopt-item">
-                        <MDBCardImg
-                            :src="logo"
-                            top
-                            alt="..."
-                        />
-                        <MDBCardBody>
-                            <MDBCardTitle class="text-center">PET NAME</MDBCardTitle>
-                        </MDBCardBody>
-                    </MDBCard>
-                </MDBCol>
-                <MDBCol>
-                    <MDBCard style="height: 100%;" class="pet-adopt-item">
-                        <MDBCardImg
-                            :src="logo"
-                            top
-                            alt="..."
-                        />
-                        <MDBCardBody>
-                            <MDBCardTitle class="text-center">PET NAME</MDBCardTitle>
-                        </MDBCardBody>
-                    </MDBCard>
-                </MDBCol>
-                <MDBCol>
-                    <MDBCard style="height: 100%;" class="pet-adopt-item">
-                        <MDBCardImg
-                            :src="logo"
-                            top
-                            alt="..."
-                        />
-                        <MDBCardBody>
-                            <MDBCardTitle class="text-center">PET NAME</MDBCardTitle>
-                        </MDBCardBody>
-                    </MDBCard>
-                </MDBCol>
-                <MDBCol>
-                    <MDBCard style="height: 100%;" class="pet-adopt-item">
-                        <MDBCardImg
-                            :src="logo"
-                            top
-                            alt="..."
-                        />
-                        <MDBCardBody>
-                            <MDBCardTitle class="text-center">PET NAME</MDBCardTitle>
+                            <MDBCardTitle class="text-center">{{ data.name }}</MDBCardTitle>
                         </MDBCardBody>
                     </MDBCard>
                 </MDBCol>
             </MDBRow>
+            <strong v-else>NO PETS AVAILABLE YET!</strong>
             <br/><br/><br/>
         </MDBContainer>
     </div>
@@ -85,9 +29,11 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardImg, } from "mdb-vue-ui-kit";
+import { MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardImg, MDBSpinner, } from "mdb-vue-ui-kit";
 
 import logo from "@/assets/logo.png"
+
+import { Pets } from '@/modules/home/Pets'
 
 export default defineComponent({
     name: "FirstContent",
@@ -97,14 +43,31 @@ export default defineComponent({
         }
     },
     components: {
-        MDBContainer,
-        MDBRow,
-        MDBCol,
-        MDBCard, 
-        MDBCardBody, 
-        MDBCardTitle, 
-        MDBCardText, 
-        MDBCardImg,
+    MDBContainer,
+    MDBRow,
+    MDBCol,
+    MDBCard,
+    MDBCardBody,
+    MDBCardTitle,
+    MDBCardText,
+    MDBCardImg,
+    MDBSpinner
+},
+    methods: {
+        async GetPets(){
+            await this.GetPetListHome()
+        },
+        GetImage(image: any){
+            return new URL(`${import.meta.env.VITE_API_URL}/${image}`, import.meta.url).href
+        },
+    },
+    mounted(){
+        this.GetPets()
+    },
+    setup() {
+        const { petsreponse, petsprocessing, GetPetListHome } = Pets()
+
+        return { petsreponse, petsprocessing, GetPetListHome }
     }
 })
 </script>
@@ -117,5 +80,10 @@ export default defineComponent({
     border: 2px solid rgba(149,56,158,1);
     margin: -2px;
     cursor: pointer;
+}
+.card-img-top {
+    width: 100%;
+    height: 15vw;
+    object-fit: cover;
 }
 </style>

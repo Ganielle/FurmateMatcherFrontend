@@ -5,12 +5,24 @@ export const Pets = () => {
        petaddmessage: '',
        petaddresponse: '',
        petlistmessage: '',
-       petlistresponse: ''
+       petlistresponse: '',
+       petlikemessage: '',
+       petlikeresponse: '',
+       petlikelistmessage: '',
+       petlikelistresponse: '',
+       petdetailsmessage: '',
+       petdetailsresponse: [{
+        userDetails: [{}],
+        ownerDetails: [{}]
+       }]
     })
 
     const petsprocessing = ref({
         petaddloading: false,
-        petlistloading: false
+        petlistloading: false,
+        petlikeloading: false,
+        petlikelistloading: false,
+        petdetailsloading: false
     })
 
     const GetPetList = async (id: any) => {
@@ -26,11 +38,94 @@ export const Pets = () => {
             petsprocessing.value.petlistloading = false
         })
         .catch(err => {
-            userprofileresponse.value.petlistmessage = "bad-request"
-            userprofileresponse.value.petlistresponse = err.message
-            userprofileprocessing.value.petlistloading = false
+            petsreponse.value.petlistmessage = "bad-request"
+            petsreponse.value.petlistresponse = err.message
+            petsprocessing.value.petlistloading = false
         })
     }
 
-    return { petsreponse, petsprocessing, GetPetList }
+    const GetPetCustomFilterList = async(data: any) => {
+        petsprocessing.value.petlistloading = true
+
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        }
+
+        await fetch(`${import.meta.env.VITE_API_URL}/pets/listpetadoptercustomfilter`, requestOptions)
+        .then(res => {
+            return res.json()
+        })
+        .then(data => {
+            petsreponse.value.petlistmessage = data.message
+            petsreponse.value.petlistresponse = data.data != undefined ? data.data : ''
+            petsprocessing.value.petlistloading = false
+        })
+        .catch(err => {
+            petsreponse.value.petlistmessage = "bad-request"
+            petsreponse.value.petlistresponse = err.message
+            petsprocessing.value.petlistloading = false
+        })
+    }
+
+    const PetLike = async (petid: any, userid: any) => {
+        petsprocessing.value.petlikeloading = true
+
+        await fetch(`${import.meta.env.VITE_API_URL}/pets/likepet?petid=${petid}&userid=${userid}`, {})
+        .then(res => {
+            return res.json()
+        })
+        .then(data => {
+            petsreponse.value.petlikemessage = data.message
+            petsprocessing.value.petlikeloading = false
+        })
+        .catch(err => {
+            petsreponse.value.petlikemessage = "bad-request"
+            petsreponse.value.petlikeresponse = err.message
+            petsprocessing.value.petlikeloading = false
+        })
+    }
+
+    const PetLikeList = async (userid: any) => {
+        petsprocessing.value.petlikelistloading = true
+
+        await fetch(`${import.meta.env.VITE_API_URL}/pets/likepetlist?userid=${userid}`, {})
+        .then(res => {
+            return res.json()
+        })
+        .then(data => {
+            petsreponse.value.petlikelistmessage = data.message
+            petsreponse.value.petlikelistresponse = data.data
+            petsprocessing.value.petlikelistloading = false
+        })
+        .catch(err => {
+            petsreponse.value.petlikelistmessage = "bad-request"
+            petsreponse.value.petlikelistresponse = err.message
+            petsprocessing.value.petlikelistloading = false
+        })
+    }
+
+    const PetDetailsView = async(petid: any) => {
+        petsprocessing.value.petdetailsloading = true;
+
+        await fetch(`${import.meta.env.VITE_API_URL}/pets/petdetails?petid=${petid}`, {})
+        .then(res => {
+            return res.json()
+        })
+        .then(data => {
+            petsreponse.value.petdetailsmessage = data.message
+            petsreponse.value.petdetailsresponse = data.data
+            petsprocessing.value.petdetailsloading = false
+        })
+        .catch(err => {
+            petsreponse.value.petdetailsmessage = "bad-request"
+            petsreponse.value.petdetailsresponse = err.message
+            petsprocessing.value.petdetailsloading = false
+        })
+    }
+
+    return { petsreponse, petsprocessing, GetPetList, GetPetCustomFilterList, PetLike, PetLikeList, PetDetailsView }
 }

@@ -40,22 +40,16 @@ export default defineComponent({
                     icon: "paw",
                     children: [
                         {
-                            name: "viewpets",
-                            pageName: "VIEW PETS",
+                            name: "likpets",
+                            pageName: "LIKED PETS",
                             icon: "chevron-right",
                         },
                         {
                             name: "updatepets",
-                            pageName: "UPDATE PETS",
+                            pageName: "ADOPTED PETS",
                             icon: "chevron-right",
                         }
                     ]
-                },
-                {
-                    name: "userrescuers",
-                    pageName: "RESCUERS",
-                    icon: "hands-helping",
-                    children: []
                 },
                 {
                     name: "usermessages",

@@ -105,6 +105,8 @@
                     required
                 />
 
+                <MDBTextarea label="Pet Description" rows="4" v-model="description" />
+
                 <div class="d-flex flex-wrap ">
                     <div class="flex-grow-1 mb-3">
                         <select class="form-select cua-input-select-2" name="role" v-model="type"
@@ -235,7 +237,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { MDBBtn, MDBCol, MDBContainer, MDBFile, MDBIcon, MDBInput, MDBModal, MDBModalBody, MDBModalFooter, MDBModalHeader, MDBModalTitle, MDBRow, MDBSpinner, MDBTable } from 'mdb-vue-ui-kit';
+import { MDBBtn, MDBCol, MDBContainer, MDBFile, MDBIcon, MDBInput, MDBModal, MDBModalBody, MDBModalFooter, MDBModalHeader, MDBModalTitle, MDBRow, MDBSpinner, MDBTable, MDBTextarea } from 'mdb-vue-ui-kit';
 
 import Dashboardbreadcrumbs from '@/components/Dashboard/Dashboardbreadcrumbs.vue';
 
@@ -249,6 +251,7 @@ export default defineComponent({
         return{
             addpetmodal: false,
             petname: "",
+            description: "",
             type: "",
             gender: "",
             breed: "",
@@ -345,7 +348,8 @@ export default defineComponent({
     MDBFile,
     MDBSpinner,
     MDBRow,
-    MDBCol
+    MDBCol,
+    MDBTextarea
 },
     methods: {
         async SavePet(){
@@ -355,6 +359,7 @@ export default defineComponent({
 
             formData.append("id", authdata._id)
             formData.append("petname", this.petname)
+            formData.append("description", this.description)
             formData.append("type", this.type)
             formData.append("gender", this.gender)
             formData.append("breed", this.breed)

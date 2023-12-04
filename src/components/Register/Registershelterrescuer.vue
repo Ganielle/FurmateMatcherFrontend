@@ -168,7 +168,9 @@ export default defineComponent({
                 municipality: this.municipality,
                 province: this.province,
                 country: this.country,
-                zipcode: this.zipcode
+                zipcode: this.zipcode,
+                vision: this.vision,
+                mission: this.mission
             }
 
             await this.Register(data)
