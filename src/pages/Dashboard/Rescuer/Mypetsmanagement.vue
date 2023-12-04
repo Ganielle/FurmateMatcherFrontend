@@ -148,7 +148,7 @@
                 />
 
                 <MDBTextarea label="Pet Description" rows="4" v-model="description" />
-
+                <br/>
                 <div class="d-flex flex-wrap ">
                     <div class="flex-grow-1 mb-3">
                         <select class="form-select cua-input-select-2" name="role" v-model="type"
@@ -178,6 +178,15 @@
                         </select>
                     </div>
                 </div>  
+                <div class="d-flex flex-wrap " v-else-if="type == 'Cat'">
+                    <div class="flex-grow-1 mb-3">
+                        <select class="form-select cua-input-select-2" name="role" v-model="breed"
+                            style="background-color: white; color: black; font-size: 0.9em;">
+                            <option value="">What is your pet breed?</option>
+                            <option v-for="breedcatkey in breedpetcatdata" :key="breedcatkey" :value="breedcatkey">{{ breedcatkey }}</option>
+                        </select>
+                    </div>
+                </div>
 
                 <div class="d-flex flex-wrap ">
                     <div class="flex-grow-1 mb-3">
@@ -259,6 +268,7 @@
                 breed = ''
                 age = ''
                 personality = []
+                description = ''
                 maintenance = ''
                 located = ''
                 file = []
@@ -291,7 +301,7 @@
                 />
 
                 <MDBTextarea label="Pet Description" rows="4" v-model="description" disabled/>
-
+                <br/>
                 <div class="d-flex flex-wrap ">
                     <div class="flex-grow-1 mb-3">
                         <select class="form-select cua-input-select-2" name="role" v-model="type"
@@ -318,6 +328,15 @@
                             style="background-color: white; color: black; font-size: 0.9em;" disabled>
                             <option value="">What is your pet breed?</option>
                             <option v-for="breeddogkey in breedpetdogdata" :key="breeddogkey" :value="breeddogkey">{{ breeddogkey }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="d-flex flex-wrap " v-else-if="type == 'Cat'">
+                    <div class="flex-grow-1 mb-3">
+                        <select class="form-select cua-input-select-2" name="role" v-model="breed"
+                            style="background-color: white; color: black; font-size: 0.9em;" disabled>
+                            <option value="">What is your pet breed?</option>
+                            <option v-for="breedcatkey in breedpetcatdata" :key="breedcatkey" :value="breedcatkey">{{ breedcatkey }}</option>
                         </select>
                     </div>
                 </div>
@@ -384,6 +403,7 @@
                 breed = ''
                 age = ''
                 personality = []
+                description = ''
                 maintenance = ''
                 located = ''
                 file = []
@@ -407,7 +427,7 @@
                 />
 
                 <MDBTextarea label="Pet Description" rows="4" v-model="description" />
-
+                <br/>
                 <div class="d-flex flex-wrap ">
                     <div class="flex-grow-1 mb-3">
                         <select class="form-select cua-input-select-2" name="role" v-model="type"
@@ -437,6 +457,15 @@
                         </select>
                     </div>
                 </div>  
+                <div class="d-flex flex-wrap " v-else-if="type == 'Cat'">
+                    <div class="flex-grow-1 mb-3">
+                        <select class="form-select cua-input-select-2" name="role" v-model="breed"
+                            style="background-color: white; color: black; font-size: 0.9em;">
+                            <option value="">What is your pet breed?</option>
+                            <option v-for="breedcatkey in breedpetcatdata" :key="breedcatkey" :value="breedcatkey">{{ breedcatkey }}</option>
+                        </select>
+                    </div>
+                </div>
 
                 <div class="d-flex flex-wrap ">
                     <div class="flex-grow-1 mb-3">
@@ -517,6 +546,7 @@
                 gender = ''
                 breed = ''
                 age = ''
+                description = ''
                 personality = []
                 maintenance = ''
                 located = ''
@@ -657,6 +687,7 @@ export default defineComponent({
             formData.append("petname", this.petname)
             formData.append("description", this.description)
             formData.append("type", this.type)
+            formData.append("age", this.age)
             formData.append("gender", this.gender)
             formData.append("breed", this.breed)
             formData.append("personality", JSON.stringify(this.personality))
@@ -755,6 +786,7 @@ export default defineComponent({
             formData.append("userid", authdata._id)
             formData.append("petname", this.petname)
             formData.append("description", this.description)
+            formData.append("age", this.age)
             formData.append("type", this.type)
             formData.append("gender", this.gender)
             formData.append("breed", this.breed)
