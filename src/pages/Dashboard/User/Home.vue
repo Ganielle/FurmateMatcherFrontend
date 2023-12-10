@@ -16,6 +16,7 @@
                             <select class="form-select cua-input-select-2" name="breed" id="breed" v-model="located"
                                 style="background-color: rgb(255, 255, 255); font-size: 0.9em;">
                                 <option value="">Choose Location</option>
+                                <option value="any">Any</option>
                                 <option v-for="locatedkey in locateddata" :key="locatedkey" :value="locatedkey">{{locatedkey}}</option>
                             </select>
                         </div>
@@ -25,10 +26,11 @@
                 <div class="text-center bg-light">
                     <div class="d-flex flex-wrap ">
                         <div class="flex-grow-1 mb-3">
-                            <label for="breed">Select Pet Type</label>
+                            <label for="breed">Select Pet Type <strong style="color: red;">*</strong></label>
                             <select class="form-select cua-input-select-2" name="breed" id="breed" v-model="type"
                                 style="background-color: rgb(255, 255, 255); font-size: 0.9em;">
-                                <option value="">Choose Breed Type</option>
+                                <option value="">Choose Pet Type</option>
+                                <option value="any">Any</option>
                                 <option v-for="typepetkey in typepet" :key="typepetkey" :value="typepetkey">{{typepetkey}}</option>
                             </select>
                         </div>
@@ -36,20 +38,22 @@
 
                     <div class="d-flex flex-wrap" v-if="type == 'Dog'">
                         <div class="flex-grow-1 mb-3">
-                            <label for="breed">Select Breed</label>
+                            <label for="breed">Select Breed <strong style="color: red;">*</strong></label>
                             <select class="form-select cua-input-select-2" name="breed" id="breed" v-model="breed"
                                 style="background-color: rgb(255, 255, 255); font-size: 0.9em;">
                                 <option value="">Choose Breed Type</option>
+                                <option value="any">Any</option>
                                 <option v-for="breeddogkey in breedowneddogdata" :key="breeddogkey" :value="breeddogkey">{{breeddogkey}}</option>
                             </select>
                         </div>
                     </div>
                     <div class="d-flex flex-wrap" v-else-if="type == 'Cat'">
                         <div class="flex-grow-1 mb-3">
-                            <label for="breed">Select Breed</label>
+                            <label for="breed">Select Breed <strong style="color: red;">*</strong></label>
                             <select class="form-select cua-input-select-2" name="breed" id="breed" v-model="breed"
                                 style="background-color: rgb(255, 255, 255); font-size: 0.9em;">
                                 <option value="">Choose Breed Type</option>
+                                <option value="any">Any</option>
                                 <option v-for="breedcatkey in breedownedcatdata" :key="breedcatkey" :value="breedcatkey">{{breedcatkey}}</option>
                             </select>
                         </div>
@@ -61,6 +65,7 @@
                             <select class="form-select cua-input-select-2" name="age" id="age" v-model="age"
                                 style="background-color: rgb(255, 255, 255); font-size: 0.9em;">
                                 <option value="">Choose Age Specification</option>
+                                <option value="any">Any</option>
                                 <option v-for="ageItem in agedata" :key="ageItem" :value="ageItem">{{ageItem}}</option>
                             </select>
                         </div>
@@ -72,6 +77,7 @@
                             <select class="form-select cua-input-select-2" name="gender" id="gender" v-model="gender"
                                 style="background-color: rgb(255, 255, 255); font-size: 0.9em;">
                                 <option value="">Choose Gender</option>
+                                <option value="any">Any</option>
                                 <option v-for="genderItem in genderdata" :key="genderItem" :value="genderItem">{{genderItem}}</option>
                             </select>
                         </div>
@@ -83,6 +89,7 @@
                             <select class="form-select cua-input-select-2" name="personality" id="personality" v-model="personality"
                                 style="background-color: rgb(255, 255, 255); font-size: 0.9em;">
                                 <option value="">Choose Personality</option>
+                                <option value="any">Any</option>
                                 <option v-for="personalityItem in personalitydata" :key="personalityItem" :value="personalityItem">{{personalityItem}}</option>
                             </select>
                         </div>
@@ -105,7 +112,7 @@
             <MDBCol style="max-height: 80vh; overflow-y: scroll;">
                 <strong style="font-size:1.5vw">PET LIST</strong>
                 <br/><br/>
-                <MDBRow>
+                <MDBRow v-if="petsreponse.petlistresponse.length > 0">
                     <MDBCol col="4" v-for="petsItem in petsreponse.petlistresponse" :key="petsItem">
                         <MDBCard class="h-100">
                             <div>
@@ -144,6 +151,7 @@
                         </MDBCard>
                     </MDBCol>
                 </MDBRow>
+                <strong v-else>NO PETS FOUND!</strong>
             </MDBCol>
         </MDBRow>
         
@@ -263,9 +271,20 @@ export default defineComponent({
         },
         async CustomFilter(){
             this.customfilteron = true
-            if (this.breed == '' || this.type == ''){
+            if (this.type != 'any' && this.type != ''){
+                if (this.breed == ''){
+                    this.$swal({
+                        title: "Please select a breed first!",
+                        confirmButtonText: "OK"
+                    })
+                    this.customfilteron = false
+                    return
+                }
+            }
+
+            if (this.type == ''){
                 this.$swal({
-                    title: "Please select a pet type and breed first!",
+                    title: "Please select a pet type",
                     confirmButtonText: "OK"
                 })
                 this.customfilteron = false

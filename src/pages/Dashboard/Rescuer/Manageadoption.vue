@@ -153,11 +153,7 @@
                 <br/>
                 <MDBInput label="Street" v-model="userprofileresponse.profileresponse.preference.userdetails.street" disabled/>
                 <br/>
-                <MDBInput label="Municipality" v-model="userprofileresponse.profileresponse.preference.userdetails.municipality" disabled/>
-                <br/>
-                <MDBInput label="Province" v-model="userprofileresponse.profileresponse.preference.userdetails.province" disabled/>
-                <br/>
-                <MDBInput label="Zipcode" v-model="userprofileresponse.profileresponse.preference.userdetails.zipcode" disabled/>
+                <MDBInput label="City" v-model="userprofileresponse.profileresponse.preference.userdetails.municipality" disabled/>
             </div>
         </MDBModalBody>
         <MDBModalFooter>

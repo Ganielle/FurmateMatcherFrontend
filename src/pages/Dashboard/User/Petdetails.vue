@@ -18,7 +18,7 @@
                     <br/><br/>
                     <strong>Rescuer: </strong><p>{{ petsreponse.petdetailsresponse[0].userDetails[0].username }}</p>
                     <strong>Adopter: </strong>
-                    <p v-if="petsreponse.petdetailsresponse[0].adopterDetails == undefined">none</p>
+                    <p v-if="petsreponse.petdetailsresponse[0].adopterDetails == undefined || petsreponse.petdetailsresponse[0].adopterDetails.length <= 0">none</p>
                     <p v-else>{{ petsreponse.petdetailsresponse[0].adopterDetails[0].firstname }} {{ petsreponse.petdetailsresponse[0].adopterDetails[0].lastname }}</p>
                     <MDBBtn color="primary" block :disabled="chatprocessing.chatcreateloading" @click="() => {
                         $swal({
@@ -45,10 +45,10 @@
                                 UserAdoptionRequest(petsreponse.petdetailsresponse[0]._id)
                             }
                         })
-                    }" :disabled="petsreponse.petdetailsresponse[0].hasPendingRequests || petsreponse.petdetailsresponse[0].hasSuccessRequests">
+                    }" :disabled="petsreponse.petdetailsresponse[0].hasPendingRequests || petsreponse.petdetailsresponse[0].hasSuccessRequests || petsreponse.petdetailsresponse[0].adopterDetails.length > 0">
                         <strong v-if="petsreponse.petdetailsresponse[0].hasPendingRequests == true" >ADOPTION REQUESTED</strong>
                         <strong v-else-if="petsreponse.petdetailsresponse[0].hasSuccessRequests == true">YOU ALREADY ADOPT THIS PET</strong>
-                        <strong v-else-if="petsreponse.petdetailsresponse[0].adopterDetails != undefined">
+                        <strong v-else-if="petsreponse.petdetailsresponse[0].adopterDetails != undefined && petsreponse.petdetailsresponse[0].adopterDetails.length > 0">
                             <div v-if="petsreponse.petdetailsresponse[0].adopterDetails[0].user == uid">
                                 YOU ALREADY ADOPT THIS PET
                             </div>

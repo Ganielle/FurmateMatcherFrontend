@@ -62,7 +62,7 @@
                 />
                 <MDBInput
                     type="text"
-                    label="Address (Municipality)"
+                    label="Address (City)"
                     v-model="address"
                     wrapperClass="mb-4"
                     disabled

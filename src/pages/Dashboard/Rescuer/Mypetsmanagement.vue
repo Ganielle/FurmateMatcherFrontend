@@ -302,54 +302,37 @@
 
                 <MDBTextarea label="Pet Description" rows="4" v-model="description" disabled/>
                 <br/>
-                <div class="d-flex flex-wrap ">
-                    <div class="flex-grow-1 mb-3">
-                        <select class="form-select cua-input-select-2" name="role" v-model="type"
-                            style="background-color: white; color: black; font-size: 0.9em;" disabled>
-                            <option value="">What is your pet type?</option>
-                            <option v-for="typekey in typepetdata" :key="typekey" :value="typekey">{{ typekey }}</option>
-                        </select>
-                    </div>
-                </div>
+                <MDBInput 
+                    type="text"
+                    label="What is your pet type?"
+                    v-model="type"
+                    wrapperClass="mb-4"
+                    disabled
+                />
 
-                <div class="d-flex flex-wrap ">
-                    <div class="flex-grow-1 mb-3">
-                        <select class="form-select cua-input-select-2" name="role" v-model="gender"
-                            style="background-color: white; color: black; font-size: 0.9em;" disabled>
-                            <option value="">What is your pet gender?</option>
-                            <option v-for="genderkey in genderpetdata" :key="genderkey" :value="genderkey">{{ genderkey }}</option>
-                        </select>
-                    </div>
-                </div>
+                <MDBInput 
+                    type="text"
+                    label="What is your pet gender?"
+                    v-model="gender"
+                    wrapperClass="mb-4"
+                    disabled
+                />
 
-                <div class="d-flex flex-wrap " v-if="type == 'Dog'">
-                    <div class="flex-grow-1 mb-3">
-                        <select class="form-select cua-input-select-2" name="role" v-model="breed"
-                            style="background-color: white; color: black; font-size: 0.9em;" disabled>
-                            <option value="">What is your pet breed?</option>
-                            <option v-for="breeddogkey in breedpetdogdata" :key="breeddogkey" :value="breeddogkey">{{ breeddogkey }}</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="d-flex flex-wrap " v-else-if="type == 'Cat'">
-                    <div class="flex-grow-1 mb-3">
-                        <select class="form-select cua-input-select-2" name="role" v-model="breed"
-                            style="background-color: white; color: black; font-size: 0.9em;" disabled>
-                            <option value="">What is your pet breed?</option>
-                            <option v-for="breedcatkey in breedpetcatdata" :key="breedcatkey" :value="breedcatkey">{{ breedcatkey }}</option>
-                        </select>
-                    </div>
-                </div>
+                <MDBInput 
+                    type="text"
+                    label="What is your pet breed?"
+                    v-model="breed"
+                    wrapperClass="mb-4"
+                    disabled
+                />
 
-                <div class="d-flex flex-wrap ">
-                    <div class="flex-grow-1 mb-3">
-                        <select class="form-select cua-input-select-2" name="role" v-model="age"
-                            style="background-color: white; color: black; font-size: 0.9em;" disabled>
-                            <option value="">What is your pet age?</option>
-                            <option v-for="agekey in agepetdata" :key="agekey" :value="agekey">{{ agekey }}</option>
-                        </select>
-                    </div>
-                </div>
+                <MDBInput 
+                    type="text"
+                    label="What is your pet age?"
+                    v-model="age"
+                    wrapperClass="mb-4"
+                    disabled
+                />
 
                 What is your pet personality traits? (Please at lease one)
                 <div v-for="personalitykey in personalitytraitsdata" :key="personalitykey">
@@ -364,35 +347,30 @@
                     </label>
                 </div>
                 <br/>
-                <div class="d-flex flex-wrap ">
-                    <div class="flex-grow-1 mb-3">
-                        <select class="form-select cua-input-select-2" name="role" v-model="special"
-                            style="background-color: white; color: black; font-size: 0.9em;" disabled>
-                            <option value="">Is your pet a special pet?</option>
-                            <option v-for="specialkey in specialdata" :key="specialkey" :value="specialkey">{{ specialkey }}</option>
-                        </select>
-                    </div>
-                </div>
+                
+                <MDBInput 
+                    type="text"
+                    label="Is your pet a special pet?"
+                    v-model="special"
+                    wrapperClass="mb-4"
+                    disabled
+                />
 
-                <div class="d-flex flex-wrap ">
-                    <div class="flex-grow-1 mb-3">
-                        <select class="form-select cua-input-select-2" name="role" v-model="maintenance"
-                            style="background-color: white; color: black; font-size: 0.9em;" disabled>
-                            <option value="">Is your pet have a maintenance?</option>
-                            <option v-for="maintenancekey in petmaintenancedata" :key="maintenancekey" :value="maintenancekey">{{ maintenancekey }}</option>
-                        </select>
-                    </div>
-                </div>
+                <MDBInput 
+                    type="text"
+                    label="Is your pet have a maintenance?"
+                    v-model="maintenance"
+                    wrapperClass="mb-4"
+                    disabled
+                />
 
-                <div class="d-flex flex-wrap ">
-                    <div class="flex-grow-1 mb-3">
-                        <select class="form-select cua-input-select-2" name="role" v-model="located"
-                            style="background-color: white; color: black; font-size: 0.9em;" disabled>
-                            <option value="">Where is your pet located?</option>
-                            <option v-for="locatedkey in locateddata" :key="locatedkey" :value="locatedkey">{{ locatedkey }}</option>
-                        </select>
-                    </div>
-                </div>
+                <MDBInput 
+                    type="text"
+                    label="Where is your pet located?"
+                    v-model="located"
+                    wrapperClass="mb-4"
+                    disabled
+                />
             </form>
         </MDBModalBody>
         <MDBModalFooter>

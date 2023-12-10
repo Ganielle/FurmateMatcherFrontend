@@ -48,7 +48,6 @@
                             label="Middle Name (Optional)"
                             v-model="middlename"
                             wrapperClass="mb-4"
-                            required
                         />
                     </MDBCol>
                     <MDBCol>
@@ -69,7 +68,7 @@
                 <br/>
                 <label for="dateofbirth">Date Of Birth</label>
                 <br/>
-                <input type="date" name="dateofbirth" id="dateofbirth" v-mode="dob">
+                <input type="date" name="dateofbirth" id="dateofbirth" v-model="dob">
                 <br/><br/>
                 <MDBInput
                     type="text"
@@ -78,44 +77,13 @@
                     wrapperClass="mb-4"
                     required
                 />
-                <MDBRow id="HomeAddress">
-                    <MDBCol>
-                        <MDBInput
-                            type="text"
-                            label="Municipality"
-                            v-model="municipality"
-                            wrapperClass="mb-4"
-                            required
-                        />
-                    </MDBCol>
-                    <MDBCol>
-                        <MDBInput
-                            type="text"
-                            label="Province"
-                            v-model="province"
-                            wrapperClass="mb-4"
-                            required
-                        />
-                    </MDBCol>
-                    <MDBCol>
-                        <MDBInput
-                            type="text"
-                            label="Country"
-                            v-model="country"
-                            wrapperClass="mb-4"
-                            required
-                        />
-                    </MDBCol>
-                    <MDBCol>
-                        <MDBInput
-                            type="text"
-                            label="Zip Code"
-                            v-model="zipcode"
-                            wrapperClass="mb-4"
-                            required
-                        />
-                    </MDBCol>
-                </MDBRow>
+                <MDBInput
+                    type="text"
+                    label="City"
+                    v-model="municipality"
+                    wrapperClass="mb-4"
+                    required
+                />
                 <MDBCheckbox
                     label="By click this you're accepting the <a href='/termsandcondition'>Terms and Conditions</a>"
                     v-model="terms"
@@ -305,32 +273,37 @@
                     </div>
                     What breed of pet are you looking for?
                     <br/>
-                    <strong>CAT:</strong>
-                    <div v-for="cat in breedpetcatdata" :key="cat">
-                        <label class="container no-center-text">
-                            <input type="checkbox"
-                                :value="cat"
-                                :id="cat"
-                                v-model="breedpet"
-                                :name="cat"
-                                checked>
-                            <span class="checkmark"></span>&nbsp;
-                            <strong>{{ cat }}</strong>
-                        </label>
+                    <div v-if="typepet == 'Cat'">
+                        <strong>CAT:</strong>
+                        <div v-for="cat in breedpetcatdata" :key="cat">
+                            <label class="container no-center-text">
+                                <input type="checkbox"
+                                    :value="cat"
+                                    :id="cat"
+                                    v-model="breedpet"
+                                    :name="cat"
+                                    checked>
+                                <span class="checkmark"></span>&nbsp;
+                                <strong>{{ cat }}</strong>
+                            </label>
+                        </div>
                     </div>
-                    <strong>DOG:</strong>
-                    <div v-for="dog in breedpetdogdata" :key="dog">
-                        <label class="container no-center-text">
-                            <input type="checkbox"
-                                :value="dog"
-                                :id="dog"
-                                v-model="breedpet"
-                                :name="dog"
-                                checked>
-                            <span class="checkmark"></span>&nbsp;
-                            <strong>{{ dog }}</strong>
-                        </label>
+                    <div v-if="typepet == 'Dog'">
+                        <strong>DOG:</strong>
+                        <div v-for="dog in breedpetdogdata" :key="dog">
+                            <label class="container no-center-text">
+                                <input type="checkbox"
+                                    :value="dog"
+                                    :id="dog"
+                                    v-model="breedpet"
+                                    :name="dog"
+                                    checked>
+                                <span class="checkmark"></span>&nbsp;
+                                <strong>{{ dog }}</strong>
+                            </label>
+                        </div>
                     </div>
+                    <strong v-else>PLEASE SELECT A TYPE OF PET FIRST! <br/></strong>
                     <br/>
                     What kind of pet personality traits do you prefer?
                     <br/>
@@ -591,11 +564,12 @@ export default defineComponent({
     },
     methods: {
         OpenUserPreference(){
-            if (this.username == "" && this.password == "" && this.email == "" && this.firstname == "" && this.middlename == "" && this.lastname == "" && this.gender == "" && this.dob == "" && this.street == "" && this.municipality == "" && this.province == "" && this.country == "" && this.zipcode == ""){
+            if (this.username == "" || this.password == "" || this.email == "" || this.firstname == "" || this.lastname == "" || this.gender == "" || this.dob == "" || this.street == "" || this.municipality == ""){
                 this.$swal({
                     title: "Please complete the form first before proceeding!",
                     confirmButtonText: "OK"
                 })
+                
 
                 return;
             }
@@ -603,7 +577,7 @@ export default defineComponent({
             this.userpreference = true
         },
         async RegisterUser() {
-            if (this.username == "" && this.password == "" && this.email == "" && this.firstname == "" && this.middlename == "" && this.lastname == "" && this.gender == "" && this.dob == "" && this.street == "" && this.municipality == "" && this.province == "" && this.country == "" && this.zipcode == ""){
+            if (this.username == "" || this.password == "" || this.email == "" || this.firstname == "" || this.lastname == "" || this.gender == "" || this.dob == "" || this.street == "" || this.municipality == ""){
                 this.$swal({
                     title: "Please complete the form first before proceeding!",
                     confirmButtonText: "OK"
