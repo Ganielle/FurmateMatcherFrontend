@@ -32,7 +32,7 @@
                                 <strong v-else>{{ data.sender.username }}</strong>
                                 <br/><br/>
                                 <p style="white-space: pre-line;">{{ data.content }}</p>
-                                <p>sent: {{ data.createdAt }}</p>
+                                <p>sent: {{ ConvertToDateTime(data.createdAt) }}</p>
                             </div>
                             <br/><br/>
                             <br/><br/>
@@ -91,6 +91,11 @@ export default defineComponent({
         
     },
     methods: {
+        ConvertToDateTime(time: any){
+            const dateTime = new Date(time);
+
+            return `${dateTime.getMonth()}/${dateTime.getDay()}/${dateTime.getFullYear()} ${dateTime.getHours()}:${dateTime.getMinutes()}:${dateTime.getSeconds()}`
+        },
         SelectedRoom(id: any){
             const roomidquery = this.$route.query.roomid
             

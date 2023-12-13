@@ -43,7 +43,12 @@ export default defineComponent({
                             name: "likpets",
                             pageName: "LIKED PETS",
                             icon: "chevron-right",
-                        }
+                        },
+                        {
+                            name: "viewpethistoryuser",
+                            pageName: "VIEW HISTORY",
+                            icon: "chevron-right",
+                        },
                     ]
                 },
                 {

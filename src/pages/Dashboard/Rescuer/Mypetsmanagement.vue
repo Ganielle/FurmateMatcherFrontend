@@ -9,6 +9,7 @@
                 :disabled="petspagination.page <= 0" 
                 @click="() => {
                     petspagination.page -= 1
+                    ListPets()
                 }">
                 <MDBIcon
                     fas
@@ -23,6 +24,7 @@
                 :disabled=" petspagination.page >= petspagination.totalPages - 1"
                 @click="() => {
                     petspagination.page += 1
+                    ListPets()
                 }">
                 <MDBIcon
                     fas

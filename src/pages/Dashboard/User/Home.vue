@@ -113,7 +113,7 @@
                 <strong style="font-size:1.5vw">PET LIST</strong>
                 <br/><br/>
                 <MDBRow v-if="petsreponse.petlistresponse.length > 0">
-                    <MDBCol col="4" v-for="petsItem in petsreponse.petlistresponse" :key="petsItem">
+                    <MDBCol col="4" v-for="petsItem in petsreponse.petlistresponse" :key="petsItem" style="padding-bottom: 50px;">
                         <MDBCard class="h-100">
                             <div>
                                 <MDBSpinner v-if="petsprocessing.petlikeloading && likepetclicked == petsItem._id" style="position: absolute; padding-top: 10px; padding-left: 10px; color: #e45757" />
@@ -143,10 +143,8 @@
                                 <strong>Gender: {{ petsItem.gender }}</strong>
                             </MDBCardText>
                                 <MDBBtn color="primary" @click="() => {
-                                    $router.push({name: 'petviewer', params: {
-                                        petid: petsItem._id
-                                    }})
-                                }">View </MDBBtn>
+                                    AddHistory(petsItem._id)
+                                }" :disabled="petsprocessing.pethistoryaddloading">View </MDBBtn>
                             </MDBCardBody>
                         </MDBCard>
                     </MDBCol>
@@ -320,15 +318,39 @@ export default defineComponent({
                 })
             }
             this.likepetclicked = ""
+        },
+        async AddHistory(petid: any){
+
+            const auth: any = await GetItemKey("auth")
+            const authdata = JSON.parse(auth)
+
+            const data = {
+                userid: authdata._id,
+                petid: petid
+            }
+
+            await this.AddPetViewHistory(data)
+
+            if (this.petsreponse.pethistoryaddmessage == "success"){
+                this.$router.push({name: 'petviewer', params: {
+                    petid: petid
+                }})
+            }
+            else{
+                this.$swal({
+                    title: `There's a problem adding history! Error Code: ${this.petsreponse.pethistoryaddmessage}`,
+                    confirmButtonText: "OK! Cool"
+                })
+            }
         }
     },
     mounted(){
         this.FilterPets()
     },
     setup(){
-        const { petsreponse, petsprocessing, GetPetList, GetPetCustomFilterList, PetLike } = Pets()
+        const { petsreponse, petsprocessing, GetPetList, GetPetCustomFilterList, PetLike, AddPetViewHistory } = Pets()
 
-        return { petsreponse, petsprocessing, GetPetList, GetPetCustomFilterList, PetLike }
+        return { petsreponse, petsprocessing, GetPetList, GetPetCustomFilterList, PetLike, AddPetViewHistory }
     }
 })
 </script>

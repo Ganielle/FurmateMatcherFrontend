@@ -19,7 +19,11 @@ export const Pets = () => {
         ownerDetails: [{}]
        }],
        petadoptionrequestmessage: '',
-       petadoptionrequestdata: ''
+       petadoptionrequestdata: '',
+       pethistoryaddmessage: "",
+       pethistoryadddata: "",
+       pethistorylistmessage: "",
+       pethistorylistdata: ""
     })
 
     const petsprocessing = ref({
@@ -28,7 +32,15 @@ export const Pets = () => {
         petlikeloading: false,
         petlikelistloading: false,
         petdetailsloading: false,
-        petadoptionrequestloading: false
+        petadoptionrequestloading: false,
+        pethistoryaddloading: false,
+        pethistorylistloading: false
+    })
+
+    const petspagination = ref({
+        page: 0,
+        limit: 5,
+        totalPages: 0
     })
 
     const GetPetList = async (id: any) => {
@@ -160,5 +172,52 @@ export const Pets = () => {
         })
     }
 
-    return { petsreponse, petsprocessing, GetPetList, GetPetCustomFilterList, PetLike, PetLikeList, PetDetailsView, AdoptionRequest }
+    const AddPetViewHistory = async(data: any) => {
+        petsprocessing.value.pethistoryaddloading = true
+
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        }
+
+        await fetch(`${import.meta.env.VITE_API_URL}/pets/addhistoryviewpet`, requestOptions)
+        .then(res => {
+            return res.json()
+        })
+        .then(data => {
+            petsreponse.value.pethistoryaddmessage = data.message
+            petsreponse.value.pethistoryadddata = data.data != undefined ? data.data : ''
+            petsprocessing.value.pethistoryaddloading = false
+        })
+        .catch(err => {
+            petsreponse.value.pethistoryaddmessage = "bad-request"
+            petsreponse.value.pethistoryadddata = err.message
+            petsprocessing.value.pethistoryaddloading = false
+        })
+    }
+
+    const GetPetHistoryList = async (id: any) => {
+        petsprocessing.value.pethistoryaddloading = true
+
+        await fetch(`${import.meta.env.VITE_API_URL}/pets/viewhistorypet?page=${petspagination.value.page}&limit=${petspagination.value.limit}&userid=${id}`, {})
+        .then(res => {
+            return res.json()
+        })
+        .then(data => {
+            petsreponse.value.pethistorylistmessage = data.message
+            petsreponse.value.pethistoryadddata = data.data != undefined ? data.data : ''
+            petspagination.value.totalPages = data.pages
+            petsprocessing.value.pethistoryaddloading = false
+        })
+        .catch(err => {
+            petsreponse.value.pethistorylistmessage = "bad-request"
+            petsreponse.value.pethistoryadddata = err.message
+            petsprocessing.value.pethistoryaddloading = false
+        })
+    }
+
+    return { petsreponse, petspagination, petsprocessing, GetPetList, GetPetCustomFilterList, PetLike, PetLikeList, PetDetailsView, AdoptionRequest, AddPetViewHistory, GetPetHistoryList }
 }
