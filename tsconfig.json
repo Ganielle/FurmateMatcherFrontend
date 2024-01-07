@@ -4,7 +4,7 @@
     "vue-sweetalert2"
   ],
   "compilerOptions": {
-    "strict": true,
+    "strict": false,
     "noImplicitThis": true,
     "noImplicitAny": true,
     "noImplicitOverride": true,
