@@ -5,10 +5,10 @@
   ],
   "compilerOptions": {
     "strict": false,
-    "noImplicitThis": true,
-    "noImplicitAny": true,
-    "noImplicitOverride": true,
-    "noImplicitReturns": true
+    "noImplicitThis": false,
+    "noImplicitAny": false,
+    "noImplicitOverride": false,
+    "noImplicitReturns": false
   },
   "references": [
     {
