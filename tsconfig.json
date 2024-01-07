@@ -3,6 +3,13 @@
   "types": [
     "vue-sweetalert2"
   ],
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true
+  },
   "references": [
     {
       "path": "./tsconfig.node.json"
