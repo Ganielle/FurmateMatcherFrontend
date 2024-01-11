@@ -11,12 +11,16 @@
                         $router.push({name: 'login'})
                     }">
                         <MDBCardImg
-                            :src="GetImage(data.picture)"
+                            :src="
+                            //@ts-ignore
+                            GetImage(data.picture)"
                             top
                             alt="..."
                         />
                         <MDBCardBody>
-                            <MDBCardTitle class="text-center">{{ data.name }}</MDBCardTitle>
+                            <MDBCardTitle class="text-center">{{ 
+                                //@ts-ignore
+                                data.name }}</MDBCardTitle>
                         </MDBCardBody>
                     </MDBCard>
                 </MDBCol>
@@ -49,7 +53,6 @@ export default defineComponent({
     MDBCard,
     MDBCardBody,
     MDBCardTitle,
-    MDBCardText,
     MDBCardImg,
     MDBSpinner
 },

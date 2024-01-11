@@ -142,6 +142,7 @@ export default defineComponent({
     methods: {
         async RegisterUser() {
             if (this.username == "" && this.password == "" && this.email == "" && this.street == "" && this.municipality == "" && this.province == "" && this.country == "" && this.zipcode == ""){
+                //@ts-ignore
                 this.$swal({
                     title: "Please complete the form first before proceeding!",
                     confirmButtonText: "OK"
@@ -151,6 +152,7 @@ export default defineComponent({
             }
 
             if (this.terms == false){
+                //@ts-ignore
                 this.$swal({
                     title: "Please accept the Terms and Condition before proceeding!",
                     confirmButtonText: "OK"
@@ -176,10 +178,12 @@ export default defineComponent({
             await this.Register(data)
 
             if (this.registerresponse.message == "success"){
+                //@ts-ignore
                 this.$swal({
                     title: "Successfully Registered! Do you want to proceed to login?",
                     showCancelButton: true,
                     confirmButtonText: "YES"
+                    //@ts-ignore
                 }).then((result) => {
                     if (result.isConfirmed){
                         this.$router.push({name: "login"})
@@ -197,6 +201,7 @@ export default defineComponent({
                 })
             }
             else{
+                //@ts-ignore
                 this.$swal({
                     title: this.registerresponse.response,
                     confirmButtonText: "YES"

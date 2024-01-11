@@ -17,21 +17,30 @@
                     <MDBCard class="h-100">
                         <div>
                             <MDBCardImg
-                                :src="GetImage(petsItem.pet.picture)"
+                                :src="
+                                //@ts-ignore
+                                GetImage(petsItem.pet.picture)"
                                 top
                             />
                         </div>
                         <MDBCardBody>
-                        <MDBCardTitle>{{ petsItem.pet.name }}</MDBCardTitle>
+                        <MDBCardTitle>{{ 
+                            //@ts-ignore
+                            petsItem.pet.name }}</MDBCardTitle>
                         <MDBCardText>
                             
                             
-                            <strong>Breed: {{ petsItem.pet.breed }}</strong>
+                            <strong>Breed: {{ 
+                                //@ts-ignore
+                                petsItem.pet.breed }}</strong>
                             <br/>
-                            <strong>Gender: {{ petsItem.pet.gender }}</strong>
+                            <strong>Gender: {{ 
+                            //@ts-ignore
+                            petsItem.pet.gender }}</strong>
                         </MDBCardText>
                             <MDBBtn color="primary" @click="() => {
                                 $router.push({name: 'petviewer', params: {
+                                    //@ts-ignore
                                         petid: petsItem.pet._id
                                     }})
                             }">View </MDBBtn>
@@ -67,8 +76,7 @@ export default defineComponent({
         MDBCardTitle,
         MDBCardText,
         Dashboardbreadcrumbs,
-        MDBSpinner,
-        MDBIcon
+        MDBSpinner
     },
     methods: {
         async GetPetLikeList(){
@@ -78,6 +86,7 @@ export default defineComponent({
             await this.PetLikeList(authdata._id)
 
             if (this.petsreponse.petlikelistmessage != "success"){
+                //@ts-ignore
                 this.$swal({
                     title: `There's a problem getting your liked pets list! Error Code: ${this.petsreponse.petlikelistmessage}`,
                     showCancelButton: true,

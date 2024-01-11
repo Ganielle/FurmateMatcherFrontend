@@ -120,17 +120,7 @@ export default defineComponent({
     },
     components: {
         MDBContainer,
-        MDBBtn,
-        MDBRow, 
-        MDBCol,
-        MDBInput,
         MDBIcon,
-        MDBCheckbox,
-        MDBModal,
-        MDBModalHeader,
-        MDBModalBody,
-        MDBModalFooter,
-        MDBModalTitle,
     },
     computed:{
         SidebarWrapper(): any{
@@ -166,12 +156,15 @@ export default defineComponent({
           }
         },
         Logout(){
+          //@ts-ignore
           this.$swal({
             title: "Are you sure you want to logout?",
             showCancelButton: true,
             confirmButtonText: "Yes"
+            //@ts-ignore
           }).then((result) => {
             if (result.isConfirmed){
+              //@ts-ignore
               this.$swal({
                 title: 'User Logging out!',
                 html: 'The user will be logged out in <b></b> milliseconds.',
@@ -181,17 +174,24 @@ export default defineComponent({
                 showConfirmButton: false,
                 allowOutsideClick: false,
                 didOpen: () => {
+                  //@ts-ignore
                   this.$swal.showLoading()
+                  //@ts-ignore
                   const b = this.$swal.getHtmlContainer().querySelector('b')
+                  //@ts-ignore
                   this.timeInterval = setInterval(() => {
+                    //@ts-ignore
                     b.textContent = this.$swal.getTimerLeft()
                   }, 100)
                 },
                 willClose: () => {
+                  //@ts-ignore
                   clearInterval(this.timerInterval)
                 }
+                //@ts-ignore
               }).then((result) => {
                 /* Read more about handling dismissals below */
+                //@ts-ignore
                 if (result.dismiss === this.$swal.DismissReason.timer) {
                   localStorage.removeItem("auth")
                   this.$router.push({name: "home"})

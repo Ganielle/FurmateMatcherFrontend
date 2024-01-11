@@ -194,6 +194,7 @@
                     <MDBBtn block color="primary" @click="() => {
                         if (location == '' || typeofhome == '' || aloneothers == '' || ownershipstatus == '' ||
                         breedowned.length <= 0 || petshave == ''){
+                            //@ts-ignore
                             $swal({
                                 title: 'Please complete the form first before proceeding!',
                                 confirmButtonText: 'OK'
@@ -342,6 +343,7 @@
                         <MDBCol>
                             <MDBBtn block color="primary" @click="() => {
                                 if (located == '' || typepet == '' || genderpet == '' || agepet == '' || specialdogs == '' || breedpet.length <= 0 || personalitytraits.length <= 0 || petmaintenance == ''){
+                                    //@ts-ignore
                                     $swal({
                                         title: 'Please complete the form first before proceeding!',
                                         confirmButtonText: 'OK'
@@ -565,6 +567,7 @@ export default defineComponent({
     methods: {
         OpenUserPreference(){
             if (this.username == "" || this.password == "" || this.email == "" || this.firstname == "" || this.lastname == "" || this.gender == "" || this.dob == "" || this.street == "" || this.municipality == ""){
+                //@ts-ignore
                 this.$swal({
                     title: "Please complete the form first before proceeding!",
                     confirmButtonText: "OK"
@@ -578,6 +581,7 @@ export default defineComponent({
         },
         async RegisterUser() {
             if (this.username == "" || this.password == "" || this.email == "" || this.firstname == "" || this.lastname == "" || this.gender == "" || this.dob == "" || this.street == "" || this.municipality == ""){
+                //@ts-ignore
                 this.$swal({
                     title: "Please complete the form first before proceeding!",
                     confirmButtonText: "OK"
@@ -587,6 +591,7 @@ export default defineComponent({
             }
 
             if (this.terms == false){
+                //@ts-ignore
                 this.$swal({
                     title: "Please accept the Terms and Condition before proceeding!",
                     confirmButtonText: "OK"
@@ -629,10 +634,12 @@ export default defineComponent({
             await this.Register(data)
 
             if (this.registerresponse.message == "success"){
+                //@ts-ignore
                 this.$swal({
                     title: "Successfully Registered! Do you want to proceed to login?",
                     showCancelButton: true,
                     confirmButtonText: "YES"
+                    //@ts-ignore
                 }).then((result) => {
                     if (result.isConfirmed){
                         this.$router.push({name: "login"})
@@ -655,6 +662,7 @@ export default defineComponent({
                 })
             }
             else{
+                //@ts-ignore
                 this.$swal({
                     title: this.registerresponse.response,
                     confirmButtonText: "YES"

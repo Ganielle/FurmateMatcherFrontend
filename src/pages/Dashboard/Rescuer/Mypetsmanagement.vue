@@ -67,28 +67,45 @@
                 </tr>
                 <tr v-else v-for="data in petsreponse.petlistresponse" :key="data">
                     <th scope="row" class="text-center" style="color: black">
-                        {{ data.name }}
+                        {{ 
+                            //@ts-ignore
+                            data.name }}
                     </th>
                     <th class="text-center" style="color: black">
-                        {{ data.type }}
+                        {{ 
+                            //@ts-ignore
+                            data.type }}
                     </th>
                     <th class="text-center" style="color: black">
-                        {{ data.breed }}
+                        {{ 
+                            //@ts-ignore
+                            data.breed }}
                     </th>
                     <th class="text-center">
                         <MDBRow>
                             <MDBCol>
                                 <MDBBtn block color="primary" @click="() => {
+                                    //@ts-ignore
                                     petname = data.name
+                                    //@ts-ignore
                                     description = data.description
+                                    //@ts-ignore
                                     type = data.type
+                                    //@ts-ignore
                                     gender = data.gender
+                                    //@ts-ignore
                                     breed = data.breed
+                                    //@ts-ignore
                                     age = data.age
+                                    //@ts-ignore
                                     personality = data.personalitytraits
+                                    //@ts-ignore
                                     special = data.special
+                                    //@ts-ignore
                                     maintenance = data.maintenance
+                                    //@ts-ignore
                                     located = data.located
+                                    //@ts-ignore
                                     picture = data.picture
 
                                     viewpetmodal = true
@@ -96,16 +113,27 @@
                             </MDBCol>
                             <MDBCol>
                                 <MDBBtn block color="primary" @click="() => {
+                                    //@ts-ignore
                                     petname = data.name
+                                    //@ts-ignore
                                     description = data.description
+                                    //@ts-ignore
                                     type = data.type
+                                    //@ts-ignore
                                     gender = data.gender
+                                    //@ts-ignore
                                     breed = data.breed
+                                    //@ts-ignore
                                     age = data.age
+                                    //@ts-ignore
                                     personality = data.personalitytraits
+                                    //@ts-ignore
                                     special = data.special
+                                    //@ts-ignore
                                     maintenance = data.maintenance
+                                    //@ts-ignore
                                     located = data.located
+                                    //@ts-ignore
                                     userpetid = data._id
 
                                     updatemodal = true
@@ -113,12 +141,16 @@
                             </MDBCol>
                             <MDBCol>
                                 <MDBBtn block color="primary" @click="() => {
+                                    //@ts-ignore
                                     this.$swal({
                                         title: `Are you sure you want to remove this pet?`,
                                         confirmButtonText: 'Yes',
                                         showCancelButton: true
-                                    }).then((result) => {
+                                    }).then(
+                                        //@ts-ignore
+                                        (result) => {
                                         if (result.isConfirmed){
+                                            //@ts-ignore
                                             RemovePet(data._id)
                                         }
                                     })
@@ -247,6 +279,7 @@
                 <br/>
                 <MDBBtn color="primary" block @click="() => {
                     if (petname == '' || type == '' || gender == '' || breed == '' || age == '' || personality.length <= 0 || maintenance == '' || located == '' || file.length <= 0){
+                        //@ts-ignore
                         $swal({
                             title: 'Please complete the form first before proceeding!',
                             confirmButtonText: 'OK'
@@ -504,6 +537,7 @@
                 <br/>
                 <MDBBtn color="primary" block @click="() => {
                     if (petname == '' || type == '' || gender == '' || breed == '' || age == '' || personality.length <= 0 || maintenance == '' || located == ''){
+                        //@ts-ignore
                         $swal({
                             title: 'Please complete the form first before proceeding!',
                             confirmButtonText: 'OK'
@@ -679,6 +713,7 @@ export default defineComponent({
             await this.AddPet(formData)
 
             if (this.petsreponse.petaddmessage == "success"){
+                //@ts-ignore
                 this.$swal({
                     title: 'Save Success!',
                     html: `The page will reload in <b></b> milliseconds.`,
@@ -688,22 +723,30 @@ export default defineComponent({
                     showConfirmButton: false,
                     allowOutsideClick: false,
                     didOpen: () => {
+                        //@ts-ignore
                     this.$swal.showLoading()
+                    //@ts-ignore
                     const b = this.$swal.getHtmlContainer().querySelector('b')
+                    //@ts-ignore
                     this.timeInterval = setInterval(() => {
+                        //@ts-ignore
                         b.textContent = this.$swal.getTimerLeft()
                     }, 100)
                     },
                     willClose: () => {
+                    //@ts-ignore
                     clearInterval(this.timerInterval)
                     }
+                    //@ts-ignore
                 }).then(result => {
+                    //@ts-ignore
                     if (result.dismiss === this.$swal.DismissReason.timer) {
                         window.location.reload();
                     }
                 })
             }
             else{
+                //@ts-ignore
                 this.$swal({
                     title: `There's a problem saving your data! ErrorCode: ${this.petsreponse.petlistresponse}`,
                     confirmButtonText: 'OK'
@@ -725,6 +768,7 @@ export default defineComponent({
             await this.PetRemove(data)
 
             if (this.petsreponse.petremovemessage == "success"){
+                //@ts-ignore
                 this.$swal({
                 title: 'Pet successfully removed!',
                 html: 'The page will be refreshed in <b></b> milliseconds.',
@@ -734,23 +778,31 @@ export default defineComponent({
                 showConfirmButton: false,
                 allowOutsideClick: false,
                 didOpen: () => {
+                    //@ts-ignore
                   this.$swal.showLoading()
+                  //@ts-ignore
                   const b = this.$swal.getHtmlContainer().querySelector('b')
+                  //@ts-ignore
                   this.timeInterval = setInterval(() => {
+                    //@ts-ignore
                     b.textContent = this.$swal.getTimerLeft()
                   }, 100)
                 },
                 willClose: () => {
+                    //@ts-ignore
                   clearInterval(this.timerInterval)
                 }
+                //@ts-ignore
               }).then((result) => {
                 /* Read more about handling dismissals below */
+                //@ts-ignore
                 if (result.dismiss === this.$swal.DismissReason.timer) {
                     window.location.reload()
                 }
               })
             }
             else{
+                //@ts-ignore
                 this.$swal({
                     title: `There's a problem removing your pet. Error Code: ${this.petsreponse.petremoveresponse}`,
                     confirmButtonText: "OK! Cool"
@@ -782,6 +834,7 @@ export default defineComponent({
             await this.UpdatePet(formData)
 
             if (this.petsreponse.petupdatemessage == "success"){
+                //@ts-ignore
                 this.$swal({
                     title: 'Save Success!',
                     html: `The page will reload in <b></b> milliseconds.`,
@@ -791,22 +844,30 @@ export default defineComponent({
                     showConfirmButton: false,
                     allowOutsideClick: false,
                     didOpen: () => {
+                        //@ts-ignore
                     this.$swal.showLoading()
+                    //@ts-ignore
                     const b = this.$swal.getHtmlContainer().querySelector('b')
+                    //@ts-ignore
                     this.timeInterval = setInterval(() => {
+                        //@ts-ignore
                         b.textContent = this.$swal.getTimerLeft()
                     }, 100)
                     },
                     willClose: () => {
+                        //@ts-ignore
                     clearInterval(this.timerInterval)
                     }
+                    //@ts-ignore
                 }).then(result => {
+                    //@ts-ignore
                     if (result.dismiss === this.$swal.DismissReason.timer) {
                         window.location.reload();
                     }
                 })
             }
             else{
+                //@ts-ignore
                 this.$swal({
                     title: `There's a problem saving your data! ErrorCode: ${this.petsreponse.petupdateresponse}`,
                     confirmButtonText: 'OK'

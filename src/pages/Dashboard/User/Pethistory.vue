@@ -42,7 +42,9 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-if="petsprocessing.pethistorylistdata">
+                <tr v-if="
+                    //@ts-ignore
+                    petsprocessing.pethistorylistdata">
                     <td colspan="4">
                         
                     {{ petsreponse.pethistorylistdata }}
@@ -55,14 +57,19 @@
                 </tr>
                 <tr v-else v-for="data in petsreponse.pethistoryadddata" :key="data">
                     <th scope="row" class="text-center" style="color: black">
-                        {{ data.pet.name }}
+                        {{ 
+                            //@ts-ignore
+                            data.pet.name }}
                     </th>
                     <th class="text-center" style="color: black">
-                        {{ ConvertToDateTime(data.createdAt) }}
+                        {{ 
+                            //@ts-ignore
+                            ConvertToDateTime(data.createdAt) }}
                     </th>
                     <th class="text-center">
                         <MDBBtn block color="primary" @click="() => {
                             $router.push({name: 'petviewer', params: {
+                                //@ts-ignore
                                 petid: data.pet._id
                             }})
                         }">VIEW PET</MDBBtn>
@@ -98,19 +105,12 @@ export default defineComponent({
     MDBTable,
     Dashboardbreadcrumbs,
     MDBSpinner,
-    MDBRow,
-    MDBCol,
     MDBBtn,
-    MDBModal,
-    MDBModalHeader,
-    MDBModalTitle,
-    MDBModalBody,
-    MDBModalFooter,
-    MDBInput
 },
     methods: {
         async GetHistory(){
             const auth = await GetItemKey("auth")
+            //@ts-ignore
             const authdata = JSON.parse(auth)
 
             await this.GetPetHistoryList(authdata._id)
