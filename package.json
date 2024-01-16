@@ -17,9 +17,7 @@
     "mdb-vue-ui-kit": "^4.1.1",
     "pinia": "^2.1.7",
     "socket.io-client": "^4.7.2",
-    "swiper": "^11.0.5",
     "vue": "^3.3.4",
-    "vue-awesome-swiper": "^5.0.1",
     "vue-router": "^4.2.5",
     "vue-sweetalert2": "^5.0.5",
     "vue3-carousel": "^0.3.1"

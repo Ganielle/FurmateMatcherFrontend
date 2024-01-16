@@ -24,17 +24,6 @@ const router = createRouter({
       component: () => import("../views/Wellbeing.vue")
     },
     {
-      path: '/Age',
-      name: 'Age',
-      component: () => import("../views/Age.vue")
-    },   
-    {
-      path: '/Age2',
-      name: 'Age2',
-      component: () => import("../views/Age2.vue")
-    },     
-    
-    {
       path: '/emergencyresponse',
       name: 'emergencyresponse',
       component: () => import("../views/Emergencyresponse.vue")
@@ -54,31 +43,6 @@ const router = createRouter({
       name: "registration",
       component: () => import('../views/Register.vue')
     },
-    {
-      path: '/pethealth2',
-      name: 'pethealth2',
-      component: () => import("../views/Pethealth.vue")
-    },
-    {
-      path: '/wellbeing2',
-      name: 'wellbeing2',
-      component: () => import("../views/Wellbeing2.vue")
-    },
-    {
-      path: '/emergencyresponse2',
-      name: 'emergencyresponse2',
-      component: () => import("../views/Emergencyresponse2.vue")
-    },
-    {
-      path: '/tips2',
-      name: 'tips2',
-      component: () => import("../views/Tips2.vue")
-    },
-    {
-      path: '/firsttimeadopters2',
-      name: 'firsttimeadopters2',
-      component: () => import("../views/Firsttimeadopters2.vue")
-    },  
     {
       path: "/login",
       name: "login",

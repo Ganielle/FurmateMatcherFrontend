@@ -1,28 +1,14 @@
 <template>
-    
-    <img :src="logo" alt="Logo" class="header-logo" />
-    
-    
-    
     <div style="background-color: gainsboro">
         <br/><br/><br/>
         <MDBContainer>
-            <p class="text-center" style="color: rgba(149,56,158,1); font-size: 4vw; font-weight: bold;">Furmate Matcher FAQs</p>
+            <p class="text-center" style="color: rgba(149,56,158,1); font-size: 2vw;">Furmate Matcher FAQs</p>
             <br/>
-            <p class="text-center" style="font-size: 1.5vw">Welcome to FurMate Matcher Frequently Asked Questions (FAQs)!
+            <p class="text-center" style="font-size: 1vw">Thank you for using the Furmate Matcher! We're here to assist you at every stage, from exploring <br/> profiles of over (no. of pets available for adoption) adoptable pets to welcoming your new furry family member into your home and ensuring a <br/> long and joyful life together. on comprehensive data analysis, enhancing the well-being of pets and the satisfaction of adopters.
             </p>
             <br/>
-        <p  style="font-size: 1.5vw; text-align: justify;">
-        Welcome to FurMate Matcher Frequently Asked Questions (FAQs)! We understand that adopting a pet is an exciting journey, and you may have questions along the way. This FAQ section aims to provide answers to common queries, helping you navigate the process smoothly and ensuring a positive experience for both you and your future furry companion. <br/> <br/>
-
-        Explore the questions and answers below to find valuable information about the adoption process, our platform features, and more. If you don't find what you're looking for, feel free to reach out to our support team for personalized assistance. <br/> <br/>
-
-        Thank you for considering FurMate Matcher for your pet adoption journey. Let's embark on this wonderful adventure together!
-        </p>
-
-        
-            
-            
+            <p class="text-center" style="font-size: 1vw">Below, you'll find links to some of the most frequently asked questions about adopting a pet <br/> through Furmate Matcher. If you can't find the answer you're looking for, please don't hesitate to <br/> reach out to us (contact information can be found at the bottom of this page) with any additional questions you may have:
+            </p>
             <br/>
             <MDBAccordion v-model="activeItem">
                 <MDBAccordionItem
@@ -95,15 +81,11 @@
 import { defineComponent, ref  } from 'vue';
 import { MDBAccordion, MDBAccordionItem, MDBContainer } from "mdb-vue-ui-kit";
 
-import logo from "@/assets/Home/Header/2.svg";
-
 export default defineComponent({
     name: "FAQContent",
     data() {
         return {
-            activeItem: ref('collapseOne'),
-            logo,
-
+            activeItem: ref('collapseOne')
         }
     },
     components: {
@@ -113,11 +95,3 @@ export default defineComponent({
     }
 })
 </script>
-
-<style>
-.header-logo {
-  width: 100%; /* Adjust the width as needed */
-  height: auto;
-}
-
-</style>

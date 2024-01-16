@@ -16,7 +16,7 @@
     </div>
     <div class="sidebar-body flex-grow-1">
       <MDBContainer>
-          <div style="background-color: purple; border-radius: 5px !important; " class="mb-2">
+          <div style="background-color: rgba(246,191,159,1); border-radius: 5px !important; " class="mb-2">
               <div v-for="link in items" :key="link.name">
                   <!--MAIN NAVIGATION HERE-->
                   <div @click="() => {
@@ -102,7 +102,7 @@ import { MDBContainer, MDBBtn, MDBRow, MDBCol, MDBInput, MDBIcon, MDBCheckbox, M
     MDBModalBody, MDBModalFooter, MDBModalTitle } from "mdb-vue-ui-kit";
 
 import backBtn from '@/assets/Dashboard/Navigation/Backbutton.png'
-import logo from "@/assets/logo1.png"
+import logo from "@/assets/logo.png"
 
 export default defineComponent({
     name: 'DashboardNavigation',
@@ -120,17 +120,7 @@ export default defineComponent({
     },
     components: {
         MDBContainer,
-        MDBBtn,
-        MDBRow, 
-        MDBCol,
-        MDBInput,
         MDBIcon,
-        MDBCheckbox,
-        MDBModal,
-        MDBModalHeader,
-        MDBModalBody,
-        MDBModalFooter,
-        MDBModalTitle,
     },
     computed:{
         SidebarWrapper(): any{
@@ -166,12 +156,15 @@ export default defineComponent({
           }
         },
         Logout(){
+          //@ts-ignore
           this.$swal({
             title: "Are you sure you want to logout?",
             showCancelButton: true,
             confirmButtonText: "Yes"
+            //@ts-ignore
           }).then((result) => {
             if (result.isConfirmed){
+              //@ts-ignore
               this.$swal({
                 title: 'User Logging out!',
                 html: 'The user will be logged out in <b></b> milliseconds.',
@@ -181,17 +174,24 @@ export default defineComponent({
                 showConfirmButton: false,
                 allowOutsideClick: false,
                 didOpen: () => {
+                  //@ts-ignore
                   this.$swal.showLoading()
+                  //@ts-ignore
                   const b = this.$swal.getHtmlContainer().querySelector('b')
+                  //@ts-ignore
                   this.timeInterval = setInterval(() => {
+                    //@ts-ignore
                     b.textContent = this.$swal.getTimerLeft()
                   }, 100)
                 },
                 willClose: () => {
+                  //@ts-ignore
                   clearInterval(this.timerInterval)
                 }
+                //@ts-ignore
               }).then((result) => {
                 /* Read more about handling dismissals below */
+                //@ts-ignore
                 if (result.dismiss === this.$swal.DismissReason.timer) {
                   localStorage.removeItem("auth")
                   this.$router.push({name: "home"})
@@ -213,19 +213,19 @@ export default defineComponent({
   right: 0;
   /* border-right: 2px solid #58677a; */
   transition: width 250ms ease-out;
-  background-color: purple !important;
+  background-color: rgba(246,191,159,1) !important;
   z-index: 10;
 }
 
 .sidebar-toggle {
-  background-color: purple;
+  background-color: rgba(149,56,158,1);
   border-radius: 50%;
   width: 2rem;
   height: 2rem;
   position: absolute;
   right: -1rem;
   top: 2rem;
-  color: white;
+  color: rgba(246,191,159,1);
   /* border: 2px solid #0931e2; */
   cursor: pointer;
   transition: transform 250ms ease-out;
@@ -240,13 +240,13 @@ export default defineComponent({
 }
 
 .sidebar-header {
-  background: purple;
+  background: rgba(246,191,159,1);
 }
 
 .sidebar-body {
-  background: purple;
+  background: rgba(246,191,159,1);
   min-height: fit-content;
-  border-top: 1px solid purple;
+  border-top: 1px solid rgba(246,191,159,1);
   overflow-x: hidden;
   overflow-y: auto;
 }

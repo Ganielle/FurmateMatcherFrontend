@@ -66,11 +66,17 @@
                     <MDBRadio label="Female" value="Female" v-model="gender" inline name="inlineRadioOptions" />
                 </div>
                 <br/>
-                <label for="dateofbirth">Date of Birth</label>
+                <label for="dateofbirth">Date Of Birth</label>
                 <br/>
                 <input type="date" name="dateofbirth" id="dateofbirth" v-model="dob">
                 <br/><br/>
-
+                <MDBInput
+                    type="text"
+                    label="Building No./Street/Barangay"
+                    v-model="street"
+                    wrapperClass="mb-4"
+                    required
+                />
                 <MDBInput
                     type="text"
                     label="City"
@@ -188,6 +194,7 @@
                     <MDBBtn block color="primary" @click="() => {
                         if (location == '' || typeofhome == '' || aloneothers == '' || ownershipstatus == '' ||
                         breedowned.length <= 0 || petshave == ''){
+                            //@ts-ignore
                             $swal({
                                 title: 'Please complete the form first before proceeding!',
                                 confirmButtonText: 'OK'
@@ -217,8 +224,7 @@
                 <form @submit.prevent>
                     
                     <div class="d-flex flex-wrap ">
-                        <div class="flex-grow-1 mb-3">'
-                            <label>Where are you located?</label>
+                        <div class="flex-grow-1 mb-3">
                             <select class="form-select cua-input-select-2" name="role" v-model="located"
                                 style="background-color: white; color: black; font-size: 0.9em;">
                                 <option value="">Where are you located? (Metro Manila Municipality only)</option>
@@ -227,11 +233,18 @@
                         </div>
                     </div>
 
-
+                    <div class="d-flex flex-wrap ">
+                        <div class="flex-grow-1 mb-3">
+                            <select class="form-select cua-input-select-2" name="role" v-model="typepet"
+                                style="background-color: white; color: black; font-size: 0.9em;">
+                                <option value="">What type of pet are you looking for?</option>
+                                <option v-for="typepetkey in typepetdata" :key="typepetkey" :value="typepetkey">{{ typepetkey }}</option>
+                            </select>
+                        </div>
+                    </div>
 
                     <div class="d-flex flex-wrap ">
                         <div class="flex-grow-1 mb-3">
-                            <label>What gender of pet are you looking for?</label>
                             <select class="form-select cua-input-select-2" name="role" v-model="genderpet"
                                 style="background-color: white; color: black; font-size: 0.9em;">
                                 <option value="">What gender of pet are you looking for?</option>
@@ -242,7 +255,6 @@
 
                     <div class="d-flex flex-wrap ">
                         <div class="flex-grow-1 mb-3">
-                            <label>What is your ideal age for a pet?</label>
                             <select class="form-select cua-input-select-2" name="role" v-model="agepet"
                                 style="background-color: white; color: black; font-size: 0.9em;">
                                 <option value="">What is your ideal age for a pet?</option>
@@ -253,7 +265,6 @@
 
                     <div class="d-flex flex-wrap ">
                         <div class="flex-grow-1 mb-3">
-                            <label>Are you willing to adopt a pet with special needs?</label>
                             <select class="form-select cua-input-select-2" name="role" v-model="specialdogs"
                                 style="background-color: white; color: black; font-size: 0.9em;">
                                 <option value="">Are you willing to adopt a pet with special needs?</option>
@@ -261,18 +272,7 @@
                             </select>
                         </div>
                     </div>
-
-                                        <div class="d-flex flex-wrap ">
-                        <div class="flex-grow-1 mb-3">
-                            <label>What type of pet are you looking for?</label>
-                            <select class="form-select cua-input-select-2" name="role" v-model="typepet"
-                                style="background-color: white; color: black; font-size: 0.9em;">
-                                <option value="">What type of pet are you looking for?</option>
-                                <option v-for="typepetkey in typepetdata" :key="typepetkey" :value="typepetkey">{{ typepetkey }}</option>
-                            </select>
-                        </div>
-                    </div>
-
+                    What breed of pet are you looking for?
                     <br/>
                     <div v-if="typepet == 'Cat'">
                         <strong>CAT:</strong>
@@ -304,10 +304,10 @@
                             </label>
                         </div>
                     </div>
-                    
-                 <br/>
+                    <strong v-else>PLEASE SELECT A TYPE OF PET FIRST! <br/></strong>
+                    <br/>
                     What kind of pet personality traits do you prefer?
-                    
+                    <br/>
                     <div v-for="personality in personalitytraitsdata" :key="personality">
                         <label class="container no-center-text">
                             <input type="checkbox"
@@ -323,7 +323,6 @@
                     <br/>
                     <div class="d-flex flex-wrap ">
                         <div class="flex-grow-1 mb-3">
-                            <label>Are you comfortable with the responsibility of maintaining a pet's medical records and administering any required medications?</label>
                             <select class="form-select cua-input-select-2" name="role" v-model="petmaintenance"
                                 style="background-color: white; color: black; font-size: 0.9em;">
                                 <option value="">Are you comfortable with the responsibility of maintaining a pet's medical records and administering any required medications?</option>
@@ -344,6 +343,7 @@
                         <MDBCol>
                             <MDBBtn block color="primary" @click="() => {
                                 if (located == '' || typepet == '' || genderpet == '' || agepet == '' || specialdogs == '' || breedpet.length <= 0 || personalitytraits.length <= 0 || petmaintenance == ''){
+                                    //@ts-ignore
                                     $swal({
                                         title: 'Please complete the form first before proceeding!',
                                         confirmButtonText: 'OK'
@@ -566,7 +566,8 @@ export default defineComponent({
     },
     methods: {
         OpenUserPreference(){
-            if (this.username == "" || this.password == "" || this.email == "" || this.contactnumber == "" || this.firstname == "" || this.lastname == "" || this.gender == "" || this.dob == "" || this.municipality == ""){
+            if (this.username == "" || this.password == "" || this.email == "" || this.firstname == "" || this.lastname == "" || this.gender == "" || this.dob == "" || this.street == "" || this.municipality == ""){
+                //@ts-ignore
                 this.$swal({
                     title: "Please complete the form first before proceeding!",
                     confirmButtonText: "OK"
@@ -579,7 +580,8 @@ export default defineComponent({
             this.userpreference = true
         },
         async RegisterUser() {
-            if (this.username == "" || this.password == "" || this.email == "" || this.contactnumber == "" || this.firstname == "" || this.lastname == "" || this.gender == "" || this.dob == "" || this.municipality == ""){
+            if (this.username == "" || this.password == "" || this.email == "" || this.firstname == "" || this.lastname == "" || this.gender == "" || this.dob == "" || this.street == "" || this.municipality == ""){
+                //@ts-ignore
                 this.$swal({
                     title: "Please complete the form first before proceeding!",
                     confirmButtonText: "OK"
@@ -589,6 +591,7 @@ export default defineComponent({
             }
 
             if (this.terms == false){
+                //@ts-ignore
                 this.$swal({
                     title: "Please accept the Terms and Condition before proceeding!",
                     confirmButtonText: "OK"
@@ -607,7 +610,11 @@ export default defineComponent({
                 lastname: this.lastname,
                 gender: this.gender,
                 dob: this.dob,
+                street: this.street,
                 municipality: this.municipality,
+                province: this.province,
+                country: this.country,
+                zipcode: this.zipcode,
                 location: this.location,
                 typeofhome: this.typeofhome,
                 aloneothers: this.aloneothers,
@@ -627,10 +634,12 @@ export default defineComponent({
             await this.Register(data)
 
             if (this.registerresponse.message == "success"){
+                //@ts-ignore
                 this.$swal({
                     title: "Successfully Registered! Do you want to proceed to login?",
                     showCancelButton: true,
                     confirmButtonText: "YES"
+                    //@ts-ignore
                 }).then((result) => {
                     if (result.isConfirmed){
                         this.$router.push({name: "login"})
@@ -639,18 +648,21 @@ export default defineComponent({
                         this.username == ""
                         this.password == "" 
                         this.email == "" 
-                        this.contactnumber = ""
                         this.firstname == "" 
                         this.middlename == "" 
                         this.lastname == "" 
                         this.gender == "" 
                         this.dob == "" 
+                        this.street == "" 
                         this.municipality == "" 
-
+                        this.province == "" 
+                        this.country == "" 
+                        this.zipcode == ""
                     }
                 })
             }
             else{
+                //@ts-ignore
                 this.$swal({
                     title: this.registerresponse.response,
                     confirmButtonText: "YES"
