@@ -1,7 +1,7 @@
 <template>
     <MDBContainer fluid>
         <br/>
-        <Dashboardbreadcrumbs data=" USER MESSAGE INBOX" />
+        <Dashboardbreadcrumbs data="MESSAGES" />
         <br/>
         <MDBRow>
             <MDBCol col="4">
@@ -10,10 +10,16 @@
                 </center>
                 <div style="height: 500px; overflow-y: auto; width: 100%;">
                     <div v-for="data in chatresponse.chatlistdata" :key=data style="cursor: pointer" class="chatbox-item">
-                        <div class="chatbox-item-child" :style="SelectedRoom(data._id)" style="border-radius: 2px; padding-left: 5px; padding-right: 5px; margin: 0; width: 100%;" @click="() => {
+                        
+                        <div class="chatbox-item-child" :style="SelectedRoom(
+                            //@ts-ignore
+                            data._id)" style="border-radius: 2px; padding-left: 5px; padding-right: 5px; margin: 0; width: 100%;" @click="() => {
+                            //@ts-ignore
                             SelectChatHistory(data._id)
                         }">
-                        <strong>Chat box for {{ data.roomname }}</strong>
+                        <strong>Chat box for {{ 
+                        //@ts-ignore
+                        data.roomname }}</strong>
                         </div> 
                         <br/>
                     </div>
@@ -26,14 +32,23 @@
                         <center v-else-if="chatresponse.chathistorydata.length <= 0">
                             <strong>NO CHAT HISTORY YET!</strong>
                         </center>
-                        <div v-else v-for="data in chatresponse.chathistorydata" :key="data">
-                            <div :class="{'right-chat': data.sender._id == userid, 'left-chat': data.sender._id != userid}" class="px-2">
-                                <strong v-if="data.sender._id == userid">You</strong>
+                        <div v-else v-for="data in chatresponse.chathistorydata" :key="
+                        //@ts-ignore
+                        data._id">
+                            <div :class="{'right-chat': 
+                            //@ts-ignore
+                            data.sender._id == userid, 'left-chat': data.sender._id != userid}" class="px-2">
+                                <strong v-if="
+                                //@ts-ignore
+                                data.sender._id == userid">You</strong>
                                 <strong v-else>{{ data.sender.username }}</strong>
                                 <br/><br/>
-                                <p style="white-space: pre-line;">{{ data.content }}</p>
-                                <br/>
-                                <p style="font-size: 13px;">sent: {{ ConvertToDateTime(data.createdAt) }}</p>
+                                <p style="white-space: pre-line;">{{ 
+                                //@ts-ignore
+                                data.content }}</p>
+                                <p>sent: {{ 
+                                //@ts-ignore
+                                ConvertToDateTime(data.createdAt) }}</p>
                             </div>
                             <br/><br/>
                             <br/><br/>
@@ -78,14 +93,8 @@ export default defineComponent({
         MDBCol,
         MDBContainer,
         MDBBtn,
-        MDBCard,
-        MDBCardImg,
-        MDBCardBody,
-        MDBCardTitle,
-        MDBCardText,
         Dashboardbreadcrumbs,
         MDBSpinner,
-        MDBIcon,
         MDBTextarea
     },
     computed: {
@@ -114,6 +123,7 @@ export default defineComponent({
         },
         async ChatList(){
             const auth = await GetItemKey("auth")
+            //@ts-ignore
             const authdata = JSON.parse(auth)
 
             await this.GetChatList(authdata._id)
@@ -156,7 +166,9 @@ export default defineComponent({
             }
         },
         async UserSendChat(){
+            //@ts-ignore
             if (this.content == ""){
+                //@ts-ignore
                 this.$swal({
                     title: "Please put message first before sending",
                     showCancelButton: true,
@@ -178,6 +190,7 @@ export default defineComponent({
                 window.location.reload();
             }
             else{
+                //@ts-ignore
                 this.$swal({
                     title: `There's a problem sending your message! Error Code: ${this.chatresponse.chatsenddata}`,
                     showCancelButton: true,
@@ -188,6 +201,7 @@ export default defineComponent({
     },
     async mounted(){
         const auth = await GetItemKey("auth")
+        //@ts-ignore
         const authdata = JSON.parse(auth)
 
         this.userid = authdata._id

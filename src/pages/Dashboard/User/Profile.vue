@@ -153,7 +153,7 @@
                         </div>
                     </div>
 
-              <!--  <MDBBtn class="text-center" color="primary" block>SAVE CHANGES</MDBBtn> -->
+                    <MDBBtn class="text-center" color="primary" block>SAVE CHANGES</MDBBtn>
                 <br/>
                 <br/>
                 </form>
@@ -265,7 +265,7 @@
                             </select>
                         </div>
                     </div>
-                   <!--  <MDBBtn class="text-center" color="primary" block>SAVE CHANGES</MDBBtn> -->
+                    <MDBBtn class="text-center" color="primary" block>SAVE CHANGES</MDBBtn>
                     <br/><br/>
                 </form>
             </MDBCol>
@@ -466,6 +466,7 @@ export default defineComponent({
                 let proxyData = toRaw(this.userprofileresponse.profileresponse)
 
                 if (proxyData.constructor === Object){
+                    //@ts-ignore
                     return new URL(`${import.meta.env.VITE_API_URL}/${proxyData.preference.userdetails.profilepic}`, import.meta.url).href
                 }
                 else{
@@ -480,6 +481,7 @@ export default defineComponent({
     methods: {
         async UploadPic(){
             if (this.file.length <= 0){
+                //@ts-ignore
                 this.$swal({
                     title: "Please select a picture file first before uploading!",
                     confirmButtonText: "OK"
@@ -487,6 +489,7 @@ export default defineComponent({
                 return
             }
             const auth = await GetItemKey("auth")
+            //@ts-ignore
             const authdata = JSON.parse(auth)
             const formData = new FormData()
 
@@ -496,6 +499,7 @@ export default defineComponent({
             await this.UploadProfilePic(formData)
 
             if (this.userprofileresponse.uploadmessage == "success"){
+                //@ts-ignore
                 this.$swal({
                     title: 'Upload success',
                     html: `The page will reload in <b></b> milliseconds.`,
@@ -505,22 +509,30 @@ export default defineComponent({
                     showConfirmButton: false,
                     allowOutsideClick: false,
                     didOpen: () => {
+                        //@ts-ignore
                     this.$swal.showLoading()
+                    //@ts-ignore
                     const b = this.$swal.getHtmlContainer().querySelector('b')
+                    //@ts-ignore
                     this.timeInterval = setInterval(() => {
+                        //@ts-ignore
                         b.textContent = this.$swal.getTimerLeft()
                     }, 100)
                     },
                     willClose: () => {
+                        //@ts-ignore
                     clearInterval(this.timerInterval)
                     }
+                    //@ts-ignore
                 }).then(result => {
+                    //@ts-ignore
                     if (result.dismiss === this.$swal.DismissReason.timer) {
                         window.location.reload();
                     }
                 })
             }
             else{
+                //@ts-ignore
                 this.$swal({
                     title: `There's a problem saving your profile picture! Error Code: ${this.userprofileresponse.uploadresponse}`,
                     confirmButtonText: "OK"
@@ -529,6 +541,7 @@ export default defineComponent({
         },
         async GetProfile(){
             const auth = await GetItemKey("auth")
+            //@ts-ignore
             const authdata = JSON.parse(auth)
 
             await this.Profile(authdata._id)
@@ -538,27 +551,45 @@ export default defineComponent({
                     let proxyData = toRaw(this.userprofileresponse.profileresponse)
 
                     if (proxyData.constructor === Object){
+                        //@ts-ignore
                         this.fullname = `${proxyData.preference.userdetails.firstname} ${proxyData.preference.userdetails.lastname}`
+                        //@ts-ignore
                         this.dob = proxyData.preference.userdetails.dob
+                        //@ts-ignore
                         this.email = proxyData.preference.userdetails.email
+                        //@ts-ignore
                         this.contact = proxyData.preference.userdetails.contactnumber
+                        //@ts-ignore
                         this.gender = proxyData.preference.userdetails.gender
+                        //@ts-ignore
                         this.address = proxyData.preference.userdetails.municipality
-
+//@ts-ignore
                         this.location = proxyData.preference.location
+                        //@ts-ignore
                         this.typeofhome = proxyData.preference.typeofhome
+                        //@ts-ignore
                         this.aloneothers = proxyData.preference.aloneothers
+                        //@ts-ignore
                         this.ownershipstatus = proxyData.preference.ownershipstatus
+                        //@ts-ignore
                         this.breedowned = proxyData.preference.breedowned
+                        //@ts-ignore
                         this.petshave = proxyData.preference.petshave
-
+//@ts-ignore
                         this.located = proxyData.petdata.located
+                        //@ts-ignore
                         this.typepet = proxyData.petdata.typepet
+                        //@ts-ignore
                         this.genderpet = proxyData.petdata.genderpet
+                        //@ts-ignore
                         this.agepet = proxyData.petdata.agepet
+                        //@ts-ignore
                         this.specialdogs = proxyData.petdata.specialdogs
+                        //@ts-ignore
                         this.breedpet = proxyData.petdata.breedpet
+                        //@ts-ignore
                         this.personalitytraits = proxyData.petdata.personalitytraits
+                        //@ts-ignore
                         this.petmaintenance = proxyData.petdata.petmaintenance
                     }
                 }

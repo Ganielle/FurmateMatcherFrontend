@@ -1,93 +1,28 @@
 <template>
-    <div>
-        <img :src="about" alt="" style="width: 100%; height: 50%; margin: 0 auto; display: block;" />
-        <br/>
+    <div class="text-center">
+        <br/><br/><br/>
+        <MDBContainer>
+            <p style="color: rgba(149,56,158,1); font-size: 3vw">VISION</p>
+            <p style="font-size: 1vw">Our vision is to revolutionize the pet adoption experience by leveraging AI technology to ensure <br/> that every pet finds their perfect forever home. We aim to create a platform that <br/> fosters meaningful connections between adopters and pets, leading to happier lives for both.
+            Mission
+            </p>
+            <br/><br/><br/>
+            <p style="color: rgba(149,56,158,1); font-size: 3vw">MISSION</p>
+            <p style="font-size: 1vw">Our mission is to provide a seamless and personalized pet adoption journey through <br/> the power of AI-driven solutions. We are dedicated to optimizing pet-adopter matches based <br/>  on comprehensive data analysis, enhancing the well-being of pets and the satisfaction of adopters.
+            </p>
+            <br/><br/><br/>
+        </MDBContainer>
     </div>
-
-      <div class="about-us">
-    <div class="container">
-        <h2 class="text-center mb-5" style="font-size: 2.5em; color: purple; +[   ]">About FurMate Matcher</h2>
-
-
-
-      <div class="row">
-        <div class="col-md-4">
-          <img
-            src="@/assets/7.jpg"
-            alt="FurMate Matcher Logo"
-            class="img-fluid"
-          />
-        </div>
-        <div class="col-md-8">
-          <p style="text-align:justify; font-size: 1.3em;" >
-            Welcome to FurMate Matcher, your online destination for finding the perfect furry companion. Our vision is to revolutionize the pet adoption experience by leveraging AI technology to ensure that every pet finds their perfect forever home. We aim to create a platform that fosters meaningful connections between adopters and pets, leading to happier lives for both. 
-          </p>
-          <p  style="text-align:justify; font-size: 1.3em;" >
-            Our mission is to simplify the process of pet adoption by using advanced matching algorithms
-            to pair pets with compatible owners. We believe that understanding the unique qualities of
-            each pet is crucial for building strong and happy relationships.
-          </p>
-          
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-
-    
-    <br/> <br/> <br/><br/> 
-    <img :src="logo" alt="Logo"  style="width: 60%; height: auto; margin: 0 auto; display: block;" />
-
-    <div>
-
-    </div>
-
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardImg, } from "mdb-vue-ui-kit";
 
-import logo from "@/assets/Home/Header/guide for adopters.svg";
-import about from "@/assets/Home/Header/4.png";
-
 export default defineComponent({
     name: "Vision",
-        data() {
-        return {
-            logo,
-            about,
-
-        }
-    },
-    
     components: {
-        MDBContainer,
-        
+        MDBContainer
     }
 })
 </script>
-
-
-
-<style scoped>
-.about-us {
-  padding: 50px 0;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.img-fluid {
-  max-width: 110%;
-  height: auto;
-}
-
-.header-logo {
-  width: 100%; /* Adjust the width as needed */
-  height:  auto;
-}
-</style>

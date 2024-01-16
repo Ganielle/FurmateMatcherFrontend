@@ -18,7 +18,7 @@ export default defineComponent({
     name: "Pethealth",
     components: {
         Homenavigation,
-
+        HeaderHome,
         FooterContent,
         Pethealthcontent
     }

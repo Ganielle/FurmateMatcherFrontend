@@ -28,23 +28,60 @@
                     labelClass="forminput"
                     required
                 />
-                
+                <MDBInput
+                    type="text"
+                    label="Building No./Street/Barangay"
+                    v-model="street"
+                    wrapperClass="mb-4"
+                    labelClass="forminput"
+                    required
+                />
                 <MDBRow id="HomeAddress">
                     <MDBCol>
                         <MDBInput
                             type="text"
-                            label="City"
+                            label="Municipality"
                             v-model="municipality"
                             wrapperClass="mb-4"
                             labelClass="forminput"
                             required
                         />
                     </MDBCol>
-               
+                    <MDBCol>
+                        <MDBInput
+                            type="text"
+                            label="Province"
+                            v-model="province"
+                            wrapperClass="mb-4"
+                            labelClass="forminput"
+                            required
+                        />
+                    </MDBCol>
+                    <MDBCol>
+                        <MDBInput
+                            type="text"
+                            label="Country"
+                            v-model="country"
+                            wrapperClass="mb-4"
+                            labelClass="forminput"
+                            required
+                        />
+                    </MDBCol>
+                    <MDBCol>
+                        <MDBInput
+                            type="text"
+                            label="Zip Code"
+                            v-model="zipcode"
+                            wrapperClass="mb-4"
+                            labelClass="forminput"
+                            required
+                        />
+                    </MDBCol>
                 </MDBRow>
-            <MDBTextarea label="Vision" rows="4" v-model="vision" labelClass="forminput" required/>
+                <MDBTextarea label="Vision" rows="4" v-model="vision" labelClass="forminput"/>
                 <br/>
-            <MDBTextarea label="Mission" rows="4" v-model="mission" aria-label="forminput" required/>
+                <MDBTextarea label="Mission" rows="4" v-model="mission" aria-label="forminput"/>
+                <br/>
                 <MDBCheckbox
                     label="By click this you're accepting the <a href='/termsandcondition'>Terms and Conditions</a>"
                     v-model="terms"
@@ -84,6 +121,9 @@ export default defineComponent({
             email: "",
             street: "",
             municipality: "",
+            province: "",
+            country: "",
+            zipcode: "",
             terms: false,
             vision: "",
             mission: ""
@@ -101,7 +141,8 @@ export default defineComponent({
     },
     methods: {
         async RegisterUser() {
-            if (this.username == "" && this.password == "" && this.email == "" && this.municipality == ""&& this.vision == "" && this.mission == ""){
+            if (this.username == "" && this.password == "" && this.email == "" && this.street == "" && this.municipality == "" && this.province == "" && this.country == "" && this.zipcode == ""){
+                //@ts-ignore
                 this.$swal({
                     title: "Please complete the form first before proceeding!",
                     confirmButtonText: "OK"
@@ -111,6 +152,7 @@ export default defineComponent({
             }
 
             if (this.terms == false){
+                //@ts-ignore
                 this.$swal({
                     title: "Please accept the Terms and Condition before proceeding!",
                     confirmButtonText: "OK"
@@ -124,9 +166,11 @@ export default defineComponent({
                 roleId: this.role,
                 username: this.username,
                 password: this.password,
-                
+                street: this.street,
                 municipality: this.municipality,
-                
+                province: this.province,
+                country: this.country,
+                zipcode: this.zipcode,
                 vision: this.vision,
                 mission: this.mission
             }
@@ -134,10 +178,12 @@ export default defineComponent({
             await this.Register(data)
 
             if (this.registerresponse.message == "success"){
+                //@ts-ignore
                 this.$swal({
                     title: "Successfully Registered! Do you want to proceed to login?",
                     showCancelButton: true,
                     confirmButtonText: "YES"
+                    //@ts-ignore
                 }).then((result) => {
                     if (result.isConfirmed){
                         this.$router.push({name: "login"})
@@ -146,15 +192,16 @@ export default defineComponent({
                         this.username == ""
                         this.password == "" 
                         this.email == "" 
-                        
+                        this.street == "" 
                         this.municipality == "" 
-                        this.vision == "" 
-                        this.mission == "" 
-                       
+                        this.province == "" 
+                        this.country == "" 
+                        this.zipcode == ""
                     }
                 })
             }
             else{
+                //@ts-ignore
                 this.$swal({
                     title: this.registerresponse.response,
                     confirmButtonText: "YES"

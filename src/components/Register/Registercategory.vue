@@ -1,14 +1,11 @@
 <template>
     <MDBContainer class="registration-form">
-        <div class="p-5 bg-white">
+        <div class="p-5 bg-light">
             <h2 class="text-center">FURMATE MATCHER CATEGORY REGISTRATION</h2>
             <br/>
            <MDBBtn color="primary" block @click="$emit('pickcategory', 'User')">Adopter Registration</MDBBtn>
-
            <!-- <MDBBtn color="primary" block @click="$emit('pickcategory', 'Shelter')">Shelter Registration</MDBBtn>
-
            <MDBBtn color="primary" block @click="$emit('pickcategory', 'Organization')">Organization Registration</MDBBtn> -->
-           
            <MDBBtn color="primary" block @click="$emit('pickcategory', 'Rescuer')">Rescuer Registration</MDBBtn>
         </div>
     </MDBContainer>

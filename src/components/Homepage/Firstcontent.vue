@@ -2,8 +2,8 @@
     <div class="first-content">
         <MDBContainer class="text-center">
             <br/><br/><br/>
-            <strong style="color: purple; font-size: 3vw;">Pets Available for Adoption</strong>
-            <br/><br/><br/>
+            <p style="color: rgba(149,56,158,1); font-size: 2vw;">Pets Available for Adoption Nearby</p>
+            <br/>
             <MDBSpinner size="large" v-if="petsprocessing.petlistloading" />
             <MDBRow v-else-if="petsreponse.petlistresponse.length > 0" style="height: 300px;" start>
                 <MDBCol v-for="data in petsreponse.petlistresponse" :key="data">
@@ -11,18 +11,22 @@
                         $router.push({name: 'login'})
                     }">
                         <MDBCardImg
-                            :src="GetImage(data.picture)"
+                            :src="
+                            //@ts-ignore
+                            GetImage(data.picture)"
                             top
                             alt="..."
                         />
                         <MDBCardBody>
-                            <MDBCardTitle class="text-center" style="color: purple; font-size: 25px;">{{ data.name }}</MDBCardTitle>
+                            <MDBCardTitle class="text-center">{{ 
+                                //@ts-ignore
+                                data.name }}</MDBCardTitle>
                         </MDBCardBody>
                     </MDBCard>
                 </MDBCol>
             </MDBRow>
             <strong v-else>NO PETS AVAILABLE YET!</strong>
-            <br/><br/><br/>   <br/> <br/> 
+            <br/><br/><br/>
         </MDBContainer>
     </div>
 </template>
@@ -49,7 +53,6 @@ export default defineComponent({
     MDBCard,
     MDBCardBody,
     MDBCardTitle,
-    MDBCardText,
     MDBCardImg,
     MDBSpinner
 },
@@ -73,12 +76,12 @@ export default defineComponent({
 </script>
 
 <style>
-.first-content {
+.first-content{
     background-color: gainsboro;
 }
 .pet-adopt-item:hover{
-    border: 6px solid 	purple;
-    margin: -20px;
+    border: 2px solid rgba(149,56,158,1);
+    margin: -2px;
     cursor: pointer;
 }
 .card-img-top {

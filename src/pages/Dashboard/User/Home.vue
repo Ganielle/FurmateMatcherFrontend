@@ -1,5 +1,4 @@
 <template>
-
     <MDBContainer fluid>
         <br/>
         <Dashboardbreadcrumbs data="DASHBOARD / PET MATCHER" />
@@ -7,8 +6,7 @@
         <MDBRow>
             <MDBCol col="3" style="max-height: 80vh; overflow-y: auto;">
                 <center>
-        <strong style="font-size: 25px; font-weight: bold;">CUSTOM FILTER</strong>
-
+                    <strong>CUSTOM FILTER</strong>
                 </center>
                 <br/>
                 <div class="text-center bg-light">
@@ -97,9 +95,7 @@
                         </div>
                     </div>
 
-                    <br/> 
-
-                    <MDBBtn color="primary" block class="custom-button" @click="CustomFilter()" :disabled="customfilteron || petsprocessing.petlistloading">
+                    <MDBBtn color="primary" block class="mt-4" @click="CustomFilter()" :disabled="customfilteron || petsprocessing.petlistloading">
                         <MDBSpinner v-if="petsprocessing.petlistloading"></MDBSpinner>
                         <strong v-else>SEARCH BY CUSTOM FILTER</strong>
                     </MDBBtn>
@@ -110,50 +106,59 @@
                         <MDBSpinner v-if="petsprocessing.petlistloading"></MDBSpinner>
                         <strong v-else>CANCEL CUSTOM FILTER</strong>
                     </MDBBtn>
-                    <br/> <br/>
-                <p class="text-center" style="color: red; font-size: 14px; padding: 8px; border-radius: 5px;">**Click "Cancel Custom Filter" to start a new filter</p>
-
                     <br/><br/>
                 </div>
             </MDBCol>
             <MDBCol style="max-height: 80vh; overflow-y: scroll;">
-                <strong style="color: purple; font-size:2.5vw">PET LIST</strong>
-                <p style="font-size: 20px;"> Click the image of the pet to bookmark or like the pet. </p>
+                <strong style="font-size:1.5vw">PET LIST</strong>
                 <br/><br/>
                 <MDBRow v-if="petsreponse.petlistresponse.length > 0">
                     <MDBCol col="4" v-for="petsItem in petsreponse.petlistresponse" :key="petsItem" style="padding-bottom: 50px;">
                         <MDBCard class="h-100">
                             <div>
-                                <MDBSpinner v-if="petsprocessing.petlikeloading && likepetclicked == petsItem._id" style="position: absolute; padding-top: 10px; padding-left: 230px; color: red" />
-                                
-                                <MDBIcon v-else-if="petsItem.isLiked == true" icon="heart" style="position: absolute; padding-top: 20px; padding-left: 230px; color: red" size="2x"/>
+                                <MDBSpinner v-if="
+                                //@ts-ignore
+                                    petsprocessing.petlikeloading && likepetclicked == petsItem._id" style="position: absolute; padding-top: 10px; padding-left: 10px; color: #e45757" />
+                                <MDBIcon v-else-if="
+                                //@ts-ignore
+                                petsItem.isLiked == true" icon="heart" style="position: absolute; padding-top: 10px; padding-left: 10px; color: #e45757" size="2x"/>
                                 <MDBCardImg
-                                    :src="GetImage(petsItem.picture)"
+                                    :src="
+                                    //@ts-ignore
+                                    GetImage(petsItem.picture)"
                                     top
                                     @click="() => {
+                                        //@ts-ignore
                                         likepetclicked = petsItem._id
 
                                         if (petsprocessing.petlikeloading){
                                             likepetclicked = ''
                                             return;
                                         }
+                                        //@ts-ignore
                                         petsItem.isLiked = !petsItem.isLiked
+                                        //@ts-ignore
                                         LikeMyPet(petsItem._id)
                                     }"
                                 />
                             </div>
                             <MDBCardBody>
-                            <MDBCardTitle>{{ petsItem.name }}</MDBCardTitle>
+                            <MDBCardTitle>{{ 
+                                //@ts-ignore
+                                petsItem.name }}</MDBCardTitle>
                             <MDBCardText>
                                 
                                 
-                                <strong>Breed: {{ petsItem.breed }}</strong>
+                                <strong>Breed: {{ 
+                                    //@ts-ignore
+                                    petsItem.breed }}</strong>
                                 <br/>
-                                <strong>Gender: {{ petsItem.gender }}</strong>
-                                <br/>
-                                <strong>Age: {{ petsItem.age }}</strong>                               
+                                <strong>Gender: {{ 
+                                //@ts-ignore
+                                petsItem.gender }}</strong>
                             </MDBCardText>
-                                <MDBBtn class="custom-button" color="primary" @click="() => {
+                                <MDBBtn color="primary" @click="() => {
+                                    //@ts-ignore
                                     AddHistory(petsItem._id)
                                 }" :disabled="petsprocessing.pethistoryaddloading">View </MDBBtn>
                             </MDBCardBody>
@@ -282,6 +287,7 @@ export default defineComponent({
             this.customfilteron = true
             if (this.type != 'any' && this.type != ''){
                 if (this.breed == ''){
+                    //@ts-ignore
                     this.$swal({
                         title: "Please select a breed first!",
                         confirmButtonText: "OK"
@@ -292,6 +298,7 @@ export default defineComponent({
             }
 
             if (this.type == ''){
+                //@ts-ignore
                 this.$swal({
                     title: "Please select a pet type",
                     confirmButtonText: "OK"
@@ -322,6 +329,7 @@ export default defineComponent({
             await this.PetLike(petid, authdata._id)
 
             if (this.petsreponse.petlikemessage != "success"){
+                //@ts-ignore
                 this.$swal({
                     title: `There's a problem liking the pet! Error Code: ${this.petsreponse.petlikeresponse}`,
                     showCancelButton: true,
@@ -348,6 +356,7 @@ export default defineComponent({
                 }})
             }
             else{
+                //@ts-ignore
                 this.$swal({
                     title: `There's a problem adding history! Error Code: ${this.petsreponse.pethistoryaddmessage}`,
                     confirmButtonText: "OK! Cool"
@@ -375,16 +384,4 @@ export default defineComponent({
     height: 20vw;
     object-fit: cover;
 }
-
-.custom-button {
-    background-color: purple !important;
-    color: white !important;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.custom-button:hover {
-    background-color: rgb(127, 0, 255) !important;
-    color: white !important;
-}
-
 </style>
