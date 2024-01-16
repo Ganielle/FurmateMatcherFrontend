@@ -18,7 +18,7 @@ export default defineComponent({
     name: "EmergencyResponse",
     components: {
         Homenavigation,
-        HeaderHome,
+
         FooterContent,
         TipsContent    
     }

@@ -27,12 +27,19 @@ export default defineComponent({
     name: "UserProfileModal",
     props: ["openmodal", "userid"],
     components: {
-        MDBBtn,
+        MDBBtn, 
+        MDBCol, 
+        MDBContainer, 
+        MDBIcon, 
+        MDBRow,
+        MDBSpinner, 
+        MDBTable,
         MDBModal,
         MDBModalHeader,
         MDBModalTitle,
         MDBModalBody,
         MDBModalFooter,
+        MDBBtn,
     },
     computed: {
         OpenModal(){
