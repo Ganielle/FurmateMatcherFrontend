@@ -49,35 +49,24 @@
                         <MDBSpinner></MDBSpinner>
                     </td>
                 </tr>
-                <tr v-else-if="
-                //@ts-ignore
-                petsreponse.petadoptionlistresponse == '' || petsreponse.petadoptionlistresponse[0].data.length <= 0">
+                <tr v-else-if="petsreponse.petadoptionlistresponse == '' || petsreponse.petadoptionlistresponse[0].data.length <= 0">
                     
                     <td colspan="4">No Data Yet!</td>
                 </tr>
                 <tr v-else v-for="data in petsreponse.petadoptionlistresponse" :key="data">
                     <th scope="row" class="text-center" style="color: black">
-                        {{ 
-                            //@ts-ignore
-                            data.data[0].adopterdetails.firstname }} {{ 
-                            //@ts-ignore
-                            data.data[0].adopterdetails.lastname }}
+                        {{ data.data[0].adopterdetails.firstname }} {{ data.data[0].adopterdetails.lastname }}
                     </th>
                     <th class="text-center" style="color: black">
-                        {{ 
-                            //@ts-ignore
-                            data.data[0].petdata.name }}
+                        {{ data.data[0].petdata.name }}
                     </th>
                     <th class="text-center" style="color: black">
-                        {{ 
-                            //@ts-ignore
-                            data.data[0].createdAt }}
+                        {{ data.data[0].createdAt }}
                     </th>
                     <th class="text-center" style="color: black">
                         <MDBRow>
                             <MDBCol>
                                 <MDBBtn color="primary" block style="height: 100%;" @click="() => {
-                                    //@ts-ignore
                                     detailsuid = data.data[0].adopterdetails.user
                                     Profile(detailsuid)
                                     viewdetails = true
@@ -85,15 +74,12 @@
                             </MDBCol>
                             <MDBCol>
                                 <MDBBtn color="success" block style="height: 100%;" @click="() => {
-                                    //@ts-ignore
                                     this.$swal({
                                         title: 'Are you sure you want to approve this adopter?',
                                         showCancelButton: true,
                                         confirmButtonText: 'Yes'
-                                        //@ts-ignore
                                     }).then((result) => {
                                         if (result.isConfirmed){
-                                            //@ts-ignore
                                             ApproveReject(data.data[0].adopterdetails.user, 'success', data.data[0].pet)
                                         }
                                     })
@@ -101,15 +87,12 @@
                             </MDBCol>
                             <MDBCol>
                                 <MDBBtn color="danger" block style="height: 100%;" @click="() => {
-                                    //@ts-ignore
                                     this.$swal({
                                         title: 'Are you sure you want to reject this adopter?',
                                         showCancelButton: true,
                                         confirmButtonText: 'Yes'
-                                        //@ts-ignore
                                     }).then((result) => {
                                         if (result.isConfirmed){
-                                            //@ts-ignore
                                             ApproveReject(data.data[0].adopterdetails.user, 'reject', data.data[0].pet)
                                         }
                                     })
@@ -117,16 +100,13 @@
                             </MDBCol>
                             <MDBCol>
                                 <MDBBtn color="warning" block style="height: 100%;" @click="() => {
-                                    //@ts-ignore
                                     $swal({
                                         title: 'Are you sure you want to chat with this adopter?',
                                         showCancelButton: true,
                                         confirmButtonText: 'Yes'
                                     }).then((resultdata: any) => {
                                         if (resultdata.isConfirmed){
-                                            //@ts-ignore
                                             const room = `Adoption for ${data.data[0].petdata.name} with ${data.data[0].adopteruserdetails.username} & ${uname}`
-                                            //@ts-ignore
                                             CreateMessage(data.data[0].adopteruserdetails._id, room)
                                         }
                                     })
@@ -155,41 +135,25 @@
             <div v-else>
                 <center>
                     <img
-                        :src="
-                        //@ts-ignore
-                        GetImage(userprofileresponse.profileresponse.preference.userdetails.profilepic)"
+                        :src="GetImage(userprofileresponse.profileresponse.preference.userdetails.profilepic)"
                         class="img-thumbnail"
                         alt="..."
                     />
                 </center>
                 <br/><br/>
-                <MDBInput label="First Name" v-model="
-                //@ts-ignore
-                userprofileresponse.profileresponse.preference.userdetails.firstname" disabled/>
+                <MDBInput label="First Name" v-model="userprofileresponse.profileresponse.preference.userdetails.firstname" disabled/>
                 <br/>
-                <MDBInput label="Last Name" v-model="
-                //@ts-ignore
-                userprofileresponse.profileresponse.preference.userdetails.lastname" disabled/>
+                <MDBInput label="Last Name" v-model="userprofileresponse.profileresponse.preference.userdetails.lastname" disabled/>
                 <br/>
-                <MDBInput label="Contact Number" v-model="
-                //@ts-ignore
-                userprofileresponse.profileresponse.preference.userdetails.contactnumber" disabled/>
+                <MDBInput label="Contact Number" v-model="userprofileresponse.profileresponse.preference.userdetails.contactnumber" disabled/>
                 <br/>
-                <MDBInput label="Gender" v-model="
-                //@ts-ignore
-                userprofileresponse.profileresponse.preference.userdetails.gender" disabled/>
+                <MDBInput label="Gender" v-model="userprofileresponse.profileresponse.preference.userdetails.gender" disabled/>
                 <br/>
-                <MDBInput label="Email" v-model="
-                //@ts-ignore
-                userprofileresponse.profileresponse.preference.userdetails.email" disabled/>
+                <MDBInput label="Email" v-model="userprofileresponse.profileresponse.preference.userdetails.email" disabled/>
+            
+            
                 <br/>
-                <MDBInput label="Street" v-model="
-                //@ts-ignore
-                userprofileresponse.profileresponse.preference.userdetails.street" disabled/>
-                <br/>
-                <MDBInput label="City" v-model="
-                //@ts-ignore
-                userprofileresponse.profileresponse.preference.userdetails.municipality" disabled/>
+                <MDBInput label="City" v-model="userprofileresponse.profileresponse.preference.userdetails.municipality" disabled/>
             </div>
         </MDBModalBody>
         <MDBModalFooter>
@@ -242,7 +206,6 @@ export default defineComponent({
     methods: {
         async AdoptionList(){
             const auth = await GetItemKey("auth")
-            //@ts-ignore
             const authdata = JSON.parse(auth)
 
             await this.GetAdoptionList(authdata._id)
@@ -262,7 +225,6 @@ export default defineComponent({
                 window.location.reload()
             }
             else{
-                //@ts-ignore
                 this.$swal({
                     title: `There's problem processing your action! Error Code: ${this.petsreponse.petapproverejectresponse}`,
                     confirmButtonText: 'OK! Cool'
@@ -271,14 +233,12 @@ export default defineComponent({
         },
         async GetUsername(){
             const auth = await GetItemKey("auth")
-            //@ts-ignore
             const authdata = JSON.parse(auth)
 
             this.uname = authdata.username
         },
         async CreateMessage(adopterid: any, roomname: any){
             const auth = await GetItemKey("auth")
-            //@ts-ignore
             const authdata = JSON.parse(auth)
             const data = {
                 rescuerid: authdata._id,
@@ -287,7 +247,7 @@ export default defineComponent({
             }
 
             await this.CreateChat(data)
-            //@ts-ignore
+            
             this.$router.push({name: "rescuermessages", query: {"roomid": this.chatresponse.chatcreatemessage._id}})
         },
     },
@@ -326,5 +286,16 @@ export default defineComponent({
     font-weight: bold;
     border-radius: 0.5rem;
     cursor:context-menu;
+}
+
+.custom-button {
+    background-color: purple !important;
+    color: white !important;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.custom-button:hover {
+    background-color: rgb(127, 0, 255) !important;
+    color: white !important;
 }
 </style>

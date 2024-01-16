@@ -18,7 +18,7 @@ export default defineComponent({
     name: "FirstTimeAdopters",
     components: {
         Homenavigation,
-        HeaderHome,
+
         FooterContent,
         FirstTimeAdoptersContent    
     }

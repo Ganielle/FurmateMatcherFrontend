@@ -42,7 +42,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { MDBContainer, MDBInput, MDBCheckbox, MDBRow, MDBCol, MDBBtn, MDBSpinner  } from "mdb-vue-ui-kit";
-//@ts-ignore
+
 import { Login } from '@/modules/login/login.ts'
 
 export default defineComponent({
@@ -66,7 +66,6 @@ export default defineComponent({
     methods: {
         async LoginUser(){
             if (this.username == "" && this.password == ""){
-                //@ts-ignore
                 this.$swal({
                     title: "Please complete the form first before proceeding!",
                     confirmButtonText: "OK"
@@ -84,10 +83,8 @@ export default defineComponent({
 
             if (this.loginresponse.message == "success"){
                 localStorage.setItem("auth", JSON.stringify(this.loginresponse.response))
-                //@ts-ignore
                 this.$swal({
                     title: 'User Logging in',
-                    //@ts-ignore
                     html: `${this.loginresponse.response.username} will be logging in <b></b> milliseconds.`,
                     timer: 2000,
                     timerProgressBar: true,
@@ -95,29 +92,20 @@ export default defineComponent({
                     showConfirmButton: false,
                     allowOutsideClick: false,
                     didOpen: () => {
-                        //@ts-ignore
                     this.$swal.showLoading()
-                    //@ts-ignore
                     const b = this.$swal.getHtmlContainer().querySelector('b')
-                    //@ts-ignore
                     this.timeInterval = setInterval(() => {
-                        //@ts-ignore
                         b.textContent = this.$swal.getTimerLeft()
                     }, 100)
                     },
                     willClose: () => {
-                        //@ts-ignore
                     clearInterval(this.timerInterval)
                     }
-                    //@ts-ignore
                 }).then(result => {
-                    //@ts-ignore
                     if (result.dismiss === this.$swal.DismissReason.timer) {
-                        //@ts-ignore
                         if (this.loginresponse.response.roleId == "629a98a5a881575c013b5326"){
                             this.$router.push({name: "user"})
                         }
-                        //@ts-ignore
                         else if (this.loginresponse.response.roleId == "629a98a5a881575c013b5327"){
                             this.$router.push({name: "rescuer"})
                         }
@@ -125,7 +113,6 @@ export default defineComponent({
                 })
             }
             else{
-                //@ts-ignore
                 this.$swal({
                     title: this.loginresponse.response,
                     confirmButtonText: "YES"

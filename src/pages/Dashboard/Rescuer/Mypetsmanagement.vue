@@ -1,7 +1,7 @@
 <template>
     <MDBContainer>
         <br/>
-        <Dashboardbreadcrumbs data="MY PETS / MANAGEMENT" />
+        <Dashboardbreadcrumbs data="PETS MANAGEMENT" />
         <br/>
         <div class="px-0 mb-3 d-flex align-items-center justify-content-center">
             <button class="tc-pager" role="button"
@@ -36,7 +36,7 @@
         </div>
 
         <br/>
-        <MDBBtn color="primary" @click="addpetmodal = true">ADD PET</MDBBtn>
+        <MDBBtn style=" background-color: purple;" color="primary" @click="addpetmodal = true">ADD PET</MDBBtn>
         <br/>
         <br/>
         <MDBTable responsive class="align-middle mb-0 bg-white text-center">
@@ -67,45 +67,28 @@
                 </tr>
                 <tr v-else v-for="data in petsreponse.petlistresponse" :key="data">
                     <th scope="row" class="text-center" style="color: black">
-                        {{ 
-                            //@ts-ignore
-                            data.name }}
+                        {{ data.name }}
                     </th>
                     <th class="text-center" style="color: black">
-                        {{ 
-                            //@ts-ignore
-                            data.type }}
+                        {{ data.type }}
                     </th>
                     <th class="text-center" style="color: black">
-                        {{ 
-                            //@ts-ignore
-                            data.breed }}
+                        {{ data.breed }}
                     </th>
                     <th class="text-center">
                         <MDBRow>
                             <MDBCol>
                                 <MDBBtn block color="primary" @click="() => {
-                                    //@ts-ignore
                                     petname = data.name
-                                    //@ts-ignore
                                     description = data.description
-                                    //@ts-ignore
                                     type = data.type
-                                    //@ts-ignore
                                     gender = data.gender
-                                    //@ts-ignore
                                     breed = data.breed
-                                    //@ts-ignore
                                     age = data.age
-                                    //@ts-ignore
                                     personality = data.personalitytraits
-                                    //@ts-ignore
                                     special = data.special
-                                    //@ts-ignore
                                     maintenance = data.maintenance
-                                    //@ts-ignore
                                     located = data.located
-                                    //@ts-ignore
                                     picture = data.picture
 
                                     viewpetmodal = true
@@ -113,27 +96,16 @@
                             </MDBCol>
                             <MDBCol>
                                 <MDBBtn block color="primary" @click="() => {
-                                    //@ts-ignore
                                     petname = data.name
-                                    //@ts-ignore
                                     description = data.description
-                                    //@ts-ignore
                                     type = data.type
-                                    //@ts-ignore
                                     gender = data.gender
-                                    //@ts-ignore
                                     breed = data.breed
-                                    //@ts-ignore
                                     age = data.age
-                                    //@ts-ignore
                                     personality = data.personalitytraits
-                                    //@ts-ignore
                                     special = data.special
-                                    //@ts-ignore
                                     maintenance = data.maintenance
-                                    //@ts-ignore
                                     located = data.located
-                                    //@ts-ignore
                                     userpetid = data._id
 
                                     updatemodal = true
@@ -141,16 +113,12 @@
                             </MDBCol>
                             <MDBCol>
                                 <MDBBtn block color="primary" @click="() => {
-                                    //@ts-ignore
                                     this.$swal({
                                         title: `Are you sure you want to remove this pet?`,
                                         confirmButtonText: 'Yes',
                                         showCancelButton: true
-                                    }).then(
-                                        //@ts-ignore
-                                        (result) => {
+                                    }).then((result) => {
                                         if (result.isConfirmed){
-                                            //@ts-ignore
                                             RemovePet(data._id)
                                         }
                                     })
@@ -185,26 +153,18 @@
                 <br/>
                 <div class="d-flex flex-wrap ">
                     <div class="flex-grow-1 mb-3">
+                    <label for="breed">What is your Pet Type?</label>
                         <select class="form-select cua-input-select-2" name="role" v-model="type"
                             style="background-color: white; color: black; font-size: 0.9em;">
-                            <option value="">What is your pet type?</option>
+                            <option value="">What is your Pet Type?</option>
                             <option v-for="typekey in typepetdata" :key="typekey" :value="typekey">{{ typekey }}</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="d-flex flex-wrap ">
-                    <div class="flex-grow-1 mb-3">
-                        <select class="form-select cua-input-select-2" name="role" v-model="gender"
-                            style="background-color: white; color: black; font-size: 0.9em;">
-                            <option value="">What is your pet gender?</option>
-                            <option v-for="genderkey in genderpetdata" :key="genderkey" :value="genderkey">{{ genderkey }}</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="d-flex flex-wrap " v-if="type == 'Dog'">
                     <div class="flex-grow-1 mb-3">
+                        <label for="breed">What is your Pet Breed?</label>
                         <select class="form-select cua-input-select-2" name="role" v-model="breed"
                             style="background-color: white; color: black; font-size: 0.9em;">
                             <option value="">What is your pet breed?</option>
@@ -214,6 +174,7 @@
                 </div>  
                 <div class="d-flex flex-wrap " v-else-if="type == 'Cat'">
                     <div class="flex-grow-1 mb-3">
+                        <label for="breed">What is your Pet Breed?</label>
                         <select class="form-select cua-input-select-2" name="role" v-model="breed"
                             style="background-color: white; color: black; font-size: 0.9em;">
                             <option value="">What is your pet breed?</option>
@@ -222,8 +183,24 @@
                     </div>
                 </div>
 
+
+
                 <div class="d-flex flex-wrap ">
                     <div class="flex-grow-1 mb-3">
+                    <label for="gender">What is your Pet Gender?</label>
+                        <select class="form-select cua-input-select-2" name="role" v-model="gender"
+                            style="background-color: white; color: black; font-size: 0.9em;">
+                            <option value="">What is your pet gender?</option>
+                            <option v-for="genderkey in genderpetdata" :key="genderkey" :value="genderkey">{{ genderkey }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                
+
+                <div class="d-flex flex-wrap ">
+                    <div class="flex-grow-1 mb-3">
+                        <label for="age">What is your Pet Age?</label>
                         <select class="form-select cua-input-select-2" name="role" v-model="age"
                             style="background-color: white; color: black; font-size: 0.9em;">
                             <option value="">What is your pet age?</option>
@@ -232,7 +209,7 @@
                     </div>
                 </div>
 
-                What is your pet personality traits? (Please at lease one)
+                What is your pet personality traits? (Please select at lease one)
                 <div v-for="personalitykey in personalitytraitsdata" :key="personalitykey">
                     <label class="container no-center-text">
                         <input type="checkbox"
@@ -247,6 +224,7 @@
                 <br/>
                 <div class="d-flex flex-wrap ">
                     <div class="flex-grow-1 mb-3">
+                        <label>Is your pet a special pet?</label>
                         <select class="form-select cua-input-select-2" name="role" v-model="special"
                             style="background-color: white; color: black; font-size: 0.9em;">
                             <option value="">Is your pet a special pet?</option>
@@ -257,9 +235,10 @@
 
                 <div class="d-flex flex-wrap ">
                     <div class="flex-grow-1 mb-3">
+                        <label>Does your pet have a maintenance?</label>
                         <select class="form-select cua-input-select-2" name="role" v-model="maintenance"
                             style="background-color: white; color: black; font-size: 0.9em;">
-                            <option value="">Is your pet have a maintenance?</option>
+                            <option value="">Does your pet have a maintenance?</option>
                             <option v-for="maintenancekey in petmaintenancedata" :key="maintenancekey" :value="maintenancekey">{{ maintenancekey }}</option>
                         </select>
                     </div>
@@ -267,6 +246,7 @@
 
                 <div class="d-flex flex-wrap ">
                     <div class="flex-grow-1 mb-3">
+                    <label>Where does your pet located?</label>
                         <select class="form-select cua-input-select-2" name="role" v-model="located"
                             style="background-color: white; color: black; font-size: 0.9em;">
                             <option value="">Where is your pet located?</option>
@@ -279,7 +259,6 @@
                 <br/>
                 <MDBBtn color="primary" block @click="() => {
                     if (petname == '' || type == '' || gender == '' || breed == '' || age == '' || personality.length <= 0 || maintenance == '' || located == '' || file.length <= 0){
-                        //@ts-ignore
                         $swal({
                             title: 'Please complete the form first before proceeding!',
                             confirmButtonText: 'OK'
@@ -443,6 +422,7 @@
                 <br/>
                 <div class="d-flex flex-wrap ">
                     <div class="flex-grow-1 mb-3">
+                        <label for="breed">What is your Pet Type?</label>
                         <select class="form-select cua-input-select-2" name="role" v-model="type"
                             style="background-color: white; color: black; font-size: 0.9em;">
                             <option value="">What is your pet type?</option>
@@ -451,18 +431,9 @@
                     </div>
                 </div>
 
-                <div class="d-flex flex-wrap ">
-                    <div class="flex-grow-1 mb-3">
-                        <select class="form-select cua-input-select-2" name="role" v-model="gender"
-                            style="background-color: white; color: black; font-size: 0.9em;">
-                            <option value="">What is your pet gender?</option>
-                            <option v-for="genderkey in genderpetdata" :key="genderkey" :value="genderkey">{{ genderkey }}</option>
-                        </select>
-                    </div>
-                </div>
-
                 <div class="d-flex flex-wrap " v-if="type == 'Dog'">
                     <div class="flex-grow-1 mb-3">
+                        <label for="breed">What is your Pet Breed?</label>
                         <select class="form-select cua-input-select-2" name="role" v-model="breed"
                             style="background-color: white; color: black; font-size: 0.9em;">
                             <option value="">What is your pet breed?</option>
@@ -472,6 +443,7 @@
                 </div>  
                 <div class="d-flex flex-wrap " v-else-if="type == 'Cat'">
                     <div class="flex-grow-1 mb-3">
+                        <label for="breed">What is your Pet Breed?</label>
                         <select class="form-select cua-input-select-2" name="role" v-model="breed"
                             style="background-color: white; color: black; font-size: 0.9em;">
                             <option value="">What is your pet breed?</option>
@@ -482,6 +454,18 @@
 
                 <div class="d-flex flex-wrap ">
                     <div class="flex-grow-1 mb-3">
+                        <label for="gender">What is your Pet Gender?</label>
+                        <select class="form-select cua-input-select-2" name="role" v-model="gender"
+                            style="background-color: white; color: black; font-size: 0.9em;">
+                            <option value="">What is your pet gender?</option>
+                            <option v-for="genderkey in genderpetdata" :key="genderkey" :value="genderkey">{{ genderkey }}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap ">
+                    <div class="flex-grow-1 mb-3">
+                        <label for="age">What is your Pet Age?</label>
                         <select class="form-select cua-input-select-2" name="role" v-model="age"
                             style="background-color: white; color: black; font-size: 0.9em;">
                             <option value="">What is your pet age?</option>
@@ -503,8 +487,10 @@
                     </label>
                 </div>
                 <br/>
+               
                 <div class="d-flex flex-wrap ">
                     <div class="flex-grow-1 mb-3">
+                        <label>Is your pet a special pet?</label>
                         <select class="form-select cua-input-select-2" name="role" v-model="special"
                             style="background-color: white; color: black; font-size: 0.9em;">
                             <option value="">Is your pet a special pet?</option>
@@ -515,6 +501,7 @@
 
                 <div class="d-flex flex-wrap ">
                     <div class="flex-grow-1 mb-3">
+                        <label>Does your pet have a maintenance?</label>
                         <select class="form-select cua-input-select-2" name="role" v-model="maintenance"
                             style="background-color: white; color: black; font-size: 0.9em;">
                             <option value="">Is your pet have a maintenance?</option>
@@ -525,6 +512,7 @@
 
                 <div class="d-flex flex-wrap ">
                     <div class="flex-grow-1 mb-3">
+                        <label>Where is your pet located?</label>
                         <select class="form-select cua-input-select-2" name="role" v-model="located"
                             style="background-color: white; color: black; font-size: 0.9em;">
                             <option value="">Where is your pet located?</option>
@@ -537,7 +525,6 @@
                 <br/>
                 <MDBBtn color="primary" block @click="() => {
                     if (petname == '' || type == '' || gender == '' || breed == '' || age == '' || personality.length <= 0 || maintenance == '' || located == ''){
-                        //@ts-ignore
                         $swal({
                             title: 'Please complete the form first before proceeding!',
                             confirmButtonText: 'OK'
@@ -713,7 +700,6 @@ export default defineComponent({
             await this.AddPet(formData)
 
             if (this.petsreponse.petaddmessage == "success"){
-                //@ts-ignore
                 this.$swal({
                     title: 'Save Success!',
                     html: `The page will reload in <b></b> milliseconds.`,
@@ -723,30 +709,22 @@ export default defineComponent({
                     showConfirmButton: false,
                     allowOutsideClick: false,
                     didOpen: () => {
-                        //@ts-ignore
                     this.$swal.showLoading()
-                    //@ts-ignore
                     const b = this.$swal.getHtmlContainer().querySelector('b')
-                    //@ts-ignore
                     this.timeInterval = setInterval(() => {
-                        //@ts-ignore
                         b.textContent = this.$swal.getTimerLeft()
                     }, 100)
                     },
                     willClose: () => {
-                    //@ts-ignore
                     clearInterval(this.timerInterval)
                     }
-                    //@ts-ignore
                 }).then(result => {
-                    //@ts-ignore
                     if (result.dismiss === this.$swal.DismissReason.timer) {
                         window.location.reload();
                     }
                 })
             }
             else{
-                //@ts-ignore
                 this.$swal({
                     title: `There's a problem saving your data! ErrorCode: ${this.petsreponse.petlistresponse}`,
                     confirmButtonText: 'OK'
@@ -768,7 +746,6 @@ export default defineComponent({
             await this.PetRemove(data)
 
             if (this.petsreponse.petremovemessage == "success"){
-                //@ts-ignore
                 this.$swal({
                 title: 'Pet successfully removed!',
                 html: 'The page will be refreshed in <b></b> milliseconds.',
@@ -778,31 +755,23 @@ export default defineComponent({
                 showConfirmButton: false,
                 allowOutsideClick: false,
                 didOpen: () => {
-                    //@ts-ignore
                   this.$swal.showLoading()
-                  //@ts-ignore
                   const b = this.$swal.getHtmlContainer().querySelector('b')
-                  //@ts-ignore
                   this.timeInterval = setInterval(() => {
-                    //@ts-ignore
                     b.textContent = this.$swal.getTimerLeft()
                   }, 100)
                 },
                 willClose: () => {
-                    //@ts-ignore
                   clearInterval(this.timerInterval)
                 }
-                //@ts-ignore
               }).then((result) => {
                 /* Read more about handling dismissals below */
-                //@ts-ignore
                 if (result.dismiss === this.$swal.DismissReason.timer) {
                     window.location.reload()
                 }
               })
             }
             else{
-                //@ts-ignore
                 this.$swal({
                     title: `There's a problem removing your pet. Error Code: ${this.petsreponse.petremoveresponse}`,
                     confirmButtonText: "OK! Cool"
@@ -834,7 +803,6 @@ export default defineComponent({
             await this.UpdatePet(formData)
 
             if (this.petsreponse.petupdatemessage == "success"){
-                //@ts-ignore
                 this.$swal({
                     title: 'Save Success!',
                     html: `The page will reload in <b></b> milliseconds.`,
@@ -844,30 +812,22 @@ export default defineComponent({
                     showConfirmButton: false,
                     allowOutsideClick: false,
                     didOpen: () => {
-                        //@ts-ignore
                     this.$swal.showLoading()
-                    //@ts-ignore
                     const b = this.$swal.getHtmlContainer().querySelector('b')
-                    //@ts-ignore
                     this.timeInterval = setInterval(() => {
-                        //@ts-ignore
                         b.textContent = this.$swal.getTimerLeft()
                     }, 100)
                     },
                     willClose: () => {
-                        //@ts-ignore
                     clearInterval(this.timerInterval)
                     }
-                    //@ts-ignore
                 }).then(result => {
-                    //@ts-ignore
                     if (result.dismiss === this.$swal.DismissReason.timer) {
                         window.location.reload();
                     }
                 })
             }
             else{
-                //@ts-ignore
                 this.$swal({
                     title: `There's a problem saving your data! ErrorCode: ${this.petsreponse.petupdateresponse}`,
                     confirmButtonText: 'OK'

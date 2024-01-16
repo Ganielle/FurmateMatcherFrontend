@@ -3,7 +3,9 @@
         <br/>
         <Dashboardbreadcrumbs data="PETS / LIKE PETS" />
         <br/>
-        <h1>LIKED PETS LIST</h1>
+        <center>
+        <strong style="color:purple; font-size: 40px; ">LIKED PETS LIST</strong>
+        </center>
         <br/><br/>
         <div style="height: 500px; overflow-y: auto;">
             <center v-if="petsprocessing.petlikelistloading">
@@ -17,30 +19,21 @@
                     <MDBCard class="h-100">
                         <div>
                             <MDBCardImg
-                                :src="
-                                //@ts-ignore
-                                GetImage(petsItem.pet.picture)"
+                                :src="GetImage(petsItem.pet.picture)"
                                 top
                             />
                         </div>
                         <MDBCardBody>
-                        <MDBCardTitle>{{ 
-                            //@ts-ignore
-                            petsItem.pet.name }}</MDBCardTitle>
+                        <MDBCardTitle>{{ petsItem.pet.name }}</MDBCardTitle>
                         <MDBCardText>
                             
                             
-                            <strong>Breed: {{ 
-                                //@ts-ignore
-                                petsItem.pet.breed }}</strong>
+                            <strong>Breed: {{ petsItem.pet.breed }}</strong>
                             <br/>
-                            <strong>Gender: {{ 
-                            //@ts-ignore
-                            petsItem.pet.gender }}</strong>
+                            <strong>Gender: {{ petsItem.pet.gender }}</strong>
                         </MDBCardText>
-                            <MDBBtn color="primary" @click="() => {
+                            <MDBBtn class="custom-button" color="primary" @click="() => {
                                 $router.push({name: 'petviewer', params: {
-                                    //@ts-ignore
                                         petid: petsItem.pet._id
                                     }})
                             }">View </MDBBtn>
@@ -76,7 +69,8 @@ export default defineComponent({
         MDBCardTitle,
         MDBCardText,
         Dashboardbreadcrumbs,
-        MDBSpinner
+        MDBSpinner,
+        MDBIcon
     },
     methods: {
         async GetPetLikeList(){
@@ -86,7 +80,6 @@ export default defineComponent({
             await this.PetLikeList(authdata._id)
 
             if (this.petsreponse.petlikelistmessage != "success"){
-                //@ts-ignore
                 this.$swal({
                     title: `There's a problem getting your liked pets list! Error Code: ${this.petsreponse.petlikelistmessage}`,
                     showCancelButton: true,
@@ -117,4 +110,16 @@ export default defineComponent({
     height: 20vw;
     object-fit: cover;
 }
+
+.custom-button {
+    background-color: purple !important;
+    color: white !important;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.custom-button:hover {
+    background-color: rgb(127, 0, 255) !important;
+    color: white !important;
+}
+
 </style>
